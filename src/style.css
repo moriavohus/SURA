@@ -115,15 +115,10 @@ button,
   border-radius: var(--radius-button);
   background: var(--color-white);
   color: var(--color-black);
-  transition: transform var(--transition-hover), background-color var(--transition-base);
+  transition: background-color var(--transition-base);
 
   &:hover {
     background: var(--color-bg);
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 }
 
@@ -802,15 +797,10 @@ button,
   border-radius: var(--radius-button);
   background: var(--color-black);
   color: var(--color-white);
-  transition: transform var(--transition-hover), background-color var(--transition-base);
+  transition: background-color var(--transition-base);
 
   &:hover {
     background: var(--color-bg-inverse);
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 }
 
@@ -822,8 +812,9 @@ button,
   background: var(--color-grey);
   color: var(--color-black);
 
+  /* блок отступает на колонку слева, как кейсы, услуги и CTA */
   & .O_Clients-title {
-    grid-column: 1 / 3;
+    grid-column: 2 / 4;
     margin: 0;
     white-space: nowrap;
   }
@@ -900,6 +891,23 @@ button,
     opacity: 1;
   }
 
+  /* Круги-веера поверх коллажа. Секции — repeating-conic-gradient, так что
+     рисунок ничего не весит и не мылится.
+
+     Наложение двухступенчатое. Внутри группы круги считаются друг с другом
+     через exclusion: одиночный круг остаётся белым, а в пересечении белое
+     на белом даёт чёрное. Сама группа ложится на коллаж через screen, для
+     которого чёрный прозрачен, — то есть в пересечениях проступает фото, а
+     между лучами коллаж виден и так. Без isolation круги считались бы не
+     между собой, а с фотографией, и всё уходило бы в негатив. */
+  & .O_Footer-rays {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    isolation: isolate;
+    mix-blend-mode: screen;
+  }
+
   /* знак растянут по высоте: вектор с preserveAspectRatio="none" */
   & .A_FooterWordmark {
     position: absolute;
@@ -912,6 +920,49 @@ button,
     pointer-events: none;
   }
 }
+
+
+/* ===== A_RayCircle — круг с секциями ==================================
+   Размер, положение и число секций задаются модификатором; вращение —
+   в footerRays.js, каждый круг в свою сторону.
+   ====================================================================== */
+
+.A_RayCircle {
+  position: absolute;
+  left: var(--ray-x);
+  top: var(--ray-y);
+  width: var(--ray-w);
+  /* высота по умолчанию равна ширине — круг; задали отдельно, получился
+     овал, и веер вытягивается вместе с ним */
+  height: var(--ray-h, var(--ray-w));
+  translate: -50% -50%;
+  border-radius: 50%;
+  mix-blend-mode: exclusion;
+  will-change: transform;
+  background: repeating-conic-gradient(
+    var(--color-white-pure) 0deg calc(180deg / var(--ray-slices)),
+    transparent calc(180deg / var(--ray-slices)) calc(360deg / var(--ray-slices))
+  );
+}
+
+/* Центры разложены по всему кадру с разбросом: у веера просветы между
+   лучами тем шире, чем дальше от центра, поэтому пустоты закрываются не
+   размером фигур, а их количеством. Часть вытянута в овал. */
+.A_RayCircle--1  { --ray-x: 8%; --ray-y: 10%; --ray-w: 46vmin; --ray-slices: 18; }
+.A_RayCircle--2  { --ray-x: 33%; --ray-y: 6%; --ray-w: 40vmin; --ray-slices: 14; }
+.A_RayCircle--3  { --ray-x: 60%; --ray-y: 9%; --ray-w: 52vmin; --ray-slices: 22; }
+.A_RayCircle--4  { --ray-x: 92%; --ray-y: 12%; --ray-w: 44vmin; --ray-slices: 16; }
+.A_RayCircle--5  { --ray-x: 6%; --ray-y: 36%; --ray-w: 54vmin; --ray-h: 38vmin; --ray-slices: 20; }
+.A_RayCircle--6  { --ray-x: 35%; --ray-y: 33%; --ray-w: 42vmin; --ray-slices: 16; }
+.A_RayCircle--7  { --ray-x: 63%; --ray-y: 38%; --ray-w: 48vmin; --ray-slices: 20; }
+.A_RayCircle--8  { --ray-x: 94%; --ray-y: 34%; --ray-w: 38vmin; --ray-h: 58vmin; --ray-slices: 24; }
+.A_RayCircle--9  { --ray-x: 9%; --ray-y: 64%; --ray-w: 44vmin; --ray-slices: 16; }
+.A_RayCircle--10 { --ray-x: 32%; --ray-y: 66%; --ray-w: 56vmin; --ray-h: 40vmin; --ray-slices: 22; }
+.A_RayCircle--11 { --ray-x: 61%; --ray-y: 62%; --ray-w: 40vmin; --ray-slices: 14; }
+.A_RayCircle--12 { --ray-x: 90%; --ray-y: 66%; --ray-w: 150vmin; --ray-slices: 20; }
+.A_RayCircle--13 { --ray-x: 12%; --ray-y: 92%; --ray-w: 48vmin; --ray-slices: 18; }
+.A_RayCircle--14 { --ray-x: 38%; --ray-y: 95%; --ray-w: 42vmin; --ray-h: 62vmin; --ray-slices: 24; }
+.A_RayCircle--15 { --ray-x: 66%; --ray-y: 90%; --ray-w: 216vmin; --ray-slices: 22; }
 
 
 /* ===== M_FooterLinks =================================================== */
