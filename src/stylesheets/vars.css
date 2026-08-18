@@ -1,0 +1,164 @@
+/* ==========================================================================
+   vars.css — единственный источник правды для цветов, отступов и таймингов.
+   Захардкоженное значение в style.css / responsive.css — ошибка.
+   ========================================================================== */
+
+:root {
+  /* ===== цвета: база проекта ===== */
+  --color-bg: #fff;
+  --color-bg-inverse: #0a0a0a;
+  --color-text: #0a0a0a;
+  --color-text-muted: rgba(10, 10, 10, 0.56);
+  /* --color-accent: задать при утверждении дизайна */
+
+  /* ===== цвета: токены из Figma ===== */
+  --color-white: #f6f6f6;                        /* Figma: white */
+  --color-black: #0a0a0a;                        /* Figma: black */
+  --color-grey: #ececec;                         /* Figma: grey — фон блока кейсов */
+  --color-glass: rgba(255, 255, 255, 0.2);       /* светлая стеклянная подложка */
+  --color-glass-dark: rgba(0, 0, 0, 0.1);        /* тёмная стеклянная подложка */
+  --color-glass-button: rgba(255, 255, 255, 0.16);
+  --color-glass-tip: rgba(255, 255, 255, 0.1);
+  /* тёмное стекло для меню над светлыми секциями */
+  --color-glass-inverse: rgba(10, 10, 10, 0.55);
+  --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */
+  /* градиент манифеста */
+  --color-manifesto-from: #000200;
+  --color-manifesto-to: #181b0a;
+  --color-case-fallback: #d8d3cf;                /* фон карточки до загрузки */
+
+  /* притенение краёв кадра на вытянутых экранах */
+  --color-scrim-strong: rgba(10, 10, 10, 0.5);
+  --color-scrim-mid: rgba(10, 10, 10, 0.3);
+  --color-scrim-soft: rgba(10, 10, 10, 0.24);
+  --color-scrim-none: rgba(10, 10, 10, 0);
+
+  /* ===== отступы — шкала 4px ===== */
+  --space-3xs: 4px;
+  --space-2xs: 6px;
+  --space-xs: 8px;
+  --space-s: 16px;
+  --space-m: 32px;
+  --space-l: 64px;
+  --space-xl: 128px;
+
+  --space-gutter: 20px;                          /* поле макета по краям экрана */
+  --grid-cols: 6;                                /* колонок в сетке страницы */
+  --grid-gap: var(--space-gutter);               /* промежуток между колонками */
+
+  /* ===== радиусы ===== */
+  --radius-s: 4px;
+  --radius-m: 12px;
+  --radius-avatar: 9px;
+  --radius-button: 10px;
+  --radius-l: 20px;
+
+  /* ===== тайминги ===== */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.6s var(--ease-out);
+  --transition-hover: 0.4s var(--ease-out);
+
+  /* ===== layout ===== */
+  --container-max: 1440px;
+  --container-pad: 64px;
+
+  /* ===== первый экран: геометрия из макета 1440 × 960 ===== */
+  --header-h: 108px;
+  --header-logo-w: 218px;
+  --header-logo-h: 51px;
+  --button-h: 68px;
+  --button-pad-x: var(--space-m);
+
+  --hero-min-h: 600px;
+  /* поле под знаком и меню — то же, что и по краям экрана */
+  --hero-content-bottom: var(--space-gutter);
+  --hero-row-gap: 350px;                          /* из макета; при одной строке не работает */
+
+  /* Колонка сетки первого экрана: 6 колонок, поля по 20 и промежутки по 20.
+     На 1440 даёт 216.667px — ровно ширину меню из макета. */
+  --grid-col: calc(
+    (100% - var(--space-gutter) * 2 - var(--grid-gap) * (var(--grid-cols) - 1))
+    / var(--grid-cols)
+  );
+
+  /* Знак сплющивается по высоте, ширина держится постоянной: вектор
+     экспортирован с preserveAspectRatio="none" и тянется по коробке.
+     Ширина — две колонки сетки вместе с промежутком; считаем в процентах от
+     собственной ячейки (она равна одной колонке), а не через --grid-col:
+     тот выражен от 100%, которые внутри ячейки означают уже её ширину.
+     Высота 576.112px дала бы знак без искажения — 560 взято из задачи. */
+  --hero-logo-w: calc(200% + var(--grid-gap));
+  --hero-logo-h: 560px;
+  --hero-logo-h-min: 180px;
+  --hero-pin: 380px;             /* прокрутка, на которой меняется только знак */
+
+  /* «→проекты» — по левому краю второй колонки, 334 / 900 по высоте */
+  --hero-projects-x: calc(var(--space-gutter) + var(--grid-col) + var(--grid-gap));
+  --hero-projects-y: 37.1%;
+
+  /* ===== плавающее меню (Figma: компонент Menu) ===== */
+  --menu-w: var(--grid-col);                       /* ровно пятая колонка сетки */
+  --menu-gap: 24px;
+  --menu-blur: 20px;
+  --menu-bottom: var(--hero-content-bottom);
+  /* Держим меню за левый нижний угол: он один и тот же в обоих вариантах,
+     поэтому при переключении меню схлопывается на месте, а не переезжает.
+     Элемент fixed, поэтому позицию пятой колонки считаем сами. */
+  --menu-left: calc(
+    var(--space-gutter) + (var(--grid-col) + var(--grid-gap)) * 4
+  );
+
+
+  --hero-scrim-opacity: 0;                         /* включается в responsive.css */
+
+  /* ===== блок кейсов ===== */
+  --cases-pad-top: 150px;
+  --grid-max: 1400px;
+  --case-h: 661px;
+  --case-panel-w: 236px;
+  --case-panel-w-wide: 335px;
+  --case-panel-gap: 24px;
+  --case-pad: 20px;              /* внутреннее поле карточки, не зависит от экрана */
+  --case-blur: 30px;             /* стекло панели */
+  --case-bg-blur: 30px;          /* размытие кадра-подложки в мобильной раскладке */
+  --case-cta-h: 68px;
+  --case-tip-w: 315px;
+
+  /* ===== блок услуг ===== */
+  --services-pad-y: 150px;
+  --services-cols: 3;
+  --service-card-h: 367px;
+  --service-inset: 10px;
+  --service-gap-hover: 10px;
+  --service-dot: 8px;
+  --service-photo-size: 368px;
+  --service-photo-top: 60.5%;     /* 222 / 367 */
+  --service-arrow-w: 80px;
+  --service-arrow-h: 88px;
+  --service-arrow-top: 27.25%;    /* 100 / 367 */
+
+  /* ===== общие поля секций ===== */
+  --section-pad-y: 150px;
+
+  /* ===== клиенты ===== */
+  --clients-row-h: 36px;
+  --clients-row-gap: 12px;
+
+  /* ===== блок «давайте обсудим» ===== */
+  --contact-card-h: 398px;
+  --contact-card-pad: 40px;
+  --contact-title-w: 723px;
+
+  /* ===== манифест ===== */
+  --manifesto-media-w: 664px;
+  --manifesto-media-h: 992px;
+  --manifesto-text-w: 1268px;
+  --manifesto-text-shift: 112px;   /* центр текста выше центра экрана */
+
+  /* ===== футер ===== */
+  --footer-logo-w: 366px;
+  --footer-logo-top: 108px;
+  --footer-link-w: 238px;
+}

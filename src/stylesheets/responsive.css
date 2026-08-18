@@ -1,0 +1,259 @@
+/* ==========================================================================
+   responsive.css — только media queries, desktop-first.
+   Порядок переопределений внутри брейкпоинта совпадает с порядком в style.css.
+   ========================================================================== */
+
+/* ===== лэптоп ========================================================== */
+
+@media (max-width: 1440px) {
+  /* база уже текучая: знак масштабируется через clamp, меню и сетка кейсов
+     привязаны к его ширине — переопределять на этом брейкпоинте нечего */
+}
+
+
+/* ===== планшет ========================================================= */
+
+@media (max-width: 1024px) {
+  :root {
+    --header-h: 92px;
+    --header-logo-w: 168px;
+    --header-logo-h: 39px;
+    --button-h: 60px;
+    --button-pad-x: var(--space-s);
+    --hero-scrim-opacity: 1;
+    --cases-pad-top: var(--space-xl);
+
+    /* колонка становится уже читаемой ширины меню — фиксируем его размер
+       и прижимаем к правому полю, а знак отдаём левой части сетки */
+    --menu-w: 216px;
+    --menu-left: calc(100% - var(--menu-w) - var(--space-gutter));
+    --hero-logo-w: calc(300% + var(--grid-gap) * 2);
+    --hero-logo-h: 420px;
+    --hero-logo-h-min: 140px;
+    --hero-projects-x: var(--space-gutter);
+
+    --services-pad-y: var(--space-xl);
+    --section-pad-y: var(--space-xl);
+    /* четыре кнопки по 238 не помещаются в 984 доступных */
+    --footer-link-w: 180px;
+  }
+
+  .Title1 { font-size: 64px; }
+  .Title2 { font-size: 48px; }
+  .Label1 { font-size: 26px; }
+
+  .A_ButtonPrimary {
+    font-size: 18px;
+  }
+
+  .A_Wordmark {
+    grid-column: 1;
+  }
+
+  .M_Contact {
+    display: none;
+  }
+
+  .O_Header {
+    padding: var(--space-s);
+  }
+
+  /* кейсы в одну полосу: половинная карточка ужимает панель до нечитаемой */
+  .O_Cases .W_Grid > *:nth-child(n) {
+    grid-row: auto;
+    grid-column: 1 / -1;
+  }
+
+  /* блоки распахиваются на всю сетку: на 1024 колонка всего 147px */
+  .W_ServicesGrid,
+  .O_Clients .O_Clients-title,
+  .O_Clients .O_Clients-list {
+    grid-column: 1 / -1;
+  }
+
+  .M_FooterLinks .M_FooterLinks-group:first-child { grid-column: 1 / 4; }
+  .M_FooterLinks .M_FooterLinks-group:last-child { grid-column: 4 / 7; }
+}
+
+
+/* ===== планшет вертикально / крупный мобильный ========================= */
+
+@media (max-width: 768px) {
+  :root {
+    --space-gutter: 16px;
+    --header-logo-w: 140px;
+    --header-logo-h: 33px;
+    --button-h: 52px;
+    --hero-min-h: 560px;
+    --hero-projects-y: 12%;
+    --hero-logo-w: 60vw;
+    --hero-logo-h: 300px;
+    --hero-logo-h-min: 110px;
+    --cases-pad-top: var(--space-l);
+    --case-blur: 10px;                 /* стекло шапки мобильной карточки */
+    --services-pad-y: var(--space-l);
+    --services-cols: 2;
+    --service-card-h: 280px;
+    --section-pad-y: var(--space-l);
+    --contact-card-pad: var(--space-m);
+    --footer-link-w: 140px;
+    --footer-logo-w: 55vw;
+  }
+
+  .Title1 { font-size: 48px; }
+  .Title2 { font-size: 40px; }
+  .Label1 { font-size: 22px; }
+
+  .M_ContactCard {
+    height: auto;
+    gap: var(--space-l);
+  }
+
+  /* соцсети складываются в две колонки по две кнопки */
+  .M_FooterLinks .M_FooterLinks-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-s);
+  }
+
+  .A_ButtonPrimary {
+    font-size: 16px;
+  }
+
+  /* знак и меню больше не встают в ряд: знак поднимается под шапку,
+     меню остаётся внизу справа */
+  .A_Wordmark {
+    align-items: flex-start;
+    padding-top: 20%;
+    padding-bottom: 0;
+  }
+
+  /* ===== мобильная карточка кейса (Figma 512:445) =====================
+     Кадр уходит в подложку и размывается, поверх — стеклянная шапка,
+     под ней чёткий снимок, внизу кнопка. Панель раскрывается в поток
+     карточки через display: contents, поэтому её части можно расставить
+     по порядку между снимком и кнопкой. */
+
+  .T_CaseCard {
+    flex-direction: column;
+    gap: var(--case-pad);
+  }
+
+  .T_CaseCard .T_CaseCard-bg,
+  .T_CaseCard:hover .T_CaseCard-bg {
+    z-index: 0;
+    filter: blur(var(--case-bg-blur));
+    transform: scale(1.2);             /* прячем прозрачные края размытия */
+  }
+
+  /* белая вуаль поверх размытого кадра */
+  .T_CaseCard::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--color-glass);
+    pointer-events: none;
+  }
+
+  .M_CasePanel {
+    display: contents;
+  }
+
+  .M_CasePanel .M_CasePanel-head {
+    position: relative;
+    z-index: 2;
+    order: 1;
+    width: 100%;
+    padding: var(--case-pad);
+    background: var(--color-glass);
+    -webkit-backdrop-filter: blur(var(--case-blur));
+    backdrop-filter: blur(var(--case-blur));
+  }
+
+  .M_CasePanel--dark .M_CasePanel-head {
+    background: var(--color-glass-dark);
+  }
+
+  /* в мобильном макете точка стоит над названием услуги, а не рядом */
+  .M_CasePanel .M_CasePanel-tag {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+
+  .T_CaseCard .T_CaseCard-shot {
+    position: relative;
+    z-index: 2;
+    order: 2;
+    display: block;
+    flex: 1 1 0;
+    min-height: 0;
+    width: calc(100% - var(--case-pad) * 2);
+    margin-inline: var(--case-pad);
+    border-radius: var(--radius-l);
+    object-fit: cover;
+  }
+
+  .T_CaseCard .A_ButtonGhost {
+    position: relative;
+    z-index: 2;
+    order: 3;
+    width: calc(100% - var(--case-pad) * 2);
+    margin: var(--case-pad);
+  }
+
+  .M_CaseTip {
+    display: none;
+  }
+}
+
+
+/* ===== мобильный ======================================================= */
+
+@media (max-width: 480px) {
+  :root {
+    --services-cols: 1;
+    --service-card-h: 200px;
+    --footer-link-w: 120px;
+  }
+
+  .Title1 { font-size: 36px; }
+  .Title2 { font-size: 32px; }
+  .Label1 { font-size: 20px; }
+
+  .O_Menu .O_Menu-tagline {
+    font-size: 19px;
+    line-height: 105%;
+  }
+
+  .M_CasePanel .M_CasePanel-title {
+    font-size: 48px;
+  }
+}
+
+
+/* ===== ввод без курсора ================================================ */
+
+@media (hover: none) {
+  /* реплика раскрывается только по ховеру — на тач-устройствах она мертва */
+  .M_CaseTip {
+    display: none;
+  }
+}
+
+
+/* ===== системные настройки ============================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

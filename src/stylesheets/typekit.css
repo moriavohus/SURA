@@ -1,0 +1,44 @@
+/* ==========================================================================
+   typekit.css — только типографические классы, по классу на стиль из макета.
+   letter-spacing в em, чтобы жить вместе с clamp. Жирность — модификатором.
+   ========================================================================== */
+
+/* Figma: title 1 — Inter Tight SemiBold 90 / 75, letter-spacing -1px */
+.Title1 {
+  font-size: 90px;
+  line-height: 83.3%;
+  letter-spacing: -0.0111em;
+  font-weight: 600;
+}
+
+/* Figma: title 2 — Inter Tight SemiBold 62 / 60, letter-spacing -1px */
+.Title2 {
+  font-size: 62px;
+  line-height: 96.8%;
+  letter-spacing: -0.0161em;
+  font-weight: 600;
+}
+
+/* Figma: label 1 — Inter Tight SemiBold 32 / 32, letter-spacing -0.4px */
+.Label1 {
+  font-size: 32px;
+  line-height: 100%;
+  letter-spacing: -0.0125em;
+  font-weight: 600;
+}
+
+/* Figma: label 2 — Inter Tight SemiBold 22 / 22, letter-spacing -0.1px */
+.Label2 {
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: -0.0045em;
+  font-weight: 600;
+}
+
+/* Figma: body — Inter Tight Medium 14 / 16 */
+.Body {
+  font-size: 14px;
+  line-height: 114.3%;
+  letter-spacing: 0;
+  font-weight: 500;
+}

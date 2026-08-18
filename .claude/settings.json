@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof -nP -iTCP:4173 -sTCP:LISTEN)",
+      "Bash(curl -sL -o __TRACKED_VAR__/hero-new.png https://www.figma.com/api/mcp/asset/0d5d3b94-ce72-425f-a871-e6a21d1c8d23.png)",
+      "Bash(curl -sL -o src/images/logos/wordmark.svg \"https://www.figma.com/api/mcp/asset/a8bf36d9-72d4-417c-8372-7f834ca55680.svg\")",
+      "Bash(curl -sL -o src/images/hero/bullet-dot.svg \"https://www.figma.com/api/mcp/asset/d161eda3-d372-4616-b762-0a293c03f722.svg\")",
+      "Bash(sips -g pixelWidth -g pixelHeight __TRACKED_VAR__/hero-new.png)",
+      "Bash(curl -sSL -w \"\\\\nHTTP %{http_code} | type=%{content_type} | bytes=%{size_download}\\\\n\" -o /tmp/wm.svg \"https://www.figma.com/api/mcp/asset/e6c2dec4-5d99-43dd-b707-690a75c914bf.svg\")",
+      "Read(//tmp/**)",
+      "Bash(cd /Users/morisuhova/Desktop/SURA *)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/private/tmp/claude-501/-Users-morisuhova-Desktop-SURA/a709ba2c-f47e-437d-afa9-891ed701850f/scratchpad/pw-browsers node intro.mjs)",
+      "Bash(sed -i '' s/localhost:8788/localhost:4173/g /private/tmp/claude-501/-Users-morisuhova-Desktop-SURA/a709ba2c-f47e-437d-afa9-891ed701850f/scratchpad/final.mjs)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/private/tmp/claude-501/-Users-morisuhova-Desktop-SURA/a709ba2c-f47e-437d-afa9-891ed701850f/scratchpad/pw-browsers node final.mjs /private/tmp/claude-501/-Users-morisuhova-Desktop-SURA/a709ba2c-f47e-437d-afa9-891ed701850f/scratchpad)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/private/tmp/claude-501/-Users-morisuhova-Desktop-SURA/a709ba2c-f47e-437d-afa9-891ed701850f/scratchpad/pw-browsers npx --yes playwright@1.49.1 install webkit)"
+    ],
+    "additionalDirectories": [
+      "/private/tmp"
+    ]
+  }
+}

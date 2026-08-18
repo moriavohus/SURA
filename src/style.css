@@ -1,0 +1,901 @@
+/* ==========================================================================
+   style.css — layout-стили компонентов, desktop-first (база 1440+).
+   Все переопределения под узкие экраны — в stylesheets/responsive.css.
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  color: var(--color-white);
+  background: var(--color-bg-inverse);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: var(--space-3xs);
+  border-radius: var(--radius-s);
+}
+
+
+/* ===== A_Dot — точка-маркер из макета ================================== */
+
+.A_Dot {
+  width: var(--space-2xs);
+  height: var(--space-2xs);
+  flex: none;
+  border-radius: var(--radius-l);
+  background: var(--color-white);
+}
+
+/* счётчик услуги: крупнее и по тёмному */
+.A_Dot--dark {
+  width: var(--service-dot);
+  height: var(--service-dot);
+  background: var(--color-black);
+}
+
+/* вариант-иконка: готовый вектор 16 × 18 с нахлёстом на текст */
+.A_Dot--icon {
+  width: 16px;
+  height: 18px;
+  margin-right: -8px;
+  border-radius: 0;
+  background: none;
+  transition: transform var(--transition-hover);
+
+  & img {
+    width: 16px;
+    height: 18px;
+  }
+}
+
+
+/* ===== A_Logo — знак (↑) в шапке ======================================= */
+
+.A_Logo {
+  position: relative;
+  width: var(--header-logo-w);
+  height: var(--header-logo-h);
+  flex: none;
+  /* как в макете: цвет знака считается разностью с кадром под ним */
+  mix-blend-mode: difference;
+
+  & img {
+    width: var(--header-logo-w);
+    height: var(--header-logo-h);
+    transition: transform var(--transition-slow);
+  }
+
+  &:hover img {
+    transform: translateY(-3px);
+  }
+}
+
+
+/* ===== A_Avatar ======================================================== */
+
+.A_Avatar {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+  flex: none;
+
+  & img {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-avatar);
+    object-fit: cover;
+    transition: transform var(--transition-hover);
+  }
+}
+
+
+/* ===== A_ButtonPrimary ================================================= */
+
+.A_ButtonPrimary {
+  position: relative;
+  height: var(--button-h);
+  padding: 0 var(--button-pad-x) var(--space-3xs);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: var(--radius-button);
+  background: var(--color-white);
+  color: var(--color-black);
+  transition: transform var(--transition-hover), background-color var(--transition-base);
+
+  &:hover {
+    background: var(--color-bg);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+
+/* ===== A_Wordmark — süra ===============================================
+   Ячейка третьей колонки сетки, знак прижат к низу с полем 80px и шире
+   ячейки: занимает две колонки вместе с промежутком между ними.
+   ====================================================================== */
+
+.A_Wordmark {
+  grid-column: 3;
+  grid-row: 1;
+  /* ячейка тянется на всю колонку, знак шире неё и заходит на четвёртую */
+  justify-self: stretch;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: var(--hero-content-bottom);
+  position: relative;
+  z-index: 30;                         /* выше меню: знак ложится поверх него */
+  pointer-events: none;
+  mix-blend-mode: difference;          /* как в макете: разность с кадром */
+
+  & img {
+    /* обе стороны заданы явно: пропорция намеренно не сохраняется, знак
+       сплющивается по высоте при неизменной ширине */
+    width: var(--hero-logo-w);
+    height: var(--hero-logo-h);
+    /* Знак шире своей ячейки: reset ограничивает картинки по контейнеру,
+       а как flex-элемент он ещё и ужимался до автоминимума «высота ×
+       пропорция» — из-за этого ширина ехала следом за высотой. */
+    max-width: none;
+    flex: none;
+  }
+}
+
+
+/* ===== M_ProjectsLink ================================================== */
+
+.M_ProjectsLink {
+  /* в макете вынесена из потока сетки: левый край второй колонки, 334 / 900 */
+  position: absolute;
+  left: var(--hero-projects-x);
+  top: var(--hero-projects-y);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+
+  &:hover .A_Dot--icon {
+    transform: translateX(4px) scale(1.15);
+  }
+}
+
+
+/* ===== M_Contact ======================================================= */
+
+.M_Contact {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+
+  & .M_Contact-text,
+  & .M_Contact-arrow {
+    white-space: nowrap;
+    mix-blend-mode: difference;
+  }
+
+  /* в макете стрелка отзеркалена */
+  & .M_Contact-arrow {
+    transform: scaleX(-1);
+    transition: transform var(--transition-hover);
+  }
+
+  &:hover .A_Avatar img {
+    transform: scale(1.12) rotate(-4deg);
+  }
+
+  &:hover .M_Contact-arrow {
+    transform: scaleX(-1) translateX(4px);
+  }
+}
+
+
+/* ===== A_ButtonGhost — кнопка внутри стеклянной панели ================= */
+
+.A_ButtonGhost {
+  width: 100%;
+  height: var(--case-cta-h);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: var(--space-3xs);
+  white-space: nowrap;
+  border-radius: var(--radius-button);
+  background: var(--color-glass-button);
+  color: var(--color-white);
+  transition: background-color var(--transition-base);
+
+  &:hover {
+    background: var(--color-glass);
+  }
+}
+
+
+/* ===== O_Menu — плавающее меню студии =================================
+   Figma: компонент Menu. Variant1 — полный вид на первом экране,
+   Variant2 (.is-Compact) — компактный список, включается при скролле.
+   Элемент fixed и живёт вне .O_Hero, но ниже знака süra по z-index:
+   так знак по-прежнему накладывается на меню разностью, как в макете.
+   ====================================================================== */
+
+.O_Menu {
+  position: fixed;
+  left: var(--menu-left);
+  /* safe-area — чтобы на телефонах меню не пряталось под системную полосу
+     и панель браузера, а действительно держалось низа экрана */
+  bottom: calc(var(--menu-bottom) + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  width: var(--menu-w);
+  padding: var(--space-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--menu-gap);
+  align-items: flex-start;
+  border-radius: var(--radius-l);
+  /* гаснущее вступление шире схлопывающейся коробки — подрезаем по панели */
+  overflow: hidden;
+  background: var(--color-glass);
+  -webkit-backdrop-filter: blur(var(--menu-blur));
+  backdrop-filter: blur(var(--menu-blur));
+
+  & .O_Menu-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+  }
+
+  & .O_Menu-tagline {
+    width: 100%;
+    word-break: break-word;
+  }
+
+  & .O_Menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    white-space: nowrap;
+  }
+
+  & .O_Menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+  }
+
+  /* точка-указатель занимает место всегда, чтобы ширина списка не прыгала
+     при переносе отметки с пункта на пункт */
+  & .O_Menu-marker {
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  & .O_Menu-link {
+    text-decoration-color: transparent;
+    text-decoration-line: underline;
+    text-underline-position: from-font;
+    transition: text-decoration-color var(--transition-base);
+  }
+}
+
+/* Variant2 — компактный вид. Положение то же: меняется только размер, и за
+   счёт привязки по left + bottom коробка сжимается к левому нижнему углу.
+   Подложка темнеет: в компактном виде меню висит уже не над кадром первого
+   экрана, а над светлыми секциями, где белый текст по светлому стеклу
+   пропадает. Вернуть исходное стекло — заменить фон на --color-glass. */
+.O_Menu.is-Compact {
+  background: var(--color-glass-inverse);
+  transition: background-color var(--transition-base);
+  width: max-content;
+  height: max-content;
+  /* Низ, а не центр: меню привязано к низу экрана и сжимается кверху, так что
+     при flex-end список стоит на месте всю анимацию. При center он прыгал бы
+     вверх в первом же кадре, а потом съезжал обратно. */
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  /* Вступление вынимаем из потока, а не прячем: так оно успевает погаснуть
+     и не участвует в замере компактного размера. Координаты и ширину задаём
+     явно — теми же, что были в потоке. Без этого width: 100% начинает
+     считаться от padding-box вместо content-box, текст переверстывается и
+     заметно дёргается в момент переключения. */
+  & .O_Menu-block--intro {
+    position: absolute;
+    left: var(--space-gutter);
+    top: var(--space-gutter);
+    /* 100% для абсолютного блока — это padding-box меню, поэтому вычитаем
+       поля и получаем ровно ту ширину, что была в потоке: текст не
+       переверстывается и не дёргается. Через --menu-w считать нельзя:
+       он выражен от 100%, которые здесь означают уже ширину меню. */
+    width: calc(100% - var(--space-gutter) * 2);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  & .O_Menu-bullet {
+    display: none;
+  }
+
+  & .O_Menu-item.is-Active .O_Menu-marker,
+  & .O_Menu-item:hover .O_Menu-marker {
+    opacity: 1;
+  }
+
+  & .O_Menu-item.is-Active .O_Menu-link,
+  & .O_Menu-item:hover .O_Menu-link {
+    text-decoration-color: currentColor;
+  }
+
+  /* отметка одна: пункт под курсором перехватывает её у активного */
+  &:hover .O_Menu-item.is-Active:not(:hover) .O_Menu-marker {
+    opacity: 0;
+  }
+
+  &:hover .O_Menu-item.is-Active:not(:hover) .O_Menu-link {
+    text-decoration-color: transparent;
+  }
+}
+
+
+/* ===== T_CaseCard — карточка кейса ===================================== */
+
+.T_CaseCard {
+  position: relative;
+  height: var(--case-h);
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--color-case-fallback);
+  display: flex;
+  align-items: stretch;
+
+  & .T_CaseCard-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+  }
+
+  & .T_CaseCard-bg.is-Loaded {
+    opacity: 1;
+  }
+
+  &:hover .T_CaseCard-bg {
+    transform: scale(1.03);
+  }
+
+  /* чёткий снимок внутри карточки — только в мобильной раскладке */
+  & .T_CaseCard-shot {
+    display: none;
+  }
+}
+
+/* панель прижата к правому краю кадра */
+.T_CaseCard--panelRight {
+  justify-content: flex-end;
+}
+
+/* ===== M_CasePanel ===================================================== */
+
+.M_CasePanel {
+  position: relative;
+  width: var(--case-panel-w);
+  flex: none;
+  padding: var(--case-pad);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--color-glass);
+  -webkit-backdrop-filter: blur(var(--case-blur));
+  backdrop-filter: blur(var(--case-blur));
+
+  & .M_CasePanel-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--case-panel-gap);
+  }
+
+  & .M_CasePanel-title {
+    width: 100%;
+    word-break: break-word;
+  }
+
+  & .M_CasePanel-tag {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  & .M_CasePanel-text {
+    width: 100%;
+  }
+}
+
+.M_CasePanel--dark {
+  background: var(--color-glass-dark);
+}
+
+.M_CasePanel--wide {
+  width: var(--case-panel-w-wide);
+}
+
+/* ===== M_CaseTip — реплика, всплывающая на ховере кадра ================ */
+
+.M_CaseTip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--case-tip-w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* положение целиком считает caseTip.js: он ставит левый верхний угол так,
+     чтобы хвостик снизу попадал в курсор и плашка не вылезала за кадр */
+  opacity: 0;
+  pointer-events: none;
+
+  & .M_CaseTip-body {
+    width: 100%;
+    padding: var(--space-gutter);
+    border-radius: var(--radius-l);
+    background: var(--color-glass-tip);
+    -webkit-backdrop-filter: blur(var(--case-blur));
+    backdrop-filter: blur(var(--case-blur));
+  }
+
+  & .M_CaseTip-tail {
+    width: 53px;
+    height: 17px;
+  }
+}
+
+
+
+/* ===== O_Cases ========================================================= */
+
+.O_Cases {
+  position: relative;
+  padding: var(--cases-pad-top) 0 0;
+  background: var(--color-grey);
+}
+
+/* Раскладка кейсов по общей сетке: половина экрана — это ровно три
+   колонки (216.667 × 3 + 40 = 690, как в макете), полоса — все шесть.
+   Строки задаём явно, иначе авторазмещение подтянет карточку в свободную
+   ячейку предыдущей строки. */
+
+.O_Cases .W_Grid > *:nth-child(1) { grid-row: 1; grid-column: 4 / 7; }
+.O_Cases .W_Grid > *:nth-child(2) { grid-row: 2; grid-column: 1 / -1; }
+.O_Cases .W_Grid > *:nth-child(3) { grid-row: 3; grid-column: 1 / 4; }
+.O_Cases .W_Grid > *:nth-child(4) { grid-row: 4; grid-column: 4 / 7; }
+.O_Cases .W_Grid > *:nth-child(5) { grid-row: 5; grid-column: 1 / -1; }
+
+
+/* ===== O_Header ========================================================
+   Без transform и без собственного контекста наложения: иначе
+   mix-blend-difference знака перестанет видеть кадр под шапкой.
+   ====================================================================== */
+
+.O_Header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  padding: var(--space-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-gutter);
+}
+
+
+/* ===== W_Grid — единая сетка страницы =================================
+   Шесть колонок, поля по 20px, промежуток 20px. Секции не задают сетку
+   сами: они несут фон и вертикальные поля, а содержимое расставляется по
+   этой сетке через grid-column.
+   ====================================================================== */
+
+.W_Grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  row-gap: var(--grid-gap);
+  padding-inline: var(--space-gutter);
+}
+
+
+/* ===== O_Hero ========================================================== */
+
+.O_Hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: var(--hero-min-h);
+  grid-template-rows: repeat(1, minmax(0, 1fr));
+  row-gap: var(--hero-row-gap);
+  overflow: hidden;
+  background: var(--color-hero-fallback);
+  /* контекст наложения здесь не создаём: знак süra и знак в шапке должны
+     считать разность с кадром, лежащим ниже них в корневом контексте */
+}
+
+
+/* ===== W_HeroMedia — кадр первого экрана =============================== */
+
+.W_HeroMedia {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  & .A_HeroImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+  }
+
+  & .A_HeroImage.is-Loaded {
+    opacity: 1;
+  }
+
+  /* На пропорциях макета (1.5:1) кадрирование само подкладывает под текст
+     тёмный наушник. На вытянутых по высоте экранах в кадр попадает светлый
+     фон — там подстраховываемся градиентом (см. responsive.css). */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: var(--hero-scrim-opacity);
+    transition: opacity var(--transition-slow);
+    background:
+      linear-gradient(180deg, var(--color-scrim-strong) 0%, var(--color-scrim-soft) 30%, var(--color-scrim-none) 55%),
+      linear-gradient(0deg,   var(--color-scrim-strong) 0%, var(--color-scrim-mid)  22%, var(--color-scrim-none) 45%);
+  }
+}
+
+
+/* ===== M_ServiceCard — карточка услуги =================================
+   На ховере карточка раскрывается: сверху выезжает стрелка, снизу
+   поднимается круглый кадр. Оба элемента подрезаются самой карточкой.
+   ====================================================================== */
+
+.M_ServiceCard {
+  position: relative;
+  height: var(--service-card-h);
+  padding: var(--service-inset);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  overflow: hidden;
+  border-radius: var(--radius-button);
+  background: var(--color-white);
+  color: var(--color-black);
+  transition: gap var(--transition-hover);
+
+  & .M_ServiceCard-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3xs);
+  }
+
+  & .M_ServiceCard-label {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  & .M_ServiceCard-arrow {
+    position: absolute;
+    left: 50%;
+    top: var(--service-arrow-top);
+    width: var(--service-arrow-w);
+    height: var(--service-arrow-h);
+    transform: translate(-50%, 10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base), transform var(--transition-hover);
+  }
+
+  /* кадр стоит под нижним краем и выезжает вверх */
+  & .M_ServiceCard-photo {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: var(--service-photo-size);
+    height: var(--service-photo-size);
+    transform: translateX(-50%);
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+    transition: top var(--transition-hover);
+  }
+
+  /* обрезка кадра в круге — как в макете */
+  & .M_ServiceCard-photo img {
+    position: absolute;
+    left: -20.55%;
+    top: -15.51%;
+    width: 133.33%;
+    height: 133.33%;
+    max-width: none;
+  }
+
+  &:hover {
+    gap: var(--service-gap-hover);
+  }
+
+  &:hover .M_ServiceCard-arrow {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  &:hover .M_ServiceCard-photo {
+    top: var(--service-photo-top);
+  }
+}
+
+
+/* ===== O_Services ====================================================== */
+
+.O_Services {
+  position: relative;
+  padding: var(--services-pad-y) 0;
+  background: var(--color-grey);
+}
+
+
+/* ===== W_ServicesGrid ================================================== */
+
+/* Блок услуг занимает колонки 2–5 общей сетки — те самые поля 256.7px из
+   макета. Внутри своя раскладка: три карточки на четыре колонки, поэтому
+   они не выравниваются по колонкам и живут отдельной сеткой. */
+.W_ServicesGrid {
+  grid-column: 2 / 6;
+  display: grid;
+  grid-template-columns: repeat(var(--services-cols), minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+
+/* ===== A_ButtonPrimary--grey — кнопка на чёрной карточке =============== */
+
+.A_ButtonPrimary--grey {
+  background: var(--color-grey);
+}
+
+
+/* ===== A_ButtonDark — кнопка футера ==================================== */
+
+.A_ButtonDark {
+  width: var(--footer-link-w);
+  height: var(--button-h);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--button-pad-x) var(--space-3xs);
+  white-space: nowrap;
+  border-radius: var(--radius-button);
+  background: var(--color-black);
+  color: var(--color-white);
+  transition: transform var(--transition-hover), background-color var(--transition-base);
+
+  &:hover {
+    background: var(--color-bg-inverse);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+
+/* ===== O_Clients ======================================================= */
+
+.O_Clients {
+  padding: var(--section-pad-y) 0;
+  background: var(--color-grey);
+  color: var(--color-black);
+
+  & .O_Clients-title {
+    grid-column: 1 / 3;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* список встал на колонки 5–6: в макете он был 497px и начинался между
+     колонками, теперь выровнен по сетке */
+  & .O_Clients-list {
+    grid-column: 5 / 7;
+    display: flex;
+    flex-direction: column;
+    gap: var(--clients-row-gap);
+  }
+
+  & .O_Clients-item {
+    min-height: var(--clients-row-h);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+}
+
+
+/* ===== O_Contact ======================================================= */
+
+.O_Contact {
+  padding: var(--section-pad-y) 0;
+  background: var(--color-grey);
+}
+
+.M_ContactCard {
+  grid-column: 1 / -1;
+  height: var(--contact-card-h);
+  padding: var(--contact-card-pad);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--color-black);
+  color: var(--color-white);
+
+  & .M_ContactCard-title {
+    margin: 0;
+    max-width: var(--contact-title-w);
+  }
+}
+
+
+/* ===== O_Manifesto =====================================================
+   Текст считается разностью с работой под ним — как знак на первом экране,
+   поэтому секция не должна создавать контекст наложения.
+   ====================================================================== */
+
+.O_Manifesto {
+  position: relative;
+  height: 100svh;
+  min-height: var(--hero-min-h);
+  overflow: hidden;
+  align-items: center;
+  background: linear-gradient(
+    180deg,
+    var(--color-manifesto-from) 27.885%,
+    var(--color-manifesto-to) 66.346%
+  );
+
+  & .O_Manifesto-media {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--manifesto-media-w);
+    height: var(--manifesto-media-h);
+    translate: -50% -50%;
+    pointer-events: none;
+  }
+
+  & .O_Manifesto-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+  }
+
+  & .O_Manifesto-media img.is-Loaded {
+    opacity: 1;
+  }
+
+  /* реплика на всю сетку, но с шириной из макета — иначе строки
+     переверстаются на всю ширину экрана */
+  & .O_Manifesto-text {
+    grid-column: 1 / -1;
+    position: relative;
+    margin: 0 auto;
+    width: var(--manifesto-text-w);
+    max-width: 100%;
+    text-align: center;
+    color: var(--color-white);
+    mix-blend-mode: difference;
+    /* в макете центр текста поднят над центром экрана */
+    transform: translateY(calc(var(--manifesto-text-shift) * -1));
+  }
+}
+
+
+/* ===== O_Footer ======================================================== */
+
+.O_Footer {
+  position: relative;
+  height: 100svh;
+  min-height: var(--hero-min-h);
+  overflow: hidden;
+  background: var(--color-grey);
+
+  & .O_Footer-media {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  & .O_Footer-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+  }
+
+  & .O_Footer-media img.is-Loaded {
+    opacity: 1;
+  }
+
+  /* знак растянут по высоте: вектор с preserveAspectRatio="none" */
+  & .A_FooterWordmark {
+    position: absolute;
+    left: 50%;
+    top: var(--footer-logo-top);
+    width: var(--footer-logo-w);
+    height: calc(100% - var(--footer-logo-top) - var(--space-gutter));
+    max-width: none;
+    translate: -50% 0;
+    pointer-events: none;
+  }
+}
+
+
+/* ===== M_FooterLinks =================================================== */
+
+/* Соцсети стоят на общей сетке: по две кнопки на колонках 1–2 и 5–6.
+   Кнопки тянутся поровну, поэтому каждая ровно в одну колонку. */
+.M_FooterLinks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  align-items: center;
+
+  & .M_FooterLinks-group {
+    display: flex;
+    align-items: center;
+    gap: var(--grid-gap);
+  }
+
+  & .M_FooterLinks-group:first-child { grid-column: 1 / 3; }
+  & .M_FooterLinks-group:last-child { grid-column: 5 / 7; }
+
+  & .A_ButtonDark {
+    width: auto;
+    flex: 1 1 0;
+  }
+}
