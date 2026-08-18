@@ -13,7 +13,6 @@ if (hero) {
   const targets = {
     header: hero.querySelector(".O_Header"),
     wordmark: hero.querySelector(".A_Wordmark"),
-    projects: hero.querySelector(".M_ProjectsLink"),
     menu: document.querySelector(".O_Menu"),   // меню лежит вне секции
   };
 
@@ -26,7 +25,6 @@ if (hero) {
     // наложения, и mix-blend-difference знака перестал бы видеть кадр.
     if (targets.header) tl.from(targets.header, { autoAlpha: 0, duration: 0.7 }, 0);
     if (targets.wordmark) tl.from(targets.wordmark, { autoAlpha: 0, y: 24 }, 0.15);
-    if (targets.projects) tl.from(targets.projects, { autoAlpha: 0, y: 18 }, 0.35);
     if (targets.menu) tl.from(targets.menu, { autoAlpha: 0, y: 18 }, 0.5);
 
     return () => tl.kill();

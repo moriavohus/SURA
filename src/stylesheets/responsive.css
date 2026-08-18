@@ -30,7 +30,6 @@
     --hero-logo-w: calc(300% + var(--grid-gap) * 2);
     --hero-logo-h: 420px;
     --hero-logo-h-min: 140px;
-    --hero-projects-x: var(--space-gutter);
 
     --services-pad-y: var(--space-xl);
     --section-pad-y: var(--space-xl);
@@ -59,13 +58,19 @@
   }
 
   /* кейсы в одну полосу: половинная карточка ужимает панель до нечитаемой */
-  .O_Cases .W_Grid > *:nth-child(n) {
-    grid-row: auto;
-    grid-column: 1 / -1;
+  .W_CasesGrid {
+    grid-template-columns: minmax(0, 1fr);
+
+    & > *:nth-child(n) {
+      grid-row: auto;
+      grid-column: 1 / -1;
+    }
   }
 
   /* блоки распахиваются на всю сетку: на 1024 колонка всего 147px */
+  .W_CasesGrid,
   .W_ServicesGrid,
+  .M_ContactCard,
   .O_Clients .O_Clients-title,
   .O_Clients .O_Clients-list {
     grid-column: 1 / -1;
@@ -85,7 +90,6 @@
     --header-logo-h: 33px;
     --button-h: 52px;
     --hero-min-h: 560px;
-    --hero-projects-y: 12%;
     --hero-logo-w: 60vw;
     --hero-logo-h: 300px;
     --hero-logo-h-min: 110px;

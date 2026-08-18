@@ -58,7 +58,12 @@ if (menu && hero) {
 
     const from = { width: menu.offsetWidth, height: menu.offsetHeight };
 
-    gsap.killTweensOf(menu);
+    /* Гасим только предыдущий морфинг размера. Раньше здесь стоял
+       killTweensOf(menu) без ограничения — он убивал и появление меню из
+       heroIntro, которое стоит с задержкой. При перезагрузке страницы на
+       прокрутке схлопывание срабатывало сразу, появление умирало не
+       начавшись, и меню навсегда оставалось с opacity: 0. */
+    gsap.killTweensOf(menu, "width,height");
     gsap.set(menu, { clearProps: "width,height" });
     if (intro) gsap.set(intro, { clearProps: "width" });
 

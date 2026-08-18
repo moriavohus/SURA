@@ -12,6 +12,17 @@ body {
   color: var(--color-white);
   background: var(--color-bg-inverse);
   overflow-x: hidden;
+  /* Сайт-плакат: текстовая каретка на заголовках и подписях сбивает с
+     толку. Выделение текста при этом остаётся — меняется только курсор. */
+  cursor: default;
+}
+
+/* всё, что реально нажимается */
+a,
+button,
+[role="button"],
+.O_Menu-link {
+  cursor: pointer;
 }
 
 ::selection {
@@ -43,20 +54,6 @@ body {
   background: var(--color-black);
 }
 
-/* вариант-иконка: готовый вектор 16 × 18 с нахлёстом на текст */
-.A_Dot--icon {
-  width: 16px;
-  height: 18px;
-  margin-right: -8px;
-  border-radius: 0;
-  background: none;
-  transition: transform var(--transition-hover);
-
-  & img {
-    width: 16px;
-    height: 18px;
-  }
-}
 
 
 /* ===== A_Logo — знак (↑) в шапке ======================================= */
@@ -66,8 +63,6 @@ body {
   width: var(--header-logo-w);
   height: var(--header-logo-h);
   flex: none;
-  /* как в макете: цвет знака считается разностью с кадром под ним */
-  mix-blend-mode: difference;
 
   & img {
     width: var(--header-logo-w);
@@ -90,12 +85,19 @@ body {
   flex: none;
 
   & img {
-    width: 30px;
-    height: 30px;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
     border-radius: var(--radius-avatar);
     object-fit: cover;
     transition: transform var(--transition-hover);
   }
+}
+
+
+/* пустое место под аватар в наложенном слое шапки */
+.A_Avatar--slot {
+  width: var(--avatar-size);
+  height: calc(var(--avatar-size) + 2px);
 }
 
 
@@ -159,22 +161,6 @@ body {
 }
 
 
-/* ===== M_ProjectsLink ================================================== */
-
-.M_ProjectsLink {
-  /* в макете вынесена из потока сетки: левый край второй колонки, 334 / 900 */
-  position: absolute;
-  left: var(--hero-projects-x);
-  top: var(--hero-projects-y);
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-
-  &:hover .A_Dot--icon {
-    transform: translateX(4px) scale(1.15);
-  }
-}
 
 
 /* ===== M_Contact ======================================================= */
@@ -188,7 +174,6 @@ body {
   & .M_Contact-text,
   & .M_Contact-arrow {
     white-space: nowrap;
-    mix-blend-mode: difference;
   }
 
   /* в макете стрелка отзеркалена */
@@ -276,10 +261,83 @@ body {
     white-space: nowrap;
   }
 
+  /* почта отбита от перечня услуг, иначе он читается одним слипшимся
+     столбцом строк */
+  & .O_Menu-item + .O_Menu-item {
+    margin-top: var(--space-xs);
+  }
+
+  /* пункт стал колонкой: под строкой раскрывается список услуг */
   & .O_Menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  & .O_Menu-row {
     display: flex;
     align-items: center;
     gap: var(--space-3xs);
+  }
+
+  /* Раскрытие через grid-template-rows: 0fr → 1fr — так высота едет плавно
+     и не зависит от числа строк. Меню привязано к низу, поэтому список
+     разворачивается вверх. */
+  & .O_Menu-sub {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows var(--transition-hover),
+      opacity var(--transition-base);
+  }
+
+  & .O_Menu-sub-list {
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  & .O_Menu-subitem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+  }
+
+  /* Наведение подсвечивает строку — и в пунктах, и в подпунктах, в обоих
+     видах меню. Раньше правило жило внутри .is-Compact, поэтому в полном
+     виде наведение не отзывалось вовсе.
+
+     У пункта отметку вешаем на наведение всей группы, а не самой строки:
+     при раскрытии список растёт вверх и «solutions» уезжает из-под курсора,
+     так что собственный :hover у него гаснет сразу же. */
+  & .O_Menu-item:hover > .O_Menu-row .O_Menu-marker,
+  & .O_Menu-subitem:hover .O_Menu-marker {
+    opacity: 1;
+  }
+
+  & .O_Menu-item:hover > .O_Menu-row .O_Menu-link,
+  & .O_Menu-subitem:hover .O_Menu-link {
+    text-decoration-color: currentColor;
+  }
+
+  /* Отметка в списке одна: подпункт под курсором забирает её у «solutions».
+     Без :has() родителя по состоянию потомка не выбрать; там, где селектор
+     не поддержан, подсветятся оба — это не ломает меню. */
+  & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .O_Menu-marker {
+    opacity: 0;
+  }
+
+  & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .O_Menu-link {
+    text-decoration-color: transparent;
+  }
+
+  & .O_Menu-item:hover .O_Menu-sub,
+  & .O_Menu-item:focus-within .O_Menu-sub {
+    grid-template-rows: 1fr;
+    opacity: 1;
   }
 
   /* точка-указатель занимает место всегда, чтобы ширина списка не прыгала
@@ -335,24 +393,6 @@ body {
     display: none;
   }
 
-  & .O_Menu-item.is-Active .O_Menu-marker,
-  & .O_Menu-item:hover .O_Menu-marker {
-    opacity: 1;
-  }
-
-  & .O_Menu-item.is-Active .O_Menu-link,
-  & .O_Menu-item:hover .O_Menu-link {
-    text-decoration-color: currentColor;
-  }
-
-  /* отметка одна: пункт под курсором перехватывает её у активного */
-  &:hover .O_Menu-item.is-Active:not(:hover) .O_Menu-marker {
-    opacity: 0;
-  }
-
-  &:hover .O_Menu-item.is-Active:not(:hover) .O_Menu-link {
-    text-decoration-color: transparent;
-  }
 }
 
 
@@ -481,16 +521,27 @@ body {
   background: var(--color-grey);
 }
 
-/* Раскладка кейсов по общей сетке: половина экрана — это ровно три
-   колонки (216.667 × 3 + 40 = 690, как в макете), полоса — все шесть.
+/* ===== W_CasesGrid =====================================================
+   Блок кейсов отступает на одну колонку слева и занимает колонки 2–6.
+   Внутри своя раскладка в две доли: полоса на всю ширину блока и половина
+   слева или справа. По колонкам общей сетки половина не выравнивается —
+   это половина блока, а не три колонки, поэтому вложенная сетка.
    Строки задаём явно, иначе авторазмещение подтянет карточку в свободную
-   ячейку предыдущей строки. */
+   ячейку предыдущей строки.
+   ====================================================================== */
 
-.O_Cases .W_Grid > *:nth-child(1) { grid-row: 1; grid-column: 4 / 7; }
-.O_Cases .W_Grid > *:nth-child(2) { grid-row: 2; grid-column: 1 / -1; }
-.O_Cases .W_Grid > *:nth-child(3) { grid-row: 3; grid-column: 1 / 4; }
-.O_Cases .W_Grid > *:nth-child(4) { grid-row: 4; grid-column: 4 / 7; }
-.O_Cases .W_Grid > *:nth-child(5) { grid-row: 5; grid-column: 1 / -1; }
+.W_CasesGrid {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+
+  & > *:nth-child(1) { grid-row: 1; grid-column: 2; }
+  & > *:nth-child(2) { grid-row: 2; grid-column: 1 / -1; }
+  & > *:nth-child(3) { grid-row: 3; grid-column: 1; }
+  & > *:nth-child(4) { grid-row: 4; grid-column: 2; }
+  & > *:nth-child(5) { grid-row: 5; grid-column: 1 / -1; }
+}
 
 
 /* ===== O_Header ========================================================
@@ -499,16 +550,62 @@ body {
    ====================================================================== */
 
 .O_Header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 40;
+  height: var(--header-h);
+  /* Наложение задано на всей шапке, а не на её частях: position: fixed
+     делает её контекстом наложения, и изнутри дети считали бы разность с
+     пустотой, а не с содержимым страницы. Фон под шапкой меняется от 16 до
+     247 по яркости — одним цветом текст читаемым не сделать. */
+  mix-blend-mode: difference;
+  transition: transform var(--transition-hover);
+  padding: var(--space-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-gutter);
+}
+
+/* при скролле вниз шапка уезжает за верхний край */
+.O_Header.is-Hidden {
+  transform: translateY(-100%);
+}
+
+
+/* ===== O_HeaderPlain — слой с аватаром =================================
+   Шапка наложена разностью целиком, иначе изнутри дети не достают до
+   страницы. Фотография в таком слое выворачивается в негатив, поэтому она
+   живёт в отдельном слое без наложения. Слой повторяет раскладку шапки и
+   скрыт целиком, кроме самого аватара, — так его позицию считает тот же
+   флекс, без подгонки отступов руками.
+   ====================================================================== */
+
+.O_HeaderPlain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 41;
   height: var(--header-h);
   padding: var(--space-gutter);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-gutter);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform var(--transition-hover);
+
+  & .A_Avatar {
+    visibility: visible;
+  }
+}
+
+.O_HeaderPlain.is-Hidden {
+  transform: translateY(-100%);
 }
 
 
@@ -673,11 +770,11 @@ body {
 
 /* ===== W_ServicesGrid ================================================== */
 
-/* Блок услуг занимает колонки 2–5 общей сетки — те самые поля 256.7px из
-   макета. Внутри своя раскладка: три карточки на четыре колонки, поэтому
-   они не выравниваются по колонкам и живут отдельной сеткой. */
+/* Блок услуг отступает на колонку слева и идёт до правого края — так же,
+   как кейсы. Внутри своя раскладка: три карточки на пять колонок, поэтому
+   по колонкам они не выравниваются и живут отдельной сеткой. */
 .W_ServicesGrid {
-  grid-column: 2 / 6;
+  grid-column: 2 / -1;
   display: grid;
   grid-template-columns: repeat(var(--services-cols), minmax(0, 1fr));
   gap: var(--grid-gap);
@@ -757,7 +854,7 @@ body {
 }
 
 .M_ContactCard {
-  grid-column: 1 / -1;
+  grid-column: 2 / -1;
   height: var(--contact-card-h);
   padding: var(--contact-card-pad);
   display: flex;
@@ -772,62 +869,6 @@ body {
   & .M_ContactCard-title {
     margin: 0;
     max-width: var(--contact-title-w);
-  }
-}
-
-
-/* ===== O_Manifesto =====================================================
-   Текст считается разностью с работой под ним — как знак на первом экране,
-   поэтому секция не должна создавать контекст наложения.
-   ====================================================================== */
-
-.O_Manifesto {
-  position: relative;
-  height: 100svh;
-  min-height: var(--hero-min-h);
-  overflow: hidden;
-  align-items: center;
-  background: linear-gradient(
-    180deg,
-    var(--color-manifesto-from) 27.885%,
-    var(--color-manifesto-to) 66.346%
-  );
-
-  & .O_Manifesto-media {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: var(--manifesto-media-w);
-    height: var(--manifesto-media-h);
-    translate: -50% -50%;
-    pointer-events: none;
-  }
-
-  & .O_Manifesto-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity var(--transition-slow);
-  }
-
-  & .O_Manifesto-media img.is-Loaded {
-    opacity: 1;
-  }
-
-  /* реплика на всю сетку, но с шириной из макета — иначе строки
-     переверстаются на всю ширину экрана */
-  & .O_Manifesto-text {
-    grid-column: 1 / -1;
-    position: relative;
-    margin: 0 auto;
-    width: var(--manifesto-text-w);
-    max-width: 100%;
-    text-align: center;
-    color: var(--color-white);
-    mix-blend-mode: difference;
-    /* в макете центр текста поднят над центром экрана */
-    transform: translateY(calc(var(--manifesto-text-shift) * -1));
   }
 }
 
@@ -898,4 +939,122 @@ body {
     width: auto;
     flex: 1 1 0;
   }
+}
+
+
+/* ===== M_CasesWidget — счётчик кейсов под шапкой ======================
+   Виджет из того же семейства, что и плавающее меню: стеклянная плашка со
+   скруглением 20. Стоит в первой колонке сетки, под шапкой с зазором 8px.
+   Ширина — колонка сетки, но не уже содержимого: на узких экранах колонка
+   сжимается до 147px, а строка «156 cases / view all» требует ~197px.
+   ====================================================================== */
+
+.M_CasesWidget {
+  position: fixed;
+  left: var(--space-gutter);
+  top: calc(var(--header-h) + var(--widget-offset));
+  z-index: 20;
+  transition: top var(--transition-hover), background-color var(--transition-base);
+  width: var(--widget-w);
+  /* Колонка — основной размер, но ниже ~1316px она уже содержимого виджета:
+     min-width: max-content не даёт строке вылезти за подложку. */
+  min-width: max-content;
+  padding: var(--widget-pad);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--widget-gap);
+  border-radius: var(--radius-l);
+  background: var(--color-glass-shade);
+  -webkit-backdrop-filter: blur(var(--widget-blur));
+  backdrop-filter: blur(var(--widget-blur));
+  color: var(--color-white-pure);
+
+  & .M_CasesWidget-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  /* высота строки задана в макете явно: она и делает виджет ровно 91px */
+  & .M_CasesWidget-count {
+    margin: 0;
+    flex: none;
+    width: var(--widget-count-w);
+    height: var(--widget-row-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  & .M_CasesWidget-labels {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+  }
+
+  & .M_CasesWidget-link {
+    text-decoration-line: underline;
+    text-underline-position: from-font;
+    text-decoration-color: currentColor;
+    transition: opacity var(--transition-base);
+  }
+
+  & .M_CasesWidget-link:hover {
+    opacity: 0.7;
+  }
+
+  /* Точки прокрутки кейсов. В свёрнутом виде строка не просто прозрачная,
+     а нулевой высоты с отрицательным полем: иначе gap контейнера всё равно
+     добавлял бы 24px и виджет был бы выше макетного 91px. */
+  & .M_CasesWidget-dots {
+    width: 100%;
+    height: 0;
+    margin-top: calc(var(--widget-gap) * -1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-xs);
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      height var(--transition-hover),
+      margin-top var(--transition-hover),
+      opacity var(--transition-base);
+  }
+
+  & .M_CasesWidget-dot {
+    width: var(--widget-dot);
+    height: var(--widget-dot);
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-white-pure);
+    opacity: var(--widget-dot-dim);
+    transition: opacity var(--transition-base);
+  }
+
+  & .M_CasesWidget-dot.is-Active {
+    opacity: 1;
+  }
+}
+
+/* шапка спрятана — виджет занимает её место */
+.M_CasesWidget.is-Raised {
+  top: var(--space-gutter);
+}
+
+/* точки показываем, пока блок кейсов в кадре */
+.M_CasesWidget.is-OnCases {
+  & .M_CasesWidget-dots {
+    height: var(--widget-dot);
+    margin-top: 0;
+    opacity: 1;
+  }
+}
+
+/* За первым экраном виджет висит над светлыми секциями, где белый текст на
+   подложке из 20% чёрного пропадает — темним так же, как компактное меню. */
+.M_CasesWidget.is-Shaded {
+  background: var(--color-glass-inverse);
 }

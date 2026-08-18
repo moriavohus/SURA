@@ -38,38 +38,19 @@
              data-media-reveal>
       </div>
 
-      <a class="M_ProjectsLink" href="#cases">
-        <span class="A_Dot A_Dot--icon">
-          <img src="/src/images/hero/bullet-dot.svg" alt="" width="16" height="18">
-        </span>
-        <span class="Label2">→projects</span>
-      </a>
 
       <div class="A_Wordmark" role="img" aria-label="süra">
         <img src="/src/images/logos/wordmark.svg" alt="" width="454" height="576">
       </div>
 
-      <header class="O_Header">
-        <a class="A_Logo" href="/" aria-label="süra — home">
-          <img src="/src/images/logos/logo-arrow.svg" alt="" width="218" height="51">
-        </a>
 
-        <a class="M_Contact" href="https://t.me/" target="_blank" rel="noopener">
-          <span class="Label2 M_Contact-text">get in touch →</span>
-          <span class="A_Avatar">
-            <img src="/src/images/hero/avatar.jpg" alt="" width="30" height="30" loading="lazy">
-          </span>
-          <span class="Label2 M_Contact-arrow" aria-hidden="true">→</span>
-        </a>
-
-        <a class="A_ButtonPrimary Label2" href="/projects.html">all projects →</a>
-      </header>
 
     </section>
 
     <!-- ===== cases ===================================================== -->
     <section class="O_Cases" id="cases">
       <div class="W_Grid">
+        <div class="W_CasesGrid">
 
         <article class="T_CaseCard T_CaseCard--panelRight" data-scroll-reveal>
           <img class="T_CaseCard-bg" src="/src/images/cases/gym.jpg" alt="huli — identity" loading="lazy" data-media-reveal>
@@ -171,6 +152,7 @@
           </span>
         </article>
 
+        </div>
         </div>
       </div>
     </section>
@@ -289,15 +271,6 @@
       </div>
     </section>
 
-    <!-- ===== manifesto ================================================== -->
-    <section class="O_Manifesto">
-      <div class="O_Manifesto-media">
-        <img src="/src/images/manifesto/manifesto.jpg" alt="" width="664" height="992" loading="lazy" data-media-reveal>
-      </div>
-      <div class="W_Grid">
-        <p class="Title1 O_Manifesto-text">creating design, we bring together bold thinking and structure</p>
-      </div>
-    </section>
   </main>
 
 
@@ -321,8 +294,52 @@
     </nav>
   </footer>
 
+
+    <header class="O_Header">
+      <a class="A_Logo" href="/" aria-label="süra — home">
+        <img src="/src/images/logos/logo-arrow.svg" alt="" width="218" height="51">
+      </a>
+
+      <a class="M_Contact" href="https://t.me/" target="_blank" rel="noopener">
+        <span class="Label2 M_Contact-text">Contact Us →</span>
+        <span class="A_Avatar A_Avatar--slot" aria-hidden="true"></span>
+        <span class="Label2 M_Contact-arrow" aria-hidden="true">→</span>
+      </a>
+
+    </header>
+
+  <div class="O_HeaderPlain" aria-hidden="true">
+    <span class="A_Logo"></span>
+
+    <span class="M_Contact">
+      <span class="Label2 M_Contact-text">Contact Us →</span>
+      <span class="A_Avatar">
+        <img src="/src/images/hero/avatar.jpg" alt="" width="30" height="30" loading="lazy">
+      </span>
+      <span class="Label2 M_Contact-arrow">→</span>
+    </span>
+  </div>
+
+  <aside class="M_CasesWidget" aria-label="156 cases in the portfolio">
+    <p class="M_CasesWidget-row">
+      <span class="Number M_CasesWidget-count">156</span>
+      <span class="Caption M_CasesWidget-labels">
+        <span>cases</span>
+        <a class="M_CasesWidget-link" href="/projects.html">view all</a>
+      </span>
+    </p>
+
+    <p class="M_CasesWidget-dots" aria-hidden="true">
+        <span class="M_CasesWidget-dot"></span>
+        <span class="M_CasesWidget-dot"></span>
+        <span class="M_CasesWidget-dot"></span>
+        <span class="M_CasesWidget-dot"></span>
+        <span class="M_CasesWidget-dot"></span>
+    </p>
+  </aside>
+
   <!-- меню живёт вне секций: оно fixed и переживает скролл -->
-  <nav class="O_Menu" aria-label="Studio services">
+  <nav class="O_Menu" aria-label="Studio menu">
     <div class="O_Menu-block O_Menu-block--intro">
       <span class="A_Dot"></span>
       <p class="Label2 O_Menu-tagline">a design studio free in ideas and strict in structure</p>
@@ -331,21 +348,47 @@
     <div class="O_Menu-block">
       <span class="A_Dot O_Menu-bullet"></span>
       <ul class="Body O_Menu-list">
-        <li class="O_Menu-item is-Active">
-          <span class="O_Menu-link">communication</span>
-          <span class="A_Dot O_Menu-marker"></span>
-        </li>
         <li class="O_Menu-item">
-          <span class="O_Menu-link">branding</span>
-          <span class="A_Dot O_Menu-marker"></span>
+          <span class="O_Menu-row">
+            <span class="O_Menu-link">solutions</span>
+            <span class="A_Dot O_Menu-marker"></span>
+          </span>
+
+          <div class="O_Menu-sub">
+            <ul class="O_Menu-sub-list">
+              <li class="O_Menu-subitem">
+                <span class="O_Menu-link">branding</span>
+                <span class="A_Dot O_Menu-marker"></span>
+              </li>
+              <li class="O_Menu-subitem">
+                <span class="O_Menu-link">communication</span>
+                <span class="A_Dot O_Menu-marker"></span>
+              </li>
+              <li class="O_Menu-subitem">
+                <span class="O_Menu-link">digital</span>
+                <span class="A_Dot O_Menu-marker"></span>
+              </li>
+              <li class="O_Menu-subitem">
+                <span class="O_Menu-link">motion & 3d</span>
+                <span class="A_Dot O_Menu-marker"></span>
+              </li>
+              <li class="O_Menu-subitem">
+                <span class="O_Menu-link">packaging</span>
+                <span class="A_Dot O_Menu-marker"></span>
+              </li>
+              <li class="O_Menu-subitem">
+                <span class="O_Menu-link">design support</span>
+                <span class="A_Dot O_Menu-marker"></span>
+              </li>
+            </ul>
+          </div>
         </li>
+
         <li class="O_Menu-item">
-          <span class="O_Menu-link">web design</span>
-          <span class="A_Dot O_Menu-marker"></span>
-        </li>
-        <li class="O_Menu-item">
-          <span class="O_Menu-link">ux/ui design</span>
-          <span class="A_Dot O_Menu-marker"></span>
+          <span class="O_Menu-row">
+            <a class="O_Menu-link" href="mailto:hellosura@gmail.com">hellosura@gmail.com</a>
+            <span class="A_Dot O_Menu-marker"></span>
+          </span>
         </li>
       </ul>
     </div>
@@ -354,6 +397,8 @@
   <script type="module" src="/src/javascript/mediaReveal.js"></script>
   <script type="module" src="/src/javascript/heroIntro.js"></script>
   <script type="module" src="/src/javascript/menuScroll.js"></script>
+  <script type="module" src="/src/javascript/casesWidget.js"></script>
+  <script type="module" src="/src/javascript/headerScroll.js"></script>
   <script type="module" src="/src/javascript/heroLogoScroll.js"></script>
   <script type="module" src="/src/javascript/scrollReveal.js"></script>
   <script type="module" src="/src/javascript/caseTip.js"></script>

@@ -42,3 +42,22 @@
   letter-spacing: 0;
   font-weight: 500;
 }
+
+/* Виджет-счётчик размечен в макете гарнитурой Inter — не Inter Tight, на
+   которой построен остальной сайт. Разница заметная: Inter Tight узкее и
+   даёт «156» шириной 76px вместо 90.7px. */
+.Number {
+  font-family: "Inter", "Inter Tight", sans-serif;
+  font-size: 56px;
+  line-height: 90%;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
+.Caption {
+  font-family: "Inter", "Inter Tight", sans-serif;
+  font-size: 17px;
+  line-height: 100%;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}

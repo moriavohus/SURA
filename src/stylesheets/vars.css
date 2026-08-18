@@ -13,18 +13,17 @@
 
   /* ===== цвета: токены из Figma ===== */
   --color-white: #f6f6f6;                        /* Figma: white */
+  --color-white-pure: #ffffff;                   /* Figma: token white в виджете */
   --color-black: #0a0a0a;                        /* Figma: black */
   --color-grey: #ececec;                         /* Figma: grey — фон блока кейсов */
   --color-glass: rgba(255, 255, 255, 0.2);       /* светлая стеклянная подложка */
   --color-glass-dark: rgba(0, 0, 0, 0.1);        /* тёмная стеклянная подложка */
+  --color-glass-shade: rgba(0, 0, 0, 0.2);       /* подложка виджета */
   --color-glass-button: rgba(255, 255, 255, 0.16);
   --color-glass-tip: rgba(255, 255, 255, 0.1);
   /* тёмное стекло для меню над светлыми секциями */
   --color-glass-inverse: rgba(10, 10, 10, 0.55);
   --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */
-  /* градиент манифеста */
-  --color-manifesto-from: #000200;
-  --color-manifesto-to: #181b0a;
   --color-case-fallback: #d8d3cf;                /* фон карточки до загрузки */
 
   /* притенение краёв кадра на вытянутых экранах */
@@ -65,7 +64,8 @@
   --container-pad: 64px;
 
   /* ===== первый экран: геометрия из макета 1440 × 960 ===== */
-  --header-h: 108px;
+  --header-h: 91px;
+  --avatar-size: 30px;
   --header-logo-w: 218px;
   --header-logo-h: 51px;
   --button-h: 68px;
@@ -94,9 +94,22 @@
   --hero-logo-h-min: 180px;
   --hero-pin: 380px;             /* прокрутка, на которой меняется только знак */
 
-  /* «→проекты» — по левому краю второй колонки, 334 / 900 по высоте */
-  --hero-projects-x: calc(var(--space-gutter) + var(--grid-col) + var(--grid-gap));
-  --hero-projects-y: 37.1%;
+
+  /* ===== виджет-счётчик кейсов ===== */
+  --widget-w: var(--grid-col);   /* ровно левая колонка сетки; на 1440 это 216.67 */
+  --widget-pad: 20px;
+  --widget-row-h: 51px;
+  /* Ширина блока с числом из макета. Figma отдаёт ширину текстового слоя
+     без учёта трекинга, а CSS его применяет — отрисованные цифры уже
+     84px, и без этой ширины подписи встают на 6.7px левее макета.
+     Значение привязано к трёхзначному числу: изменится счётчик —
+     изменится и оно. */
+  --widget-count-w: 90.695px;
+  --widget-gap: 24px;
+  --widget-blur: 20px;
+  --widget-offset: var(--space-xs);   /* зазор между шапкой и виджетом */
+  --widget-dot: 6px;
+  --widget-dot-dim: 0.2;              /* непрозрачность непройденных точек */
 
   /* ===== плавающее меню (Figma: компонент Menu) ===== */
   --menu-w: var(--grid-col);                       /* ровно пятая колонка сетки */
@@ -151,11 +164,6 @@
   --contact-card-pad: 40px;
   --contact-title-w: 723px;
 
-  /* ===== манифест ===== */
-  --manifesto-media-w: 664px;
-  --manifesto-media-h: 992px;
-  --manifesto-text-w: 1268px;
-  --manifesto-text-shift: 112px;   /* центр текста выше центра экрана */
 
   /* ===== футер ===== */
   --footer-logo-w: 366px;
