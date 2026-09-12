@@ -58,6 +58,10 @@
     & > *:nth-child(n) {
       grid-row: auto;
       grid-column: 1 / -1;
+      /* Карточка теперь во всю сетку, то есть шесть колонок, и панель в одну
+         из них была бы уже 150px — заголовок в 48px туда не встанет.
+         Держим треть карточки: это ближайшее читаемое деление. */
+      --case-span: 3;
     }
   }
 
@@ -65,8 +69,12 @@
   .W_CasesGrid,
   .W_ServicesGrid,
   .M_ContactCard,
+  /* Второй селектор — страница услуги: там клиенты выровнены по колонке
+     заявления, и то правило специфичнее этого. Без него узкая колонка
+     доживала бы до мобильного, а бегущая строка сидела бы в ней зажатой. */
   .O_Clients .O_Clients-title,
-  .O_Clients .O_Clients-marquee {
+  .O_Clients .O_Clients-marquee,
+  .W_ServicePage .O_Clients .O_Clients-marquee {
     grid-column: 1 / -1;
   }
 
@@ -98,8 +106,13 @@
     grid-column: 1 / 3;
   }
 
-  .M_ServiceStatement {
+  .M_ServiceStatement,
+  .M_ServiceCases {
     grid-column: 3 / -1;
+  }
+
+  .O_ServiceCases .O_ServiceCases-title {
+    grid-column: 1 / 3;
   }
 }
 
@@ -274,7 +287,9 @@
      поэтому порядок остаётся читаемым сам собой: сначала о чём услуга,
      потом перечень её частей. */
   .M_ServiceStatement,
-  .M_ServiceList {
+  .M_ServiceList,
+  .M_ServiceCases,
+  .O_ServiceCases .O_ServiceCases-title {
     grid-column: 1 / -1;
     grid-row: auto;
   }
@@ -440,6 +455,9 @@
        Перечня подуслуг на странице услуги это не касается — там приглушение
        показывает, какой раздел сейчас открыт, а не ждёт курсора. */
     --menu-sub-dim: 1;
+    /* строка виджета и точки под ней стоят ближе: 24 на узкой панели
+       читаются как разрыв */
+    --widget-gap: var(--space-s);
   }
 
   /* реплика раскрывается только по ховеру — на тач-устройствах она мертва */
@@ -462,17 +480,24 @@
   .O_Menu .O_Menu-sub-list,
   .M_CasesWidget .M_CasesWidget-link {
     font-size: 19px;
-    gap: var(--space-xs);
-  }
-
-  .O_Menu .O_Menu-item,
-  .O_Menu .O_Menu-item + .O_Menu-item {
-    gap: var(--space-xs);
   }
 
   .O_Menu .O_Menu-link,
   .M_CasesWidget .M_CasesWidget-link {
     padding-block: var(--space-2xs);
+  }
+
+  /* Промежутки между строками сжаты до 4: поле под палец теперь несёт сама
+     строка, и восемь сверху этого поля разносили список так, что панель
+     выглядела полупустой. Касается и раскрытого перечня услуг. */
+  .O_Menu .O_Menu-list,
+  .O_Menu .O_Menu-sub-list,
+  .O_Menu .O_Menu-item {
+    gap: var(--space-3xs);
+  }
+
+  .O_Menu .O_Menu-item + .O_Menu-item {
+    margin-top: var(--space-3xs);
   }
 }
 
