@@ -18,21 +18,22 @@
     --header-h: 92px;
     --header-logo-w: 168px;
     --header-logo-h: 39px;
-    --button-h: 60px;
-    --button-pad-x: var(--space-s);
+    --footer-link-pad-x: var(--space-s);
     --hero-scrim-opacity: 1;
     --cases-pad-top: var(--space-xl);
 
-    /* колонка становится уже читаемой ширины меню — фиксируем его размер
-       и прижимаем к правому полю, а знак отдаём левой части сетки */
-    --menu-w: 216px;
-    --menu-left: calc(100% - var(--menu-w) - var(--space-gutter));
-    --hero-logo-w: calc(300% + var(--grid-gap) * 2);
     --hero-logo-h: 420px;
     --hero-logo-h-min: 140px;
 
     --services-pad-y: var(--space-xl);
     --section-pad-y: var(--space-xl);
+    /* Содержимое распахнулось на всю сетку и пошло под виджетом — снова
+       отводим ему место сверху: шапка, зазор, сам виджет и воздух. */
+    --page-pad-top: 200px;
+    --page-pad-bottom: var(--space-xl);
+    --projects-row-gap: var(--space-l);
+    --service-lead-pad-y: var(--space-xl);
+    --service-streak-w: 320px;
     /* четыре кнопки по 238 не помещаются в 984 доступных */
     --footer-link-w: 180px;
   }
@@ -40,14 +41,6 @@
   .Title1 { font-size: 64px; }
   .Title2 { font-size: 48px; }
   .Label1 { font-size: 26px; }
-
-  .A_ButtonPrimary {
-    font-size: 18px;
-  }
-
-  .A_Wordmark {
-    grid-column: 1;
-  }
 
   .M_Contact {
     display: none;
@@ -57,7 +50,8 @@
     padding: var(--space-s);
   }
 
-  /* кейсы в одну полосу: половинная карточка ужимает панель до нечитаемой */
+  /* кейсы в одну полосу: три колонки здесь уже 482px и панель в карточке
+     ужимается до нечитаемой */
   .W_CasesGrid {
     grid-template-columns: minmax(0, 1fr);
 
@@ -72,12 +66,41 @@
   .W_ServicesGrid,
   .M_ContactCard,
   .O_Clients .O_Clients-title,
-  .O_Clients .O_Clients-list {
+  .O_Clients .O_Clients-marquee {
     grid-column: 1 / -1;
   }
 
   .M_FooterLinks .M_FooterLinks-group:first-child { grid-column: 1 / 4; }
   .M_FooterLinks .M_FooterLinks-group:last-child { grid-column: 4 / 7; }
+
+  /* Страницы кейсов: списку и галерее возвращаем всю сетку. Колонку слева
+     держать больше не за чем — виджеты и на главной с этой ширины лежат
+     поверх содержимого. */
+  .W_ProjectsGrid,
+  .W_Case {
+    grid-column: 1 / -1;
+  }
+
+  /* название и описание кейса встают друг под друга: в одну колонку из
+     пяти заголовок уже не помещается */
+  .T_CaseIntro .T_CaseIntro-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .T_CaseIntro .T_CaseIntro-title,
+  .T_CaseIntro .T_CaseIntro-text {
+    grid-column: 1 / -1;
+  }
+
+  /* Страница услуги: колонка слева больше не резервируется, перечень и
+     заявление делят сетку пополам. */
+  .M_ServiceList {
+    grid-column: 1 / 3;
+  }
+
+  .M_ServiceStatement {
+    grid-column: 3 / -1;
+  }
 }
 
 
@@ -88,10 +111,8 @@
     --space-gutter: 16px;
     --header-logo-w: 140px;
     --header-logo-h: 33px;
-    --button-h: 52px;
     --hero-min-h: 560px;
-    --hero-logo-w: 60vw;
-    --hero-logo-h: 260px;
+    --hero-logo-h: 200px;
     --hero-logo-h-min: 110px;
     --cases-pad-top: var(--space-l);
     --case-blur: 10px;                 /* стекло шапки мобильной карточки */
@@ -99,7 +120,15 @@
     --services-cols: 2;
     --service-card-h: 280px;
     --section-pad-y: var(--space-l);
-    --contact-card-pad: var(--space-m);
+    --page-pad-bottom: var(--space-l);
+    --projects-row-gap: var(--space-m);
+    --projects-cap-gap: var(--space-xs);
+    --service-lead-pad-y: var(--space-l);
+    --service-list-gap: var(--space-s);
+    --service-lead-gap: var(--space-m);
+    /* клевер мельчает: иначе он ложится на текст */
+    --service-streak-w: 240px;
+    --service-streak-drop: 60px;
     --footer-link-w: 140px;
     --footer-logo-w: 55vw;
   }
@@ -110,28 +139,27 @@
 
   .M_ContactCard {
     height: auto;
-    gap: var(--space-l);
+    gap: var(--contact-card-gap);
   }
 
-  /* соцсети складываются в две колонки по две кнопки */
+  /* Соцсети складываются в две колонки по две кнопки. flex: 1 у кнопок
+     задан для дележа ширины в строке — в колонке он начал бы делить высоту
+     и сплющил бы их, поэтому здесь его снимаем. */
   .M_FooterLinks .M_FooterLinks-group {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-s);
   }
 
-  .A_ButtonPrimary {
-    font-size: 16px;
+  .M_FooterLinks .A_ButtonDark {
+    flex: none;
   }
 
-  /* Знак встаёт между виджетом и меню. Отступ считаем от высоты экрана:
-     процентный padding резолвится от ШИРИНЫ контейнера, а ячейка знака —
-     это одна колонка сетки (43px на 375), и 20% давали 9px вместо доли
-     экрана — знак уезжал под шапку. Нижний предел держит его ниже виджета
-     на невысоких телефонах. */
+  /* Оба виджета стоят у левого края — счётчик сверху, меню снизу. Знак
+     встаёт между ними по вертикали: развести их по горизонтали нельзя,
+     виджеты держат макетные 217px, а колонка сетки на 375 всего 40px. */
   .A_Wordmark {
-    align-items: flex-start;
-    padding-top: max(26svh, 200px);
+    align-items: center;
     padding-bottom: 0;
   }
 
@@ -182,6 +210,12 @@
     background: var(--color-glass-dark);
   }
 
+  /* В мобильном макете название кейса держит полный кегль — 62px, как на
+     широком экране, хотя общий Title2 к этой ширине уже ужат. */
+  .M_CasePanel .M_CasePanel-title {
+    font-size: 62px;
+  }
+
   /* в мобильном макете точка стоит над названием услуги, а не рядом */
   .M_CasePanel .M_CasePanel-tag {
     flex-direction: column;
@@ -208,10 +242,45 @@
     order: 3;
     width: calc(100% - var(--case-pad) * 2);
     margin: var(--case-pad);
+    /* скругление и стекло — как в макете мобильной карточки */
+    border-radius: var(--radius-cta);
+    -webkit-backdrop-filter: blur(var(--case-cta-blur));
+    backdrop-filter: blur(var(--case-cta-blur));
   }
 
   .M_CaseTip {
     display: none;
+  }
+
+  /* Плитки кейсов в одну полосу: на 768 половина ряда — 364px, подпись в
+     40px уже переносится по слогам. Верхнее поле страницы не трогаем: под
+     ним висит счётчик кейсов, и первый кадр должен начинаться ниже него. */
+  .W_ProjectsGrid,
+  .M_CaseGallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .T_ProjectCard--full,
+  .A_CaseFrame--full {
+    grid-column: 1 / -1;
+  }
+
+  /* вытянутый кадр во всю ширину стал бы выше экрана */
+  .A_CaseFrame--tall {
+    aspect-ratio: var(--case-ratio-wide);
+  }
+
+  /* Страница услуги в одну колонку. Заявление стоит в разметке первым,
+     поэтому порядок остаётся читаемым сам собой: сначала о чём услуга,
+     потом перечень её частей. */
+  .M_ServiceStatement,
+  .M_ServiceList {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .M_ServiceList {
+    margin-top: var(--space-l);
   }
 }
 
@@ -220,12 +289,30 @@
 
 @media (max-width: 480px) {
   :root {
+    /* мобильный ритм секций из макетов — те же 100, что поле футера сверху */
+    --section-pad-y: var(--footer-pad-top);
+
+    /* Мобильная сетка из макета: четыре колонки, поле по краям 4,
+       промежуток 20. Поле сетки и поле плавающих виджетов здесь расходятся,
+       поэтому --space-gutter остаётся прежним. */
+    --grid-cols: 4;
+    --grid-margin: var(--space-3xs);
+    /* промежуток задан явно: --space-gutter к этой ширине уже 16 */
+    --grid-gap: 20px;
+
     --services-cols: 1;
     --service-card-h: 200px;
     --footer-link-w: 120px;
   }
 
   .Title1 { font-size: 36px; }
+
+  /* в мобильном макете карточки (Figma 635:1045) заголовок набран label 1 */
+  .M_ContactCard .M_ContactCard-title {
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: -0.0125em;
+  }
   .Title2 { font-size: 32px; }
   .Label1 { font-size: 20px; }
 
@@ -234,8 +321,111 @@
     line-height: 105%;
   }
 
-  .M_CasePanel .M_CasePanel-title {
-    font-size: 48px;
+  /* В сетке из четырёх колонок знак занимает три: прежние «3 / -1» дали бы
+     ровно половину ширины экрана, и он вытянулся бы в полоску. */
+  .A_Wordmark {
+    grid-column: 2 / -1;
+  }
+
+  /* Соцсети в футере стоят по колонкам сетки, а их было шесть. В четырёх
+     «4 / 7» создало бы две неявные колонки и растянуло бы футер за экран. */
+  .M_FooterLinks .M_FooterLinks-group:first-child { grid-column: 1 / 3; }
+  .M_FooterLinks .M_FooterLinks-group:last-child { grid-column: 3 / -1; }
+
+  /* плашка с услугами занимала бы треть кадра */
+  .M_CaseTags {
+    padding: var(--space-xs);
+  }
+
+  /* перечень подуслуг набран заголовочным кеглем — на 375 он переносится
+     по три строки на пункт */
+  .M_ServiceList {
+    font-size: 18px;
+  }
+
+  /* ===== клиенты на мобильном (Figma 637:1137) ========================
+     Заголовок встаёт над списком, а сам список разворачивается в строку —
+     имена идут подряд и уезжают за правый край, как в макете. Строка
+     прокручивается пальцем: иначе всё, что дальше «sally», недостижимо.
+     Кегль у заголовка и имён общий — label 1 в полную величину, он к этой
+     ширине не ужимается. */
+
+  .O_Clients .O_Clients-title,
+  .O_Clients .O_Clients-item {
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: -0.0125em;
+  }
+
+  /* Дорожка подрезает строку по краю сетки, сама строка растёт по
+     содержимому и едет трансформом — см. marquee.js. */
+  .O_Clients .O_Clients-marquee {
+    overflow: hidden;
+  }
+
+  .O_Clients .O_Clients-list {
+    flex-direction: row;
+    gap: var(--clients-row-gap);
+    width: max-content;
+    will-change: transform;
+  }
+
+  /* ===== мобильный футер (Figma 637:1078) =============================
+     Вместо экрана в высоту вьюпорта с абсолютно расставленными слоями —
+     обычная колонка по содержимому: поле сверху, четыре кнопки соцсетей в
+     столбик, отбивка и знак во всю ширину сетки. Коллаж и круги-веера
+     остаются абсолютной подложкой и кроются футером, как и были. */
+
+  .O_Footer {
+    height: auto;
+    min-height: 0;
+    padding-top: var(--footer-pad-top);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--footer-gap);
+  }
+
+  /* В разметке знак стоит раньше соцсетей — он и на широком экране лежит
+     подложкой под ними. В колонке порядок обратный, поэтому расставляем
+     его здесь, а не переписываем общий партиал футера. */
+  .M_FooterLinks {
+    order: 1;
+    /* Не static, а relative со слоем: круги-веера лежат абсолютом, а
+       абсолютные элементы красятся поверх строчных. Их наложение screen
+       выбеливает всё под собой, и чёрные кнопки со знаком пропадали.
+       Собственные координаты базового правила при этом сбрасываем. */
+    position: relative;
+    z-index: 1;
+    inset: auto;
+    translate: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-gap);
+    width: 100%;
+  }
+
+  .M_FooterLinks .M_FooterLinks-group {
+    width: 100%;
+    gap: var(--grid-gap);
+  }
+
+  .M_FooterLinks .A_ButtonDark {
+    width: 100%;
+  }
+
+  /* Знак встаёт в поток и тянется по ширине сетки. Высота — пропорцией из
+     макета: вектор с preserveAspectRatio="none", поэтому он просто
+     заполняет коробку, и отдельный файл под мобильный вид не нужен. */
+  .O_Footer .A_FooterWordmark {
+    order: 2;
+    position: relative;          /* тем же слоем поверх вееров */
+    z-index: 1;
+    inset: auto;
+    translate: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--footer-logo-ratio);
   }
 }
 
@@ -243,9 +433,46 @@
 /* ===== ввод без курсора ================================================ */
 
 @media (hover: none) {
+  :root {
+    /* Приглушение — это состояние покоя перед наведением. Наведения тут нет,
+       поэтому строка так и осталась бы полупрозрачной навсегда: пункты услуг
+       в меню и строка виджета кейсов набираются в полную силу.
+       Перечня подуслуг на странице услуги это не касается — там приглушение
+       показывает, какой раздел сейчас открыт, а не ждёт курсора. */
+    --menu-sub-dim: 1;
+  }
+
   /* реплика раскрывается только по ховеру — на тач-устройствах она мертва */
   .M_CaseTip {
     display: none;
+  }
+
+  /* то же с клевером: он выезжает по наведению на ссылку. Показывать его
+     тут постоянно нельзя — на узком экране он ляжет поверх перечня. */
+  .A_ServiceStreak {
+    display: none;
+  }
+
+  /* Виджеты пальцем: строки набраны 17px и отбиты полем в 4px — цель выходит
+     около 20px, промахнуться проще, чем попасть. Текст крупнее, строки
+     отбиты вдвое шире, и у самой строки появляется поле сверху и снизу:
+     цель растёт примерно до 32px, а панели почти не раздуваются. Счётчик
+     кейсов идёт здесь же: у него та же строка, что и у пунктов меню. */
+  .O_Menu .O_Menu-list,
+  .O_Menu .O_Menu-sub-list,
+  .M_CasesWidget .M_CasesWidget-link {
+    font-size: 19px;
+    gap: var(--space-xs);
+  }
+
+  .O_Menu .O_Menu-item,
+  .O_Menu .O_Menu-item + .O_Menu-item {
+    gap: var(--space-xs);
+  }
+
+  .O_Menu .O_Menu-link,
+  .M_CasesWidget .M_CasesWidget-link {
+    padding-block: var(--space-2xs);
   }
 }
 
@@ -253,8 +480,10 @@
 /* ===== системные настройки ============================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  /* бегущая строка не запускается — оставляем её пролистываемой пальцем */
+  .O_Clients .O_Clients-marquee {
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
   *,

@@ -35,6 +35,16 @@
   font-weight: 600;
 }
 
+/* Тэглайн меню: та же гарнитура и трекинг, что у label 2, но крупнее и
+   легче. Отдельный класс, а не правка .Label2: тот набирает кнопки,
+   карточки услуг и реплики кейсов по всему сайту. */
+.Tagline {
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: -0.0045em;
+  font-weight: 500;
+}
+
 /* Figma: body — Inter Tight Medium 14 / 16, размер поднят до 15 */
 .Body {
   font-size: 15px;

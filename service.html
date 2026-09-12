@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>branding — süra</title>
+  <meta name="description" content="Branding by süra design studio: rebranding, product branding, brand systems, HR branding, brandbooks and identity audit.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link rel="alternate" hreflang="en" href="https://suradsgn.com/service.html">
+  <link rel="alternate" hreflang="ru" href="https://suradsgn.com/ru/service.html">
+  <link rel="alternate" hreflang="x-default" href="https://suradsgn.com/service.html">
+
+  <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/src/stylesheets/reset.css">
+  <link rel="stylesheet" href="/src/stylesheets/fonts.css">
+  <link rel="stylesheet" href="/src/stylesheets/vars.css">
+  <link rel="stylesheet" href="/src/stylesheets/typekit.css">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/stylesheets/responsive.css">
+</head>
+<body>
+
+  <!-- Плавная прокрутка: ScrollSmoother везёт .ScrollContent трансформом,
+       поэтому внутрь обёртки попадает только поток страницы. Шапка, счётчик
+       и меню закреплены на экране и лежат снаружи: position: fixed внутри
+       трансформированного родителя фиксированным быть перестаёт. -->
+  <div class="ScrollWrap">
+    <div class="ScrollContent">
+
+      <main class="W_ServicePage">
+
+        <!-- ===== первый экран ============================================ -->
+        <section class="O_Hero W_Grid">
+
+          <div class="W_HeroMedia">
+            <img class="A_HeroImage"
+                 src="/src/images/services/service-hero.jpg"
+                 alt=""
+                 width="1600" height="2000"
+                 fetchpriority="high"
+                 data-media-reveal>
+          </div>
+
+          <div class="A_Wordmark" role="img" aria-label="süra">
+            <img src="/src/images/logos/wordmark.svg" alt="" width="454" height="576">
+          </div>
+
+        </section>
+
+        <!-- ===== услуга: заявление и перечень ============================ -->
+        <section class="O_ServiceLead" aria-label="Branding">
+          <div class="W_Grid">
+
+            <div class="M_ServiceStatement" data-scroll-reveal>
+              <div class="M_ServiceStatement-panels">
+                <h1 class="Title2 M_ServiceStatement-text is-Current"
+                   id="svc-panel-1" role="tabpanel" aria-labelledby="svc-tab-1">We tackle costly call center bottlenecks turning inefficiency into controlled, scalable communication.</h1>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-2" role="tabpanel" aria-labelledby="svc-tab-2">We give a product its own face and voice, so it holds the shelf and the feed without borrowing attention from the mother brand.</p>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-3" role="tabpanel" aria-labelledby="svc-tab-3">We turn declared values into things people actually use — from the first day of onboarding to the walls of the office.</p>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-4" role="tabpanel" aria-labelledby="svc-tab-4">We assemble one set of rules, components and files, so every new touchpoint takes days to build instead of months.</p>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-5" role="tabpanel" aria-labelledby="svc-tab-5">We make the employer brand honest and recognisable, so the right people come to you — and stay.</p>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-6" role="tabpanel" aria-labelledby="svc-tab-6">We write the rules down the way they get followed: short, visual and impossible to read two ways.</p>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-7" role="tabpanel" aria-labelledby="svc-tab-7">We put a portfolio in order, so every product has its place, its name and a reason to exist.</p>
+                <p class="Title2 M_ServiceStatement-text"
+                   id="svc-panel-8" role="tabpanel" aria-labelledby="svc-tab-8">We look at the identity you already have and say plainly what works, what leaks and what to fix first.</p>
+              </div>
+
+              <a class="A_LinkArrow Label2" href="https://t.me/" target="_blank" rel="noopener">
+                Let’s Collaborate
+                <img src="/src/images/services/link-arrow.svg" alt="" width="12" height="12">
+              </a>
+            </div>
+
+            <ul class="Label2 M_ServiceList" role="tablist" aria-label="Branding services" data-scroll-reveal>
+              <li class="M_ServiceList-item is-Current" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-1" aria-controls="svc-panel-1"
+                        aria-selected="true">Rebranding</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-2" aria-controls="svc-panel-2"
+                        aria-selected="false" tabindex="-1">Product branding</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-3" aria-controls="svc-panel-3"
+                        aria-selected="false" tabindex="-1">Internal branding</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-4" aria-controls="svc-panel-4"
+                        aria-selected="false" tabindex="-1">Brand system / design system</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-5" aria-controls="svc-panel-5"
+                        aria-selected="false" tabindex="-1">HR branding</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-6" aria-controls="svc-panel-6"
+                        aria-selected="false" tabindex="-1">Logobook / brandbook</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-7" aria-controls="svc-panel-7"
+                        aria-selected="false" tabindex="-1">Sub-branding and brand architecture</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+              <li class="M_ServiceList-item" role="presentation">
+                <button class="M_ServiceList-trigger" type="button" role="tab"
+                        id="svc-tab-8" aria-controls="svc-panel-8"
+                        aria-selected="false" tabindex="-1">Identity audit</button>
+                <span class="A_Dot A_Dot--ink"></span>
+              </li>
+            </ul>
+
+          </div>
+
+          <img class="A_ServiceStreak"
+               src="/src/images/services/streak.jpg"
+               alt=""
+               width="814" height="548"
+               loading="lazy"
+               aria-hidden="true">
+        </section>
+
+        <!-- ===== clients ================================================= -->
+        <section class="O_Clients" id="clients" aria-label="Studio clients">
+          <div class="W_Grid">
+            <h2 class="Title2 O_Clients-title" data-scroll-reveal>clients</h2>
+            <div class="O_Clients-marquee">
+              <ul class="O_Clients-list" data-marquee data-scroll-reveal>
+                <li class="Label1 O_Clients-item">avito</li>
+                <li class="Label1 O_Clients-item">hoff</li>
+                <li class="Label1 O_Clients-item">baresto</li>
+                <li class="Label1 O_Clients-item">sally</li>
+                <li class="Label1 O_Clients-item">crona</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== contact ================================================= -->
+        <section class="O_Contact" id="contact">
+          <div class="W_Grid">
+            <div class="M_ContactCard" data-scroll-reveal>
+              <p class="Title1 M_ContactCard-title">Let’s talk about your project</p>
+              <a class="A_Button Label2" href="https://t.me/" target="_blank" rel="noopener">
+              <span class="A_Button-label">Text Us →</span>
+            </a>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- include: src/partials/en/footer.html -->
+
+    </div>
+  </div>
+
+  <!-- include: src/partials/en/header.html -->
+
+  <!-- include: src/partials/en/aside.html -->
+
+  <script type="module" src="/src/javascript/smoothScroll.js"></script>
+  <script type="module" src="/src/javascript/mediaReveal.js"></script>
+  <script type="module" src="/src/javascript/heroIntro.js"></script>
+  <script type="module" src="/src/javascript/menuScroll.js"></script>
+  <script type="module" src="/src/javascript/menuToggle.js"></script>
+  <script type="module" src="/src/javascript/casesWidget.js"></script>
+  <script type="module" src="/src/javascript/headerScroll.js"></script>
+  <script type="module" src="/src/javascript/heroLogoScroll.js"></script>
+  <script type="module" src="/src/javascript/footerRays.js"></script>
+  <script type="module" src="/src/javascript/marquee.js"></script>
+  <script type="module" src="/src/javascript/scrollReveal.js"></script>
+  <script type="module" src="/src/javascript/serviceTabs.js"></script>
+</body>
+</html>

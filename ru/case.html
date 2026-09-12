@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MONS — süra</title>
+  <meta name="description" content="MONS — айдентика, коммуникация и 3d для Avito Tech Conference, дизайн-студия süra.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link rel="alternate" hreflang="en" href="https://suradsgn.com/case.html">
+  <link rel="alternate" hreflang="ru" href="https://suradsgn.com/ru/case.html">
+  <link rel="alternate" hreflang="x-default" href="https://suradsgn.com/case.html">
+
+  <link rel="preload" href="/fonts/inter-tight-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/src/stylesheets/reset.css">
+  <link rel="stylesheet" href="/src/stylesheets/fonts.css">
+  <link rel="stylesheet" href="/src/stylesheets/vars.css">
+  <link rel="stylesheet" href="/src/stylesheets/typekit.css">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/stylesheets/responsive.css">
+</head>
+<body>
+
+  <!-- Плавная прокрутка: ScrollSmoother везёт .ScrollContent трансформом,
+       поэтому внутрь обёртки попадает только поток страницы. Шапка, счётчик
+       и меню закреплены на экране и лежат снаружи: position: fixed внутри
+       трансформированного родителя фиксированным быть перестаёт. -->
+  <div class="ScrollWrap">
+    <div class="ScrollContent">
+
+      <main>
+
+        <!-- ===== кейс ====================================================== -->
+        <article class="O_Case">
+          <div class="W_Grid">
+            <div class="W_Case">
+
+              <!-- обложка, название, описание -->
+              <div class="T_CaseIntro" data-case-reveal>
+                <div class="A_CaseFrame">
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/mons.jpg"
+                       alt="MONS — ключевой визуал на городском щите"
+                       width="1600" height="890"
+                       fetchpriority="high"
+                       data-media-reveal>
+                  <span class="M_CaseTags">
+                    <span class="A_Dot"></span>
+                    <span class="Body M_CaseTags-list">
+                      <span>айдентика</span>
+                      <span>коммуникация</span>
+                      <span>3d</span>
+                    </span>
+                  </span>
+                </div>
+
+                <div class="T_CaseIntro-head" data-case-caption>
+                  <h1 class="Title2 T_CaseIntro-title">MONS</h1>
+                  <p class="Label1 T_CaseIntro-text">Avito Tech Conference — ключевое событие для тимлидов и руководителей в IT. Мы сделали ключевой визуал и взяли на себя большую часть брендинга события и оформления площадки. Моушн-дизайн — Studio37. Организация — Advanza</p>
+                </div>
+              </div>
+
+              <!-- галерея кейса -->
+              <div class="M_CaseGallery">
+
+                <div class="A_CaseFrame A_CaseFrame--full" data-case-reveal>
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/avito.jpg"
+                       alt="MONS — ключевой визуал в движении"
+                       width="1600" height="900"
+                       loading="lazy"
+                       data-media-reveal>
+                </div>
+
+                <div class="A_CaseFrame" data-case-reveal>
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/huli.jpg"
+                       alt="MONS — логотип на стене площадки"
+                       width="1600" height="639"
+                       loading="lazy"
+                       data-media-reveal>
+                </div>
+
+                <div class="A_CaseFrame A_CaseFrame--tall" data-case-reveal>
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/gym.jpg"
+                       alt="MONS — печатный мерч конференции"
+                       width="1600" height="1067"
+                       loading="lazy"
+                       data-media-reveal>
+                </div>
+
+                <div class="A_CaseFrame A_CaseFrame--tall" data-case-reveal>
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/phone.jpg"
+                       alt="MONS — мобильные экраны сервиса события"
+                       width="1600" height="1067"
+                       loading="lazy"
+                       data-media-reveal>
+                </div>
+
+                <div class="A_CaseFrame" data-case-reveal>
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/flowers.jpg"
+                       alt="MONS — оформление площадки"
+                       width="1600" height="1067"
+                       loading="lazy"
+                       data-media-reveal>
+                </div>
+
+                <div class="A_CaseFrame A_CaseFrame--full" data-case-reveal>
+                  <img class="A_CaseFrame-image"
+                       src="/src/images/cases/boxes.jpg"
+                       alt="MONS — подарочные боксы для спикеров"
+                       width="1600" height="1067"
+                       loading="lazy"
+                       data-media-reveal>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+      </main>
+
+
+      <!-- include: src/partials/ru/footer.html -->
+
+    </div>
+  </div>
+
+  <!-- include: src/partials/ru/header.html -->
+
+  <!-- include: src/partials/ru/aside.html -->
+
+  <script type="module" src="/src/javascript/smoothScroll.js"></script>
+  <script type="module" src="/src/javascript/mediaReveal.js"></script>
+  <script type="module" src="/src/javascript/pageIntro.js"></script>
+  <script type="module" src="/src/javascript/menuScroll.js"></script>
+  <script type="module" src="/src/javascript/menuToggle.js"></script>
+  <script type="module" src="/src/javascript/casesWidget.js"></script>
+  <script type="module" src="/src/javascript/headerScroll.js"></script>
+  <script type="module" src="/src/javascript/footerRays.js"></script>
+  <script type="module" src="/src/javascript/caseReveal.js"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@
 ## Стек
 
 - **Сборка:** Vite, multipage — каждый HTML-файл регистрируется как отдельный entry в `vite.config.js` (`build.rollupOptions.input`). Новая страница = новый entry, не забывай добавлять.
+- **Общая разметка:** шапка, футер и левая колонка (счётчик + меню) лежат в `src/partials/<язык>/` и подставляются на сборке плагином `htmlIncludes` из `vite.config.js` — строкой `<!-- include: src/partials/en/header.html -->`. Правится в одном месте, копий по страницам не держим.
 - **JS:** vanilla ES-modules, без React/Vue. Один файл `src/javascript/<фича>.js` на одну фичу (smoothScroll.js, marquee.js, form.js). Никаких файлов-помоек «main.js на всё».
 - **Анимации:** GSAP (ScrollTrigger, ScrollSmoother) — скролл-хореография; Lottie (renderer: canvas) — векторные анимации из After Effects, json-файлы в `public/`.
 - **Деплой-цель:** статика на VPS (nginx, 1 ГБ RAM) — никакого SSR, никаких серверных зависимостей.
@@ -30,6 +31,7 @@
 │   │   └── responsive.css  # ВСЕ media queries, сгруппированы по брейкпоинтам
 │   ├── style.css           # layout-стили компонентов (desktop-first)
 │   ├── javascript/         # по файлу на фичу
+│   ├── partials/           # общая разметка: en/ и ru/, по файлу на блок
 │   └── images/             # svg/jpg, подпапки по секциям (cases/, logos/)
 ├── public/                 # lottie json, favicon — то, что не проходит через бандлер
 └── vite.config.js
