@@ -1,73 +1,52 @@
 /* ==========================================================================
    typekit.css — только типографические классы, по классу на стиль из макета.
-   letter-spacing в em, чтобы жить вместе с clamp. Жирность — модификатором.
+   Интерлиньяж — безразмерным множителем, letter-spacing — в em: и то и
+   другое считается от кегля, поэтому переживает его смену на брейкпоинтах.
+   Проценты для интерлиньяжа не годятся: браузер округляет их до сотых долей
+   и из 83.333% при кегле 90 получается 74.7px вместо макетных 75.
    ========================================================================== */
 
 /* Figma: title 1 — Inter Tight SemiBold 90 / 75, letter-spacing -1px */
 .Title1 {
   font-size: 90px;
-  line-height: 83.3%;
-  letter-spacing: -0.0111em;
+  line-height: 0.833333;   /* 75 / 90 */
+  letter-spacing: -0.011111em;
   font-weight: 600;
 }
 
 /* Figma: title 2 — Inter Tight SemiBold 62 / 60, letter-spacing -1px */
 .Title2 {
   font-size: 62px;
-  line-height: 96.8%;
-  letter-spacing: -0.0161em;
+  line-height: 0.967742;   /* 60 / 62 */
+  letter-spacing: -0.016129em;
   font-weight: 600;
 }
 
 /* Figma: label 1 — Inter Tight SemiBold 32 / 32, letter-spacing -0.4px */
 .Label1 {
   font-size: 32px;
-  line-height: 100%;
+  line-height: 1;          /* 32 / 32 */
   letter-spacing: -0.0125em;
   font-weight: 600;
 }
 
-/* Figma: label 2 — Inter Tight SemiBold 22 / 22, letter-spacing -0.1px */
+/* Figma: label 2 — Inter Tight SemiBold 22 / 28, letter-spacing -0.1px */
 .Label2 {
   font-size: 22px;
-  line-height: 100%;
-  letter-spacing: -0.0045em;
+  line-height: 1.272727;   /* 28 / 22 */
+  letter-spacing: -0.0045455em;
   font-weight: 600;
-}
-
-/* Тэглайн меню: та же гарнитура и трекинг, что у label 2, но крупнее и
-   легче. Отдельный класс, а не правка .Label2: тот набирает кнопки,
-   карточки услуг и реплики кейсов по всему сайту. */
-.Tagline {
-  font-size: 24px;
-  line-height: 100%;
-  letter-spacing: -0.0045em;
-  font-weight: 500;
 }
 
 /* Figma: body — Inter Tight Medium 14 / 16, размер поднят до 15 */
 .Body {
-  font-size: 15px;
-  line-height: 114.3%;
+  /* Figma: body — Inter Display Medium 17 / 22. Inter Display — это тот же
+     Inter в дисплейном оптическом размере, поэтому берём переменный файл и
+     выкручиваем ось opsz на 32: отдельная гарнитура для этого не нужна. */
+  font-family: "Inter Display", "Inter", "Inter Tight", sans-serif;
+  font-size: 17px;
+  line-height: 1.294118;   /* 22 / 17 */
   letter-spacing: 0;
   font-weight: 500;
-}
-
-/* Виджет-счётчик размечен в макете гарнитурой Inter — не Inter Tight, на
-   которой построен остальной сайт. Разница заметная: Inter Tight узкее и
-   даёт «156» шириной 76px вместо 90.7px. */
-.Number {
-  font-family: "Inter", "Inter Tight", sans-serif;
-  font-size: 56px;
-  line-height: 90%;
-  letter-spacing: -0.04em;
-  font-weight: 400;
-}
-
-.Caption {
-  font-family: "Inter", "Inter Tight", sans-serif;
-  font-size: 17px;
-  line-height: 100%;
-  letter-spacing: -0.02em;
-  font-weight: 400;
+  font-variation-settings: "opsz" 32;
 }

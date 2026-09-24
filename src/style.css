@@ -5,6 +5,12 @@
 
 body {
   font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  /* Серое сглаживание вместо субпиксельного. На macOS браузер по умолчанию
+     рисует субпиксельно, и светлый текст на цветном фоне набирает вес — тот
+     же Medium выглядел заметно жирнее, чем в макете. Figma рисует текст
+     серым сглаживанием, и с этими двумя строками набор совпадает с ней. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   color: var(--color-white);
   /* Фон всей страницы заливается здесь один раз. Раньше серый несла каждая
      секция по отдельности, и на дробных высотах между ними проступала
@@ -128,8 +134,6 @@ button,
   justify-content: center;
   white-space: nowrap;
   border-radius: var(--radius-cta);
-  background: var(--color-grey);
-  color: var(--color-black);
   transition: background-color var(--transition-base);
 
   & .A_Button-label {
@@ -138,9 +142,25 @@ button,
     justify-content: center;
     padding-bottom: var(--btn-label-pad);
   }
+}
+
+/* Заливка — модификатором: коробка и набор у всех кнопок сайта одни. */
+
+.A_Button--grey {
+  background: var(--color-grey);
+  color: var(--color-black);
 
   &:hover {
     background: var(--color-white);
+  }
+}
+
+.A_Button--glass {
+  background: var(--color-glass-button);
+  color: var(--color-white);
+
+  &:hover {
+    background: var(--color-glass);
   }
 }
 
@@ -205,28 +225,6 @@ button,
 }
 
 
-/* ===== A_ButtonGhost — кнопка внутри стеклянной панели ================= */
-
-.A_ButtonGhost {
-  width: 100%;
-  height: var(--case-cta-h);
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: var(--space-3xs);
-  white-space: nowrap;
-  border-radius: var(--radius-l);
-  background: var(--color-glass-button);
-  color: var(--color-white);
-  transition: background-color var(--transition-base);
-
-  &:hover {
-    background: var(--color-glass);
-  }
-}
-
-
 /* ===== O_Menu — плавающее меню студии =================================
    Figma: компонент Menu. Variant1 — полный вид на первом экране,
    Variant2 (.is-Compact) — компактный список, включается при скролле.
@@ -249,6 +247,7 @@ button,
   border-radius: var(--radius-l);
   /* гаснущее вступление шире схлопывающейся коробки — подрезаем по панели */
   overflow: hidden;
+  /* над кадром первого экрана стекло светлое: фон там тёмный */
   background: var(--color-glass);
   -webkit-backdrop-filter: blur(var(--menu-blur));
   backdrop-filter: blur(var(--menu-blur));
@@ -401,9 +400,9 @@ button,
 
 /* Variant2 — компактный вид. Положение то же: меняется только размер, и за
    счёт привязки по left + bottom коробка сжимается к левому нижнему углу.
-   Подложка темнеет: в компактном виде меню висит уже не над кадром первого
-   экрана, а над светлыми секциями, где белый текст по светлому стеклу
-   пропадает. Вернуть исходное стекло — заменить фон на --color-glass.
+   Подложка переворачивается: над тёмным кадром первого экрана стекло
+   светлое, а ниже, над светлыми секциями, — чёрное на 20%. По светлому
+   стеклу на светлом фоне белый текст пропадает.
 
    Второй селектор — страницы кейсов: разметка меню на всех страницах одна
    (src/partials/<язык>/aside.html), а первого экрана там нет, и переключать
@@ -412,7 +411,7 @@ button,
    меню останется развёрнутым — вёрстка от этого не рассыпается. */
 .O_Menu.is-Compact,
 body:not(:has(.O_Hero)) .O_Menu {
-  background: var(--color-glass-inverse);
+  background: var(--color-glass-shade);
   transition: background-color var(--transition-base);
   height: max-content;
   /* Низ, а не центр: меню привязано к низу экрана и сжимается кверху, так что
@@ -504,6 +503,9 @@ body:not(:has(.O_Hero)) .O_Menu {
   background: var(--color-glass);
   -webkit-backdrop-filter: blur(var(--case-blur));
   backdrop-filter: blur(var(--case-blur));
+  /* Цвет свой, а не унаследованный от страницы: панель лежит поверх кадра и
+     на светлой странице проектов чёрный текст с неё пропадал. */
+  color: var(--color-white);
 
   & .M_CasePanel-head {
     display: flex;
@@ -539,6 +541,7 @@ body:not(:has(.O_Hero)) .O_Menu {
   left: 0;
   top: 0;
   width: var(--case-tip-w);
+  color: var(--color-white);     /* по той же причине, что и панель */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -740,7 +743,7 @@ body:not(:has(.O_Hero)) .O_Menu {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2xs);
+  gap: var(--service-gap);
   overflow: hidden;
   border-radius: var(--radius-l);
   background: var(--color-white);
@@ -827,29 +830,16 @@ body:not(:has(.O_Hero)) .O_Menu {
   grid-column: 2 / -1;
   display: grid;
   grid-template-columns: repeat(var(--services-cols), minmax(0, 1fr));
-  gap: var(--grid-gap);
+  column-gap: var(--services-gap-x);
+  row-gap: var(--services-gap-y);
 }
 
 
-/* ===== A_ButtonDark — кнопка футера ==================================== */
+/* Ширину кнопка берёт от места, где стоит: в стеклянной панели кейса она
+   во всю ширину панели. */
 
-.A_ButtonDark {
-  width: var(--footer-link-w);
-  height: var(--footer-link-h);
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--footer-link-pad-x) var(--space-3xs);
-  white-space: nowrap;
-  border-radius: var(--radius-l);
-  background: var(--color-black);
-  color: var(--color-white);
-  transition: background-color var(--transition-base);
-
-  &:hover {
-    background: var(--color-bg-inverse);
-  }
+.M_CasePanel .A_Button {
+  width: 100%;
 }
 
 
@@ -914,88 +904,83 @@ body:not(:has(.O_Hero)) .O_Menu {
 }
 
 
-/* ===== O_Footer ======================================================== */
+/* ===== O_Footer (Figma 732:755) =======================================
+   Столбик от верхнего поля: соцсети, отбивка 40, знак. Заливки у футера
+   нет — он лежит на фоне страницы, а знак светлый и читается по серому
+   тон в тон, как в макете.
+   ====================================================================== */
 
 .O_Footer {
-  position: relative;
-  height: 100svh;
-  min-height: var(--hero-min-h);
-  overflow: hidden;
-  background: var(--color-grey);
+  /* Содержимое стоит на общей сетке страницы: блок начинается с третьей
+     колонки, знак занимает две — ровно 454 на макетных 1440. Ширину в
+     пикселях не считаем: --grid-col выражен от 100%, и внутри футера эти
+     100% означали бы уже его собственную ширину, а не ширину экрана. */
+  row-gap: var(--footer-gap);
+  align-items: start;
+  padding-block: var(--footer-pad);
+  color: var(--color-black);
 
-  & .O_Footer-media {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
+  & .M_FooterLinks {
+    grid-column: var(--footer-col) / -1;
   }
 
-  & .O_Footer-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity var(--transition-slow);
-  }
-
-  & .O_Footer-media img.is-Loaded {
-    opacity: 1;
-  }
-
-  /* Веер поверх коллажа — генеративный, его рисует footerRays.js на холсте.
-     Раньше рисунок лежал вектором из макета: он совпадал с оригиналом, но
-     был одной и той же картинкой, а в наложении вееров вся суть как раз в
-     том, что сочетание всё время новое. */
-  & .O_Footer-rays {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  & .A_FooterRays {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  /* знак растянут по высоте: вектор с preserveAspectRatio="none" */
   & .A_FooterWordmark {
-    position: absolute;
-    left: 50%;
-    top: var(--footer-logo-top);
-    width: var(--footer-logo-w);
-    height: calc(100% - var(--footer-logo-top) - var(--space-gutter));
+    grid-column: var(--footer-col) / span var(--footer-logo-span);
+  }
+
+  /* Пропорцию держит сам файл: вектор экспортирован 454×575, и при высоте
+     auto коробка повторяет его на любой ширине колонки. */
+  & .A_FooterWordmark img {
+    width: 100%;
+    height: auto;
     max-width: none;
-    translate: -50% 0;
-    pointer-events: none;
   }
 }
 
 
 /* ===== M_FooterLinks =================================================== */
 
-/* Соцсети стоят на общей сетке: по две кнопки на колонках 1–2 и 5–6.
-   Кнопки тянутся поровну, поэтому каждая ровно в одну колонку. */
+/* Соцсети — столбик текстовых ссылок кеглем label 1 с отбивкой 12. Строки
+   отбиты от левого края блока на 20: знак под ними стоит вровень с
+   колонкой сетки, а ссылки — с небольшим заступом (Figma 732:756). */
 .M_FooterLinks {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  translate: 0 -50%;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--footer-links-gap);
+  padding-inline: var(--text-pad);
 
-  & .M_FooterLinks-group {
+  /* Под курсором строка ведёт себя как пункт меню: приходит подчёркивание,
+     а справа проявляется точка. Точка занимает место всегда — иначе
+     столбик дёргался бы по ширине, — поэтому прячется прозрачностью.
+
+     Точка лежит рядом со ссылкой, а не внутри неё: подчёркивание ссылки
+     наследуется вглубь и протянулось бы под точкой. Так же собран и пункт
+     меню (.O_Menu-row). */
+  & .M_FooterLinks-row {
     display: flex;
     align-items: center;
-    gap: var(--grid-gap);
+    gap: var(--space-3xs);
   }
 
-  & .M_FooterLinks-group:first-child { grid-column: 1 / 3; }
-  & .M_FooterLinks-group:last-child { grid-column: 5 / 7; }
+  & .M_FooterLinks-link {
+    text-decoration-color: transparent;
+    text-decoration-line: underline;
+    text-underline-position: from-font;
+    transition: text-decoration-color var(--transition-base);
+  }
 
-  & .A_ButtonDark {
-    width: auto;
-    flex: 1 1 0;
+  & .M_FooterLinks-marker {
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  & .M_FooterLinks-row:hover .M_FooterLinks-link {
+    text-decoration-color: currentColor;
+  }
+
+  & .M_FooterLinks-row:hover .M_FooterLinks-marker {
+    opacity: 1;
   }
 }
 
@@ -1015,7 +1000,9 @@ body:not(:has(.O_Hero)) .O_Menu {
   align-items: flex-start;
   gap: var(--widget-gap);
   border-radius: var(--radius-l);
-  background: var(--color-glass-shade);
+  /* Стекло переворачивается вместе с фоном, как у меню: над тёмным кадром
+     первого экрана — светлое, ниже, над светлыми секциями, — чёрное. */
+  background: var(--color-glass);
   -webkit-backdrop-filter: blur(var(--widget-blur));
   backdrop-filter: blur(var(--widget-blur));
   /* тот же белый, что у меню: виджеты стоят в одной колонке друг под другом,
@@ -1093,6 +1080,16 @@ body:not(:has(.O_Hero)) .O_Menu {
 }
 
 /* шапка спрятана — виджет занимает её место */
+/* За первым экраном подложка темнеет — тем же чёрным стеклом 20%, что у
+   компактного меню. Класс вешает casesWidget.js; второй селектор — страницы
+   без первого экрана, где светло с первого кадра (подробнее у
+   .O_Menu.is-Compact). */
+.M_CasesWidget.is-Shaded,
+body:not(:has(.O_Hero)) .M_CasesWidget {
+  background: var(--color-glass-shade);
+}
+
+
 .M_CasesWidget.is-Raised {
   top: var(--space-gutter);
 }
@@ -1104,15 +1101,6 @@ body:not(:has(.O_Hero)) .O_Menu {
     margin-top: 0;
     opacity: 1;
   }
-}
-
-/* За первым экраном виджет висит над светлыми секциями, где белый текст на
-   подложке из 20% чёрного пропадает — темним так же, как компактное меню.
-   Второй селектор — страницы без первого экрана, где светло с первого кадра
-   (о нём подробнее у .O_Menu.is-Compact). */
-.M_CasesWidget.is-Shaded,
-body:not(:has(.O_Hero)) .M_CasesWidget {
-  background: var(--color-glass-inverse);
 }
 
 
@@ -1215,10 +1203,15 @@ body:not(:has(.O_Hero)) .M_CasesWidget {
 
 .W_ProjectsGrid {
   grid-column: 2 / -1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: var(--grid-gap);
-  row-gap: var(--projects-row-gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-gap);
+
+  /* Карточка занимает все пять колонок блока, и панель внутри считается от
+     этого: одна колонка сетки — см. .M_CasePanel. */
+  & .T_CaseCard {
+    --case-span: 5;
+  }
 }
 
 
@@ -1348,6 +1341,13 @@ body:not(:has(.O_Hero)) .M_CasesWidget {
   & .O_Clients,
   & .O_Contact {
     background: transparent;
+  }
+
+  /* Первого экрана у страницы услуги нет — перечень открывает страницу и
+     отступает сверху так же, как списки на страницах кейсов: на шапку с
+     плавающим счётчиком. */
+  & .O_ServiceLead {
+    padding-top: var(--page-pad-top);
   }
 
   /* Клиенты начинаются с той же колонки, что и заявление услуги над ними:

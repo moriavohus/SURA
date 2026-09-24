@@ -1,23 +1,26 @@
   <!-- ===== футер ==================================================== -->
-  <footer class="O_Footer">
-    <div class="O_Footer-media">
-      <img src="/src/images/footer/footer-bg.jpg" alt="" width="1500" height="1000" loading="lazy" data-media-reveal>
-    </div>
-
-    <div class="O_Footer-rays" aria-hidden="true">
-      <canvas class="A_FooterRays"></canvas>
-    </div>
-
-    <img class="A_FooterWordmark" src="/src/images/logos/wordmark-footer.svg" alt="süra" width="366" height="832" loading="lazy">
-
-    <nav class="M_FooterLinks W_Grid" aria-label="Соцсети студии">
-      <div class="M_FooterLinks-group">
-        <a class="A_ButtonDark Label2" href="https://t.me/" target="_blank" rel="noopener">tg</a>
-        <a class="A_ButtonDark Label2" href="https://www.linkedin.com/" target="_blank" rel="noopener">linkedin</a>
-      </div>
-      <div class="M_FooterLinks-group">
-        <a class="A_ButtonDark Label2" href="https://www.behance.net/" target="_blank" rel="noopener">behance</a>
-        <a class="A_ButtonDark Label2" href="https://www.instagram.com/" target="_blank" rel="noopener">****gram</a>
-      </div>
+  <footer class="O_Footer W_Grid">
+    <nav class="M_FooterLinks" aria-label="Соцсети студии">
+      <span class="M_FooterLinks-row">
+        <a class="Label1 M_FooterLinks-link" href="https://t.me/" target="_blank" rel="noopener">tg</a>
+        <span class="A_Dot A_Dot--ink M_FooterLinks-marker"></span>
+      </span>
+      <span class="M_FooterLinks-row">
+        <a class="Label1 M_FooterLinks-link" href="https://www.linkedin.com/" target="_blank" rel="noopener">linkedin</a>
+        <span class="A_Dot A_Dot--ink M_FooterLinks-marker"></span>
+      </span>
+      <span class="M_FooterLinks-row">
+        <a class="Label1 M_FooterLinks-link" href="https://www.behance.net/" target="_blank" rel="noopener">behance</a>
+        <span class="A_Dot A_Dot--ink M_FooterLinks-marker"></span>
+      </span>
+      <span class="M_FooterLinks-row">
+        <a class="Label1 M_FooterLinks-link" href="https://www.instagram.com/" target="_blank" rel="noopener">instagram</a>
+        <span class="A_Dot A_Dot--ink M_FooterLinks-marker"></span>
+      </span>
     </nav>
+
+    <picture class="A_FooterWordmark">
+      <source media="(max-width: 480px)" srcset="/src/images/logos/wordmark-footer-mobile.svg">
+      <img src="/src/images/logos/wordmark-footer.svg" alt="süra" width="454" height="575" loading="lazy">
+    </picture>
   </footer>
