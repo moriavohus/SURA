@@ -172,6 +172,12 @@
   /* ===== страница услуги (service.html) ===== */
   --service-lead-pad-y: 100px;
   --service-list-gap: 20px;       /* между пунктами перечня */
+  /* ===== аккордеон услуги на телефоне (Figma 718:2187) ===== */
+  --service-card-gap: 4px;        /* между карточками подуслуг */
+  --service-card-pad: 20px;       /* поле внутри карточки */
+  --service-card-radius: 24px;
+  --service-card-chevron: 8px;    /* сторона уголка справа */
+  --service-card-rule: 2px;       /* толщина его линий */
   --service-lead-gap: 40px;       /* заявление → ссылка; в макете 43 */
   --service-item-dim: 0.5;        /* пункт перечня вне текущего */
   --service-tab-scroll: 320px;    /* прокрутка на один подраздел при закреплении */

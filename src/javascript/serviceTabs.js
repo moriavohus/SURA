@@ -11,6 +11,11 @@
  * Разметка работает и без JS: заявления лежат в странице все, первое
  * показано, остальные вынуты из потока стилями (см. .M_ServiceStatement).
  *
+ * На телефоне тот же список становится аккордеоном (Figma 718:2187): у
+ * раскрытой карточки заявление и ссылка лежат внутри неё. В разметке они
+ * по-прежнему в одном месте — сюда их переносит этот же модуль, чтобы текст
+ * не пришлось держать в странице дважды.
+ *
  * Фокус по вкладкам ходит стрелками, а не Tab'ом: в списке восемь строк, и
  * прогонять через них всю страницу — ровно то, от чего паттерн вкладок
  * избавляет. Tab уводит сразу к содержимому.
@@ -43,6 +48,8 @@ if (list && box && panels.length) {
   let current = 0;
   /** Текущее появление ссылки: она одна на все подразделы, см. ниже. */
   let linkFade = null;
+  /** Куда переносить заявление после смены подраздела; ставит аккордеон. */
+  let relocate = null;
 
   const select = (index, focus) => {
     if (index !== current) {
@@ -111,6 +118,8 @@ if (list && box && panels.length) {
       }
     }
 
+    if (relocate) relocate();
+
     if (focus) tabs[index].focus();
   };
 
@@ -145,6 +154,35 @@ if (list && box && panels.length) {
       select(next, true);
       scrollToTab(next);
     });
+  });
+
+  /* Аккордеон на телефоне: заявление и ссылка переезжают внутрь раскрытой
+     карточки, а по уходе с брейкпоинта возвращаются на место — в свою
+     коробку и в исходном порядке. */
+  gsap.matchMedia().add("(max-width: 480px)", () => {
+    const home = link?.parentNode;
+
+    relocate = () => {
+      const card = tabs[current].closest(".M_ServiceList-item");
+
+      /* Прежнее заявление возвращаем в общую коробку: за пределами
+         .M_ServiceStatement правило, прячущее нетекущие, на него не
+         действует, и оно так и осталось бы видимым в своей карточке. */
+      panels.forEach((panel, i) => {
+        if (i !== current && panel.parentNode !== box) box.append(panel);
+      });
+
+      card.append(panels[current]);
+      if (link) card.append(link);
+    };
+
+    relocate();
+
+    return () => {
+      relocate = null;
+      panels.forEach((panel) => box.append(panel));
+      if (link && home) home.append(link);
+    };
   });
 
   /* Смена прокруткой. На узких экранах закрепления нет: блок там идёт в одну

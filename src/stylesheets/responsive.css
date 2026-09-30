@@ -394,19 +394,11 @@
   }
 
   .M_Breadcrumbs .M_Breadcrumbs-list,
-  .M_ServiceStatement-text,
-  .O_ServiceLead .M_ServiceList,
   .O_ServiceCases-title,
   .T_ProjectCard-title,
   .T_CaseIntro .T_CaseIntro-head,
   .O_Clients .O_Clients-title {
     padding-inline: var(--text-pad);
-  }
-
-  /* Ссылке поле даём внешнее, а не внутренним: padding сдвинул бы и точку,
-     которая стоит у правого края коробки. */
-  .M_ServiceStatement-link {
-    margin-inline-start: var(--text-pad);
   }
 
   /* В сетке из четырёх колонок знак занимает три: прежние «3 / -1» дали бы
@@ -428,10 +420,82 @@
     padding: var(--space-xs);
   }
 
-  /* перечень подуслуг набран заголовочным кеглем — на 375 он переносится
-     по три строки на пункт */
-  .M_ServiceList {
+  /* ===== аккордеон услуги (Figma 718:2187) ============================
+     На телефоне подуслуги перестают быть перечнем при заявлении сбоку и
+     становятся столбиком карточек: строка с названием и уголком, а у
+     раскрытой под ней лежат само заявление и ссылка. Переносит их туда
+     serviceTabs.js — в разметке они по-прежнему в одном месте.
+
+     Пустую коробку заявления прячем: её содержимое уехало в карточку. */
+  .O_ServiceLead .M_ServiceStatement {
+    display: none;
+  }
+
+  .O_ServiceLead .M_ServiceList {
+    gap: var(--service-card-gap);
     font-size: 18px;
+  }
+
+  .O_ServiceLead .M_ServiceList-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--service-lead-gap);
+    padding: var(--service-card-pad);
+    border-radius: var(--service-card-radius);
+    background: var(--color-grey);
+    /* строки перечня на телефоне не приглушены: карточка сама по себе */
+    opacity: 1;
+  }
+
+  /* Точка-отметка осталась широкому экрану: здесь её место занял уголок. */
+  .O_ServiceLead .M_ServiceList-item .A_Dot {
+    display: none;
+  }
+
+  /* Сама кнопка и есть строка карточки: название слева, уголок справа.
+     Набор — body, как в макете, а не заголовочный кегль перечня. */
+  .O_ServiceLead .M_ServiceList-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    width: 100%;
+    font-size: 17px;
+    line-height: 1.294118;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+
+  /* Уголок рисуем углом рамки: отдельный файл ради двух линий не нужен, а
+     размер и толщина остаются в токенах. */
+  .O_ServiceLead .M_ServiceList-trigger::after {
+    content: "";
+    flex: none;
+    width: var(--service-card-chevron);
+    height: var(--service-card-chevron);
+    margin-left: var(--space-xs);
+    border-right: var(--service-card-rule) solid currentColor;
+    border-bottom: var(--service-card-rule) solid currentColor;
+    rotate: 45deg;
+    translate: 0 calc(var(--service-card-chevron) / -4);
+    transition: rotate var(--transition-hover);
+  }
+
+  .O_ServiceLead .M_ServiceList-item.is-Current .M_ServiceList-trigger::after {
+    rotate: -135deg;
+    translate: 0 calc(var(--service-card-chevron) / 4);
+  }
+
+  /* Заявление и ссылка внутри карточки стоят в потоке: на широком экране
+     они сложены абсолютом друг на друга, здесь это ни к чему. */
+  .O_ServiceLead .M_ServiceList-item .M_ServiceStatement-text {
+    position: relative;
+    visibility: visible;
+    width: 100%;
+  }
+
+  .O_ServiceLead .M_ServiceList-item .M_ServiceStatement-link {
+    align-self: flex-start;
   }
 
   /* Поле под списком клиентов больше верхнего: так в кадре отбит блок от
