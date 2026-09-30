@@ -737,7 +737,12 @@ body:not(:has(.O_Hero)) .O_Menu {
   right: 0;
   height: var(--header-h);
   align-items: center;
-  z-index: 35;
+  /* Полоса крошек накрыта шапкой: та тоже закреплена во всю ширину и лежит
+     выше. Поэтому крошки поднимаем над ней, а событий сама полоса не ловит —
+     только ступени-ссылки. Иначе пустая середина крошек перехватывала бы
+     нажатия у знака и «Contact Us». */
+  z-index: 45;
+  pointer-events: none;
   color: var(--color-white);
   mix-blend-mode: difference;
   transition: transform var(--transition-hover);
@@ -759,6 +764,10 @@ body:not(:has(.O_Hero)) .O_Menu {
   & .M_Breadcrumbs-item + .M_Breadcrumbs-item::before {
     content: "/";
     opacity: var(--crumbs-dim);
+  }
+
+  & .M_Breadcrumbs-link {
+    pointer-events: auto;
   }
 
   /* текущая страница — не ссылка и приглушена: ступень показывает, где ты */
