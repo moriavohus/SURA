@@ -5,8 +5,41 @@ import { resolve } from "node:path";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 
-/** Строка вида `<!-- include: src/partials/en/header.html -->` — одна на строку. */
-const INCLUDE = /^([ \t]*)<!--\s*include:\s*([\w./-]+)\s*-->[ \t]*$/gm;
+/**
+ * Строка вида `<!-- include: src/partials/en/header.html -->` — одна на строку.
+ * После пути можно передать параметры: `... breadcrumbs.html current="all cases"`.
+ */
+const INCLUDE =
+  /^([ \t]*)<!--\s*include:\s*([\w./-]+)((?:\s+[\w-]+="[^"]*")*)\s*-->[ \t]*$/gm;
+
+const PARAM = /([\w-]+)="([^"]*)"/g;
+
+/** `{{#имя}} … {{/имя}}` — кусок остаётся только с непустым параметром. */
+const BLOCK = /^[ \t]*\{\{#([\w-]+)\}\}[ \t]*\n([\s\S]*?)^[ \t]*\{\{\/\1\}\}[ \t]*\n/gm;
+
+/** `{{имя}}` — подстановка значения. */
+const SLOT = /\{\{([\w-]+)\}\}/g;
+
+/**
+ * Подстановка параметров в партиал.
+ *
+ * Незаполненный слот — ошибка сборки, а не пустое место в разметке: партиал
+ * один на все страницы, и молча пропущенный параметр заметить в вёрстке
+ * нечем.
+ */
+function fill(part, params, file) {
+  return part
+    .replace(BLOCK, (_, name, body) => (params[name] ? body : ""))
+    .replace(SLOT, (_, name) => {
+      if (!params[name]) {
+        throw new Error(
+          `htmlIncludes: ${file} ждёт параметр "${name}", а он не передан`
+        );
+      }
+
+      return params[name];
+    });
+}
 
 /**
  * htmlIncludes — общие куски разметки одним файлом.
@@ -20,6 +53,10 @@ const INCLUDE = /^([ \t]*)<!--\s*include:\s*([\w./-]+)\s*-->[ \t]*$/gm;
  *
  * Отступ строки с директивой переносится на весь вставленный кусок: партиалы
  * написаны с базовым отступом в два пробела, а подключаются с разной глубины.
+ *
+ * Партиал может быть с параметрами — так собраны хлебные крошки: разметка
+ * навигации живёт в одном файле, а страница передаёт ей только свои названия
+ * и ссылки.
  */
 function htmlIncludes() {
   return {
@@ -28,8 +65,13 @@ function htmlIncludes() {
     transformIndexHtml: {
       order: "pre",
       handler(html) {
-        return html.replace(INCLUDE, (_, indent, file) => {
-          const part = readFileSync(resolve(root, file), "utf8").replace(/\s+$/, "");
+        return html.replace(INCLUDE, (_, indent, file, attrs) => {
+          const params = Object.fromEntries(
+            [...(attrs || "").matchAll(PARAM)].map(([, key, value]) => [key, value])
+          );
+
+          const source = readFileSync(resolve(root, file), "utf8").replace(/\s+$/, "");
+          const part = fill(source, params, file);
           const shift = indent.replace(/^ {2}/, "");
 
           return shift

@@ -663,6 +663,70 @@ body:not(:has(.O_Hero)) .O_Menu {
 }
 
 
+/* ===== M_Breadcrumbs ===================================================
+   Путь до страницы: главная → раздел → текущая. Разметка одна на весь сайт
+   (src/partials/<язык>/breadcrumbs.html), страница передаёт ей параметрами
+   только свои названия и ссылки — копий по страницам нет.
+
+   Число ступеней меняется от страницы к странице, поэтому разделитель не
+   лежит в разметке, а рисуется перед каждой ступенью кроме первой.
+   ====================================================================== */
+
+.M_Breadcrumbs {
+  padding-top: var(--page-pad-top);
+  color: var(--color-black);
+
+  & .M_Breadcrumbs-list {
+    grid-column: 2 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--crumbs-gap);
+  }
+
+  & .M_Breadcrumbs-item {
+    display: flex;
+    align-items: center;
+    gap: var(--crumbs-gap);
+  }
+
+  & .M_Breadcrumbs-item + .M_Breadcrumbs-item::before {
+    content: "/";
+    opacity: var(--crumbs-dim);
+  }
+
+  /* подчёркивание приходит под курсором — как у ссылок меню и футера */
+  & .M_Breadcrumbs-link {
+    text-decoration-color: transparent;
+    text-decoration-line: underline;
+    text-underline-position: from-font;
+    transition: text-decoration-color var(--transition-base);
+  }
+
+  & .M_Breadcrumbs-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* текущая страница — не ссылка и приглушена: ступень показывает, где ты */
+  & .M_Breadcrumbs-current {
+    opacity: var(--crumbs-dim);
+  }
+}
+
+/* Верхнее поле страницы забрали крошки, поэтому открывающий её блок своё
+   снимает: иначе между шапкой и содержимым выходит двойной отступ.
+
+   Условие на странице, а не на соседстве с крошками: перечень услуг
+   закреплён ScrollTrigger'ом, а тот оборачивает секцию в свой pin-spacer и
+   соседом крошек она быть перестаёт. Блоки перечислены поимённо — правило
+   касается только первого на странице, не всех её секций. */
+main:has(.M_Breadcrumbs) .O_Projects,
+main:has(.M_Breadcrumbs) .O_Case,
+main:has(.M_Breadcrumbs) .O_ServiceLead {
+  padding-top: var(--crumbs-bottom);
+}
+
+
 /* ===== W_Grid — единая сетка страницы =================================
    Шесть колонок, поля по 20px, промежуток 20px. Секции не задают сетку
    сами: они несут фон и вертикальные поля, а содержимое расставляется по

@@ -1,0 +1,19 @@
+  <!-- Хлебные крошки. Компонент один на весь сайт: страница передаёт ему
+       только свои названия и ссылки параметрами включения (см. htmlIncludes
+       в vite.config.js). Средняя ступень необязательна — без параметра
+       parent её кусок из разметки уходит, и остаются две ступени. -->
+  <nav class="M_Breadcrumbs W_Grid" aria-label="Хлебные крошки">
+    <ol class="Body M_Breadcrumbs-list">
+      <li class="M_Breadcrumbs-item">
+        <a class="M_Breadcrumbs-link" href="/ru/">süra</a>
+      </li>
+      {{#parent}}
+      <li class="M_Breadcrumbs-item">
+        <a class="M_Breadcrumbs-link" href="{{parentHref}}">{{parent}}</a>
+      </li>
+      {{/parent}}
+      <li class="M_Breadcrumbs-item">
+        <span class="M_Breadcrumbs-current" aria-current="page">{{current}}</span>
+      </li>
+    </ol>
+  </nav>

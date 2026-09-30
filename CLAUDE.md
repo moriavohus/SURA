@@ -7,6 +7,7 @@
 
 - **Сборка:** Vite, multipage — каждый HTML-файл регистрируется как отдельный entry в `vite.config.js` (`build.rollupOptions.input`). Новая страница = новый entry, не забывай добавлять.
 - **Общая разметка:** шапка, футер и левая колонка (счётчик + меню) лежат в `src/partials/<язык>/` и подставляются на сборке плагином `htmlIncludes` из `vite.config.js` — строкой `<!-- include: src/partials/en/header.html -->`. Правится в одном месте, копий по страницам не держим.
+- **Партиалы с параметрами:** если блок одинаков по разметке, но разный по содержимому, он всё равно один файл — значения передаются в строке включения: `<!-- include: src/partials/en/breadcrumbs.html parent="all cases" parentHref="/projects.html" current="MONS" -->`. В партиале `{{имя}}` — подстановка, `{{#имя}} … {{/имя}}` — кусок, который остаётся только с непустым параметром. Незаполненный слот роняет сборку. Так собраны хлебные крошки; навигацию руками по страницам не копируем.
 - **JS:** vanilla ES-modules, без React/Vue. Один файл `src/javascript/<фича>.js` на одну фичу (smoothScroll.js, marquee.js, form.js). Никаких файлов-помоек «main.js на всё».
 - **Анимации:** GSAP (ScrollTrigger, ScrollSmoother) — скролл-хореография; Lottie (renderer: canvas) — векторные анимации из After Effects, json-файлы в `public/`.
 - **Деплой-цель:** статика на VPS (nginx, 1 ГБ RAM) — никакого SSR, никаких серверных зависимостей.
