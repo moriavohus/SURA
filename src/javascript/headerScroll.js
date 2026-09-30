@@ -5,8 +5,9 @@
  * страницы она видна всегда, иначе на коротких рывках мелькала бы.
  *
  * Счётчик кейсов стоит под шапкой, поэтому вместе с ней подтягивается к
- * верхнему полю: класс вешаем здесь, а не в casesWidget.js, чтобы у обоих
- * состояний был один источник правды — направление скролла.
+ * верхнему полю. Хлебные крошки уходят и приходят вместе с ней же. Классы
+ * вешаем здесь, а не по своим модулям, чтобы у всех трёх состояний был один
+ * источник правды — направление скролла.
  */
 
 import gsap from "gsap";
@@ -17,6 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 const header = document.querySelector(".O_Header");
 const plain = document.querySelector(".O_HeaderPlain");
 const widget = document.querySelector(".M_CasesWidget");
+const crumbs = document.querySelector(".M_Breadcrumbs");
 
 if (header) {
   /** До этой отметки шапка не прячется. */
@@ -26,6 +28,7 @@ if (header) {
     header.classList.toggle("is-Hidden", hidden);
     if (plain) plain.classList.toggle("is-Hidden", hidden);
     if (widget) widget.classList.toggle("is-Raised", hidden);
+    if (crumbs) crumbs.classList.toggle("is-Hidden", hidden);
   };
 
   ScrollTrigger.create({
