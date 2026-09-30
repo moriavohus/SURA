@@ -1123,7 +1123,12 @@ body:not(:has(.O_Hero)) .O_Menu {
   /* Края списка растворяются — в макете это нарисовано серой вуалью поверх,
      но маска делает то же самое честно: строки тают, а не замазываются, и
      виджет остаётся стеклом над любым фоном. Маска на самом списке, а не на
-     рамке: иначе она съедала бы и полоску прокрутки у краёв. */
+     рамке: иначе она съедала бы и полоску прокрутки у краёв.
+
+     Растушёвка есть только с той стороны, где список продолжается: у начала
+     и у конца её снимает casesWidget.js, обнуляя свою переменную. Иначе
+     первая и последняя строки тонули бы в градиенте, хотя за ними ничего
+     не спрятано. */
   & .M_CasesWidget-list {
     height: 100%;
     overflow-y: auto;
@@ -1132,11 +1137,14 @@ body:not(:has(.O_Hero)) .O_Menu {
     flex-direction: column;
     gap: var(--cases-list-gap);
 
+    --fade-top: var(--cases-fade);
+    --fade-bottom: var(--cases-fade);
+
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      #000 var(--cases-fade),
-      #000 calc(100% - var(--cases-fade)),
+      #000 var(--fade-top),
+      #000 calc(100% - var(--fade-bottom)),
       transparent 100%
     );
 

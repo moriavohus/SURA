@@ -41,23 +41,39 @@ if (widget && hero) {
 
 /* Полоска прокрутки перечня: родную в вебките видно только во время
    движения, поэтому бегунок свой. Высота — доля видимой части от всего
-   списка, положение — та же доля от прокрутки. */
+   списка, положение — та же доля от прокрутки.
+
+   Здесь же снимается растушёвка с того края, где список кончился: у начала
+   и у конца прятать нечего, а первая и последняя строки из-за градиента
+   читались хуже остальных. */
 const list = widget?.querySelector(".M_CasesWidget-list");
 const thumb = widget?.querySelector(".M_CasesWidget-thumb");
 
 if (list && thumb) {
+  const EDGE = 1;   // px — допуск: прокрутка приходит дробной
+
   const draw = () => {
     const visible = list.clientHeight;
     const total = list.scrollHeight;
+    const range = total - visible;
 
-    if (total <= visible) {
+    if (range <= 0) {
       thumb.style.display = "none";
+      list.style.setProperty("--fade-top", "0px");
+      list.style.setProperty("--fade-bottom", "0px");
       return;
     }
 
     thumb.style.display = "";
     thumb.style.height = `${(visible / total) * visible}px`;
     thumb.style.transform = `translateY(${(list.scrollTop / total) * visible}px)`;
+
+    /* Пустая строка возвращает значение из стилей — растушёвку по умолчанию. */
+    list.style.setProperty("--fade-top", list.scrollTop <= EDGE ? "0px" : "");
+    list.style.setProperty(
+      "--fade-bottom",
+      list.scrollTop >= range - EDGE ? "0px" : ""
+    );
   };
 
   list.addEventListener("scroll", draw, { passive: true });
