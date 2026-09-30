@@ -543,17 +543,21 @@ body:not(:has(.O_Hero)) .O_Menu {
 
 .M_CasePanel {
   position: relative;
-  /* колонка сетки внутри карточки: её ширина минус промежутки, делённая на
-     число занятых колонок */
+  /* Колонка сетки внутри карточки плюс промежуток: в макете панель шире
+     колонки ровно на него (237 при колонке 216,67), и на этих двадцати
+     пикселях название кейса перестаёт переноситься по слогам. */
   width: calc(
-    (100% - var(--grid-gap) * (var(--case-span) - 1)) / var(--case-span)
+    (100% - var(--grid-gap) * (var(--case-span) - 1)) / var(--case-span) +
+      var(--grid-gap)
   );
   flex: none;
   padding: var(--case-pad);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: var(--color-glass);
+  /* То же чёрное стекло, что у виджетов: панель лежит поверх кадра, и
+     светлое стекло на светлых кадрах переставало читаться (Figma 759:4005). */
+  background: var(--color-glass-shade);
   -webkit-backdrop-filter: blur(var(--case-blur));
   backdrop-filter: blur(var(--case-blur));
   /* Цвет свой, а не унаследованный от страницы: панель лежит поверх кадра и
@@ -572,10 +576,23 @@ body:not(:has(.O_Hero)) .O_Menu {
     word-break: break-word;
   }
 
+  /* Услуги идут пилюлями и переносятся по строкам: их у кейса может быть
+     несколько (Figma 759:4005). */
+  & .M_CasePanel-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs);
+  }
+
   & .M_CasePanel-tag {
     display: flex;
     align-items: center;
-    gap: var(--space-2xs);
+    gap: var(--space-xs);
+    padding: var(--case-tag-pad-y) var(--case-tag-pad-x);
+    border-radius: var(--radius-pill);
+    background: var(--color-glass-tag);
+    -webkit-backdrop-filter: blur(var(--case-tags-blur));
+    backdrop-filter: blur(var(--case-tags-blur));
   }
 
   & .M_CasePanel-text {

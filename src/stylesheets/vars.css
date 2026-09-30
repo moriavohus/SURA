@@ -20,6 +20,7 @@
      экране и в любом состоянии */
   --color-glass-shade: color-mix(in srgb, var(--color-black) 32%, transparent);
   --color-glass-button: rgba(255, 255, 255, 0.16);
+  --color-glass-tag: rgba(255, 255, 255, 0.12);  /* пилюля услуги в панели */
   --color-glass-tip: rgba(255, 255, 255, 0.1);
   --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */
   --color-case-fallback: #d8d3cf;                /* фон карточки до загрузки */
@@ -176,8 +177,9 @@
   --service-card-gap: 4px;        /* между карточками подуслуг */
   --service-card-pad: 20px;       /* поле внутри карточки */
   --service-card-radius: 24px;
-  --service-card-chevron: 8px;    /* сторона уголка справа */
-  --service-card-rule: 2px;       /* толщина его линий */
+  /* уголок справа: пропорции вектора из макета, 13.15 × 7.67 */
+  --service-card-chevron-w: 13px;
+  --service-card-chevron-h: 8px;
   --service-lead-gap: 40px;       /* заявление → ссылка; в макете 43 */
   --service-item-dim: 0.5;        /* пункт перечня вне текущего */
   --service-tab-scroll: 320px;    /* прокрутка на один подраздел при закреплении */

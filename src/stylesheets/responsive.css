@@ -228,29 +228,21 @@
     letter-spacing: -0.0125em;
   }
 
-  /* Услуга уходит из потока в правый верхний угол шапки: точка и подпись,
-     без заливки. Размытия здесь нет намеренно: шапка под тегом уже размыта,
-     и второй слой поверх неё читался бы светлым пятном — той самой плашкой,
-     которой в макете нет. Поля и скругление оставлены: они держат подпись
-     ровно там, где она стоит в макете. */
-  .M_CasePanel .M_CasePanel-tag {
+  /* Услуги уходят из потока в правый верхний угол шапки. Заливки и
+     размытия у пилюли здесь нет намеренно: шапка под ней уже размыта, и
+     второй слой поверх читался бы светлым пятном — той самой плашкой,
+     которой в мобильном макете нет. */
+  .M_CasePanel .M_CasePanel-tags {
     position: absolute;
     top: var(--space-s);
     right: var(--case-pad);
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-xs);
-    padding: var(--case-tag-pad-y) var(--case-tag-pad-x);
-    border-radius: var(--radius-pill);
     white-space: nowrap;
   }
 
-  /* подпись услуги в пилюле идёт body-стилем, а не label 2 */
-  .M_CasePanel .M_CasePanel-tag .Label2 {
-    font-size: 17px;
-    line-height: 1.294118;
-    letter-spacing: 0;
-    font-weight: 500;
+  .M_CasePanel .M_CasePanel-tag {
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   /* снимок во всю ширину карточки, без полей и скругления */
@@ -466,24 +458,22 @@
     font-weight: 500;
   }
 
-  /* Уголок рисуем углом рамки: отдельный файл ради двух линий не нужен, а
-     размер и толщина остаются в токенах. */
+  /* Уголок — вектор из макета. Кладём его маской, а не картинкой: форма
+     тогда из файла, а цвет из текста строки, и в разметке ничего не
+     появляется — иконка одна на восемь карточек. */
   .O_ServiceLead .M_ServiceList-trigger::after {
     content: "";
     flex: none;
-    width: var(--service-card-chevron);
-    height: var(--service-card-chevron);
+    width: var(--service-card-chevron-w);
+    height: var(--service-card-chevron-h);
     margin-left: var(--space-xs);
-    border-right: var(--service-card-rule) solid currentColor;
-    border-bottom: var(--service-card-rule) solid currentColor;
-    rotate: 45deg;
-    translate: 0 calc(var(--service-card-chevron) / -4);
+    background: currentColor;
+    mask: url("/src/images/icons/chevron-down.svg") center / contain no-repeat;
     transition: rotate var(--transition-hover);
   }
 
   .O_ServiceLead .M_ServiceList-item.is-Current .M_ServiceList-trigger::after {
-    rotate: -135deg;
-    translate: 0 calc(var(--service-card-chevron) / 4);
+    rotate: 180deg;
   }
 
   /* Заявление и ссылка внутри карточки стоят в потоке: на широком экране
