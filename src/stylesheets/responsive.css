@@ -86,8 +86,8 @@
      заявления, и то правило специфичнее этого. Без него узкая колонка
      доживала бы до мобильного, а бегущая строка сидела бы в ней зажатой. */
   .O_Clients .O_Clients-title,
-  .O_Clients .O_Clients-marquee,
-  .W_ServicePage .O_Clients .O_Clients-marquee {
+  .O_Clients .O_Clients-box,
+  .W_ServicePage .O_Clients .O_Clients-box {
     grid-column: 1 / -1;
   }
 
@@ -488,18 +488,23 @@
     align-self: flex-start;
   }
 
-  /* Поле под списком клиентов больше верхнего: так в кадре отбит блок от
-     карточки «давайте обсудим». */
-  .O_Clients {
-    padding-bottom: var(--clients-pad-bottom);
-  }
-
-  /* ===== клиенты на мобильном (Figma 637:1137) ========================
-     Заголовок встаёт над списком, а сам список разворачивается в строку —
-     имена идут подряд и уезжают за правый край, как в макете. Строка
-     прокручивается пальцем: иначе всё, что дальше «sally», недостижимо.
+  /* ===== клиенты на телефоне (Figma 763:4287) =========================
+     Заголовок над списком, список — столбиком: имена идут друг под другом с
+     отбивкой 12. Бегущей строки здесь больше нет, всё видно сразу.
      Кегль у заголовка и имён общий — label 1 в полную величину, он к этой
      ширине не ужимается. */
+
+  .O_Clients {
+    padding-block: var(--clients-pad-y);
+  }
+
+  /* Поле у блока клиентов своё: в макете заголовок и имена стоят ровно на
+     20 от края экрана, а не на 20 от поля сетки. Поэтому сетка здесь без
+     поля, а двадцать несут сами строки. */
+  .O_Clients .W_Grid {
+    row-gap: var(--clients-gap);
+    padding-inline: 0;
+  }
 
   .O_Clients .O_Clients-title,
   .O_Clients .O_Clients-item {
@@ -508,17 +513,22 @@
     letter-spacing: -0.0125em;
   }
 
-  /* Дорожка подрезает строку по краю сетки, сама строка растёт по
-     содержимому и едет трансформом — см. marquee.js. */
-  .O_Clients .O_Clients-marquee {
-    overflow: hidden;
+  /* в макете заголовок с прописной, в разметке он строчный, как на широком
+     экране, — поднимаем только первую букву */
+  .O_Clients .O_Clients-title::first-letter {
+    text-transform: uppercase;
   }
 
   .O_Clients .O_Clients-list {
-    flex-direction: row;
+    flex-direction: column;
     gap: var(--clients-row-gap);
-    width: max-content;
-    will-change: transform;
+    padding-inline: var(--text-pad);
+  }
+
+  /* Строка по тексту, а не по макетным 36 широкого экрана: с ними шаг
+     выходил 48 вместо 44. */
+  .O_Clients .O_Clients-item {
+    min-height: 0;
   }
 
   /* ===== нижний бар навигации (Figma 719:2395) ========================
@@ -693,12 +703,6 @@
 /* ===== системные настройки ============================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  /* бегущая строка не запускается — оставляем её пролистываемой пальцем */
-  .O_Clients .O_Clients-marquee {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
   *,
   *::before,
   *::after {
