@@ -19,11 +19,14 @@
     --header-logo-w: 168px;
     --header-logo-h: 39px;
     --hero-scrim-opacity: 1;
-    /* Футер: колонка сетки здесь уже, и заступ на две увёл бы знак за
-       середину экрана. Блок сдвигается на одну, знак берёт три: на четырёх
-       он вырастает выше экрана и футер перестаёт читаться кадром. */
-    --footer-col: 2;
-    --footer-logo-span: 3;
+    /* Футер: колонка здесь уже, и «instagram» в одну не влезает — столбик
+       ссылок берёт две. Знак сдвигается к левому полю и остаётся на двух,
+       иначе он перестаёт помещаться в высоту футера. */
+    --footer-h: 640px;
+    --footer-logo-col: 1;
+    --footer-links-col: 3;
+    --footer-links-span: 2;
+    --footer-links-top: 140px;
     --cases-pad-top: var(--space-xl);
 
     --hero-logo-h: 420px;
@@ -154,9 +157,13 @@
     /* клевер мельчает: иначе он ложится на текст */
     --service-streak-w: 240px;
     --service-streak-drop: 60px;
-    /* Футер прижимается к полю сетки: колонка на планшете меньше 110px,
-       и заступ в неё уже ничего не строит. */
-    --footer-col: 1;
+    /* Футер на планшете: знак на трёх колонках, ссылки на трёх оставшихся —
+       в двух «instagram» уже режется. */
+    --footer-h: 520px;
+    --footer-logo-span: 3;
+    --footer-links-col: 4;
+    --footer-links-span: 3;
+    --footer-links-top: 100px;
   }
 
   .Title1 { font-size: 48px; }
@@ -513,11 +520,26 @@
   }
 
   /* ===== мобильный футер (Figma 719:2380) =============================
-     Тот же столбик, что на широком экране: поле сетки здесь 4, знак
-     растянут во всю ширину и берёт макетную высоту вместо пропорции. */
+     На телефоне знак и ссылки не встают рядом: футер снова становится
+     столбиком — сначала соцсети, потом знак во всю ширину со своей
+     макетной высотой. Высоту футера задаёт содержимое. */
+
+  .O_Footer {
+    min-height: 0;
+    padding-block: var(--footer-pad);
+    row-gap: var(--footer-gap);
+  }
+
+  .O_Footer .M_FooterLinks {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding-top: 0;
+    padding-inline: var(--text-pad);
+  }
 
   .O_Footer .A_FooterWordmark {
     grid-column: 1 / -1;
+    grid-row: 2;
   }
 
   .O_Footer .A_FooterWordmark img {

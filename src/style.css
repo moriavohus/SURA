@@ -72,6 +72,56 @@ button,
 
 
 
+/* ===== A_Link — ссылка с точкой ========================================
+   Figma: A_Link (748:764) и A_Link_Big (746:757). В покое — только подпись;
+   под курсором справа вырастает точка, и на неё же открывается зазор.
+   Место точка заранее не занимает: в макете ссылка на ховере шире, а строки
+   выровнены по левому краю, поэтому подпись при этом не двигается.
+
+   Крупный вариант (--big) отличается только числами, поэтому они вынесены в
+   переменные, а правила общие.
+   ====================================================================== */
+
+.A_Link {
+  --dot: var(--link-dot);
+  --gap: var(--link-gap);
+  --drop: var(--link-drop);
+
+  display: inline-flex;
+  align-items: center;
+
+  /* Точка растёт из ничего: ширина и поле идут от нуля, поэтому подпись
+     стоит на месте, а коробка ссылки становится шире ровно на точку. */
+  & .A_Link-dot {
+    width: 0;
+    height: var(--dot);
+    flex: none;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0;
+    /* ниже середины строки — как в макете */
+    translate: 0 var(--drop);
+    transition:
+      width var(--transition-base),
+      margin-left var(--transition-base),
+      opacity var(--transition-base);
+  }
+
+  &:hover .A_Link-dot,
+  &:focus-visible .A_Link-dot {
+    width: var(--dot);
+    margin-left: var(--gap);
+    opacity: 1;
+  }
+}
+
+.A_Link--big {
+  --dot: var(--link-dot-big);
+  --gap: var(--link-gap-big);
+  --drop: var(--link-drop-big);
+}
+
+
 /* ===== A_Circle — цветной круг =========================================
    Координата круга — его центр: отрицательные поля в половину размера
    сдвигают коробку так, что и наведение на кнопке, и физика в футере могут
@@ -318,7 +368,6 @@ button,
   & .O_Menu-row {
     display: flex;
     align-items: center;
-    gap: var(--space-3xs);
   }
 
   /* Раскрытие через grid-template-rows: 0fr → 1fr — так высота едет плавно
@@ -347,7 +396,6 @@ button,
   & .O_Menu-subitem {
     display: flex;
     align-items: center;
-    gap: var(--space-3xs);
     opacity: var(--menu-sub-dim);
     transition: opacity var(--transition-base);
   }
@@ -357,34 +405,26 @@ button,
     opacity: 1;
   }
 
-  /* Наведение подсвечивает строку — и в пунктах, и в подпунктах, в обоих
-     видах меню. Раньше правило жило внутри .is-Compact, поэтому в полном
-     виде наведение не отзывалось вовсе.
+  /* Появление точки держит атом A_Link, но у пункта с раскрытием собственного
+     :hover мало: меню прижато к низу экрана, при раскрытии коробка растёт
+     вверх, «solutions» уезжает из-под курсора и точка тут же гасла бы. Поэтому
+     у него точку зажигает наведение на всю группу.
 
-     У пункта отметку вешаем на наведение всей группы, а не самой строки:
-     при раскрытии список растёт вверх и «solutions» уезжает из-под курсора,
-     так что собственный :hover у него гаснет сразу же. */
-  & .O_Menu-item:hover > .O_Menu-row .O_Menu-marker,
-  & .O_Menu-item.is-Open > .O_Menu-row .O_Menu-marker,
-  & .O_Menu-subitem:hover .O_Menu-marker {
+     Подпункт под курсором забирает её себе: без :has() родителя по состоянию
+     потомка не выбрать, а где селектор не поддержан — загорятся обе, меню от
+     этого не ломается. */
+  & .O_Menu-item:hover > .O_Menu-row .A_Link-dot,
+  & .O_Menu-item.is-Open > .O_Menu-row .A_Link-dot,
+  & .O_Menu-subitem:hover .A_Link-dot {
+    width: var(--dot);
+    margin-left: var(--gap);
     opacity: 1;
   }
 
-  & .O_Menu-item:hover > .O_Menu-row .O_Menu-link,
-  & .O_Menu-item.is-Open > .O_Menu-row .O_Menu-link,
-  & .O_Menu-subitem:hover .O_Menu-link {
-    text-decoration-color: currentColor;
-  }
-
-  /* Отметка в списке одна: подпункт под курсором забирает её у «solutions».
-     Без :has() родителя по состоянию потомка не выбрать; там, где селектор
-     не поддержан, подсветятся оба — это не ломает меню. */
-  & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .O_Menu-marker {
+  & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .A_Link-dot {
+    width: 0;
+    margin-left: 0;
     opacity: 0;
-  }
-
-  & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .O_Menu-link {
-    text-decoration-color: transparent;
   }
 
   /* Кнопка-триггер выглядит как обычная строка списка. letter-spacing явно:
@@ -406,19 +446,6 @@ button,
     opacity: 1;
   }
 
-  /* точка-указатель занимает место всегда, чтобы ширина списка не прыгала
-     при переносе отметки с пункта на пункт */
-  & .O_Menu-marker {
-    opacity: 0;
-    transition: opacity var(--transition-base);
-  }
-
-  & .O_Menu-link {
-    text-decoration-color: transparent;
-    text-decoration-line: underline;
-    text-underline-position: from-font;
-    transition: text-decoration-color var(--transition-base);
-  }
 }
 
 /* Variant2 — компактный вид. Положение то же: меняется только размер, и за
@@ -718,18 +745,6 @@ body:not(:has(.O_Hero)) .O_Menu {
     opacity: var(--crumbs-dim);
   }
 
-  /* подчёркивание приходит под курсором — как у ссылок меню и футера */
-  & .M_Breadcrumbs-link {
-    text-decoration-color: transparent;
-    text-decoration-line: underline;
-    text-underline-position: from-font;
-    transition: text-decoration-color var(--transition-base);
-  }
-
-  & .M_Breadcrumbs-link:hover {
-    text-decoration-color: currentColor;
-  }
-
   /* текущая страница — не ссылка и приглушена: ступень показывает, где ты */
   & .M_Breadcrumbs-current {
     opacity: var(--crumbs-dim);
@@ -964,20 +979,19 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
 
 
 /* ===== O_Footer (Figma 732:755) =======================================
-   Столбик от верхнего поля: соцсети, отбивка 40, знак. Заливки у футера
-   нет — он лежит на фоне страницы, а знак светлый и читается по серому
-   тон в тон, как в макете.
+   Знак и соцсети стоят рядом: знак на двух колонках слева, столбик ссылок в
+   следующей колонке. Оба прижаты к низу — знак упирается в нижний край
+   футера без поля, поэтому высота задана макетной, а не содержимым.
+
+   Заливки у футера нет: он лежит на фоне страницы, а знак светлый и
+   читается по серому тон в тон, как в макете.
    ====================================================================== */
 
 .O_Footer {
   position: relative;
-  /* Содержимое стоит на общей сетке страницы: блок начинается с третьей
-     колонки, знак занимает две — ровно 454 на макетных 1440. Ширину в
-     пикселях не считаем: --grid-col выражен от 100%, и внутри футера эти
-     100% означали бы уже его собственную ширину, а не ширину экрана. */
-  row-gap: var(--footer-gap);
-  align-items: start;
-  padding-block: var(--footer-pad);
+  min-height: var(--footer-h);
+  align-items: end;
+  padding-block: var(--footer-pad) 0;
   color: var(--color-black);
 
   /* Слой кругов между знаком и ссылками: знак они закрывают, текст — нет.
@@ -990,14 +1004,8 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
     pointer-events: none;
   }
 
-  & .M_FooterLinks {
-    position: relative;
-    z-index: 2;
-    grid-column: var(--footer-col) / -1;
-  }
-
   & .A_FooterWordmark {
-    grid-column: var(--footer-col) / span var(--footer-logo-span);
+    grid-column: var(--footer-logo-col) / span var(--footer-logo-span);
   }
 
   /* Пропорцию держит сам файл: вектор экспортирован 454×575, и при высоте
@@ -1007,53 +1015,27 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
     height: auto;
     max-width: none;
   }
+
+  & .M_FooterLinks {
+    position: relative;
+    z-index: 2;
+    grid-column: var(--footer-links-col) / span var(--footer-links-span);
+    /* столбик не прижимается к низу вместе со знаком, а стоит от верха */
+    align-self: start;
+    padding-top: var(--footer-links-top);
+  }
 }
 
 
 /* ===== M_FooterLinks =================================================== */
 
-/* Соцсети — столбик текстовых ссылок кеглем label 1 с отбивкой 12. Строки
-   отбиты от левого края блока на 20: знак под ними стоит вровень с
-   колонкой сетки, а ссылки — с небольшим заступом (Figma 732:756). */
+/* Соцсети — столбик ссылок кеглем label 1 с отбивкой 12. Сама ссылка — атом
+   A_Link: подпись и точка, которая вырастает под курсором. */
 .M_FooterLinks {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--footer-links-gap);
-  padding-inline: var(--text-pad);
-
-  /* Под курсором строка ведёт себя как пункт меню: приходит подчёркивание,
-     а справа проявляется точка. Точка занимает место всегда — иначе
-     столбик дёргался бы по ширине, — поэтому прячется прозрачностью.
-
-     Точка лежит рядом со ссылкой, а не внутри неё: подчёркивание ссылки
-     наследуется вглубь и протянулось бы под точкой. Так же собран и пункт
-     меню (.O_Menu-row). */
-  & .M_FooterLinks-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3xs);
-  }
-
-  & .M_FooterLinks-link {
-    text-decoration-color: transparent;
-    text-decoration-line: underline;
-    text-underline-position: from-font;
-    transition: text-decoration-color var(--transition-base);
-  }
-
-  & .M_FooterLinks-marker {
-    opacity: 0;
-    transition: opacity var(--transition-base);
-  }
-
-  & .M_FooterLinks-row:hover .M_FooterLinks-link {
-    text-decoration-color: currentColor;
-  }
-
-  & .M_FooterLinks-row:hover .M_FooterLinks-marker {
-    opacity: 1;
-  }
 }
 
 
@@ -1091,30 +1073,7 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
     margin: 0;
     display: flex;
     align-items: center;
-    gap: var(--space-3xs);
     white-space: nowrap;
-  }
-
-  & .M_CasesWidget-marker {
-    opacity: 0;
-    transition: opacity var(--transition-base);
-  }
-
-  & .M_CasesWidget-row:hover .M_CasesWidget-marker,
-  & .M_CasesWidget-row:focus-within .M_CasesWidget-marker {
-    opacity: 1;
-  }
-
-  & .M_CasesWidget-link {
-    text-decoration-line: underline;
-    text-underline-position: from-font;
-    text-decoration-color: transparent;
-    transition: text-decoration-color var(--transition-base);
-  }
-
-  & .M_CasesWidget-row:hover .M_CasesWidget-link,
-  & .M_CasesWidget-row:focus-within .M_CasesWidget-link {
-    text-decoration-color: currentColor;
   }
 
   /* Точки прокрутки кейсов. В свёрнутом виде строка не просто прозрачная,
