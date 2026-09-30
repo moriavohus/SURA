@@ -208,13 +208,9 @@ button,
   justify-content: center;
   white-space: nowrap;
   border-radius: var(--radius-cta);
-  /* круги всплывают внутри кнопки и подрезаются её же скруглением */
-  overflow: hidden;
   transition: background-color var(--transition-base);
 
   & .A_Button-label {
-    position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
