@@ -1353,7 +1353,7 @@ body:has(.O_Projects) .M_CasesWidget {
      плашки 10, значит ей 10. Считаем, а не проставляем числом, — поменяется
      любое из двух, скругление пересчитается само. */
   border-radius: calc(var(--radius-l) - var(--case-media-pad));
-  background: var(--color-glass);
+  background: var(--color-glass-tag);
   -webkit-backdrop-filter: blur(var(--case-tags-blur));
   backdrop-filter: blur(var(--case-tags-blur));
   color: var(--color-white);
