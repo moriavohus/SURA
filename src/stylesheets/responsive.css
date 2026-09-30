@@ -30,7 +30,6 @@
     --cases-pad-top: var(--space-xl);
 
     --hero-logo-h: 420px;
-    --hero-logo-h-min: 140px;
 
     --services-pad-y: var(--space-xl);
     --section-pad-y: var(--space-xl);
@@ -136,9 +135,7 @@
     --space-gutter: 16px;
     --header-logo-w: 140px;
     --header-logo-h: 33px;
-    --hero-min-h: 560px;
     --hero-logo-h: 200px;
-    --hero-logo-h-min: 110px;
     --cases-pad-top: var(--space-l);
     --case-blur: 5px;                  /* стекло шапки мобильной карточки */
     --case-bg-blur: 15px;              /* размытие кадра-подложки */
