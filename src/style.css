@@ -90,26 +90,39 @@ button,
   display: inline-flex;
   align-items: center;
 
-  /* Точка появляется сразу, без перехода: ширина у неё идёт от нуля, и
-     любой переход по ней читался бы как сплющенный круг, который
-     раздувается. Подпись при этом стоит на месте, а коробка ссылки
-     становится шире ровно на точку с зазором. */
+  /* Точка вырастает из точки и уходит так же — тем же таймингом, что
+     раскрытие списка услуг в меню.
+
+     Размер у неё при этом всегда свой, а растёт она масштабом: анимировать
+     ширину нельзя, круг нулевой ширины — это чёрточка, и переход читался бы
+     как сплющенный круг, который раздувается.
+
+     Места в покое точка не занимает: отрицательное поле справа съедает и её,
+     и зазор. Оно же и анимируется — коробка ссылки разъезжается плавно, а
+     подпись стоит на месте, потому что растёт правый край. */
   & .A_Link-dot {
-    width: 0;
+    width: var(--dot);
     height: var(--dot);
     flex: none;
+    margin-left: var(--gap);
+    margin-right: calc(-1 * (var(--dot) + var(--gap)));
     border-radius: 50%;
     background: currentColor;
     opacity: 0;
+    scale: 0;
     /* ниже середины строки — как в макете */
     translate: 0 var(--drop);
+    transition:
+      margin-right var(--transition-hover),
+      scale var(--transition-hover),
+      opacity var(--transition-hover);
   }
 
   &:hover .A_Link-dot,
   &:focus-visible .A_Link-dot {
-    width: var(--dot);
-    margin-left: var(--gap);
+    margin-right: 0;
     opacity: 1;
+    scale: 1;
   }
 }
 
@@ -414,15 +427,15 @@ button,
   & .O_Menu-item:hover > .O_Menu-row .A_Link-dot,
   & .O_Menu-item.is-Open > .O_Menu-row .A_Link-dot,
   & .O_Menu-subitem:hover .A_Link-dot {
-    width: var(--dot);
-    margin-left: var(--gap);
+    margin-right: 0;
     opacity: 1;
+    scale: 1;
   }
 
   & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .A_Link-dot {
-    width: 0;
-    margin-left: 0;
+    margin-right: calc(-1 * (var(--dot) + var(--gap)));
     opacity: 0;
+    scale: 0;
   }
 
   /* Кнопка-триггер выглядит как обычная строка списка. letter-spacing явно:
