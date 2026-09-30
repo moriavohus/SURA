@@ -871,7 +871,13 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
     transform: translate(-50%, 10px);
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--transition-base), transform var(--transition-hover);
+    /* Тайминг тот же, что у раскрытия списка услуг в меню: 0,4 с с
+       замедлением к концу. Прозрачность раньше шла быстрее и на другой
+       кривой — стрелка успевала проявиться, пока ещё ехала, и движение
+       читалось резче, чем в меню. */
+    transition:
+      opacity var(--transition-hover),
+      transform var(--transition-hover);
   }
 
   &:hover .M_ServiceCard-arrow {
