@@ -371,6 +371,28 @@
      поля у списков селектором ul[class] / ol[class], а он специфичнее
      одного класса. */
 
+  /* Рядом со знаком крошкам на телефоне места нет — он занимает почти всю
+     строку шапки. Уводим их под неё, на прежнее поле страницы; прячутся и
+     возвращаются они по-прежнему вместе с шапкой. */
+  .M_Breadcrumbs {
+    top: var(--page-pad-top);
+    height: auto;
+  }
+
+  .M_Breadcrumbs.is-Hidden {
+    transform: translateY(calc(-1 * var(--page-pad-top) - 100%));
+  }
+
+  /* Крошки встали в полосу страницы, поэтому открывающий блок отступает
+     ниже: поле до крошек, строка крошек и зазор под ними. */
+  body:has(.M_Breadcrumbs) .O_Projects,
+  body:has(.M_Breadcrumbs) .O_Case,
+  body:has(.M_Breadcrumbs) .O_ServiceLead {
+    padding-top: calc(
+      var(--page-pad-top) + var(--crumbs-h) + var(--space-l)
+    );
+  }
+
   .M_Breadcrumbs .M_Breadcrumbs-list,
   .M_ServiceStatement-text,
   .O_ServiceLead .M_ServiceList,
@@ -483,20 +505,6 @@
     background: var(--color-glass-shade);
     -webkit-backdrop-filter: blur(var(--nav-blur));
     backdrop-filter: blur(var(--nav-blur));
-  }
-
-  /* На страницах без первого экрана меню сворачивать нечем — переключает
-     его прокрутка мимо первого экрана, а его там нет. В макете нижний бар
-     показан с тэглайном, поэтому здесь возвращаем его в поток.
-
-     Компактного вида это не касается: на главной пилюля сворачивается по
-     прокрутке, и вступление должно уходить из потока вместе с гашением —
-     иначе коробка остаётся прежней высоты и схлопывается в пустую. */
-  body:not(:has(.O_Hero)) .O_Menu .O_Menu-block--intro {
-    position: static;
-    width: 100%;
-    opacity: 1;
-    pointer-events: auto;
   }
 
   /* отметки перед списком в макете нет */
