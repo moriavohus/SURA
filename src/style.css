@@ -1524,19 +1524,6 @@ body:has(.O_Projects) .M_CasesWidget {
 }
 
 
-/* ===== A_LinkRule — ссылка с чертой ====================================
-   Тот же атом A_Link среднего размера, но с чертой под строкой: на странице
-   услуги это единственная ссылка в тексте, и без черты она теряется.
-   ====================================================================== */
-
-.A_LinkRule {
-  padding-bottom: var(--space-2xs);
-  border-bottom: var(--service-link-rule) solid currentColor;
-  color: var(--color-black);
-
-}
-
-
 /* ===== O_ServiceLead — перечень подуслуг и заявление =================== */
 
 .O_ServiceLead {
@@ -1672,7 +1659,7 @@ body:has(.O_Projects) .M_CasesWidget {
 /* Ссылка лежит в другой ветке разметки, дотянуться до кадра соседним
    селектором нельзя — состояние читаем с секции через :has(). Там, где
    он не поддержан, кадр просто не выезжает: это украшение. */
-.O_ServiceLead:has(.A_LinkRule:hover) .A_ServiceStreak,
-.O_ServiceLead:has(.A_LinkRule:focus-visible) .A_ServiceStreak {
+.O_ServiceLead:has(.M_ServiceStatement-link:hover) .A_ServiceStreak,
+.O_ServiceLead:has(.M_ServiceStatement-link:focus-visible) .A_ServiceStreak {
   transform: translateX(0);
 }

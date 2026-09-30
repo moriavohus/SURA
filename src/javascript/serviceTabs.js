@@ -25,7 +25,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 const section = document.querySelector(".O_ServiceLead");
 const list = section?.querySelector(".M_ServiceList");
 const box = section?.querySelector(".M_ServiceStatement-panels");
-const link = section?.querySelector(".A_LinkRule");
+const link = section?.querySelector(".M_ServiceStatement-link");
 const panels = Array.from(section?.querySelectorAll(".M_ServiceStatement-text") || []);
 
 if (list && box && panels.length) {
