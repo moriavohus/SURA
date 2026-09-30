@@ -1103,6 +1103,82 @@ body:not(:has(.O_Hero)) .O_Menu {
     white-space: nowrap;
   }
 
+  /* ===== перечень кейсов (Figma 759:4173) =============================
+     На странице всех кейсов виджет показывает не строку-ссылку, а перечень:
+     заголовок и список, который прокручивается внутри. Ниже — только вид
+     самого перечня, показывают его правила под .O_Projects. */
+
+  & .M_CasesWidget-title,
+  & .M_CasesWidget-scroll {
+    display: none;
+  }
+
+  /* Рамка перечня: в ней прокручивается список и рядом стоит своя полоска. */
+  & .M_CasesWidget-scroll {
+    position: relative;
+    width: 100%;
+    height: var(--cases-list-h);
+  }
+
+  /* Края списка растворяются — в макете это нарисовано серой вуалью поверх,
+     но маска делает то же самое честно: строки тают, а не замазываются, и
+     виджет остаётся стеклом над любым фоном. Маска на самом списке, а не на
+     рамке: иначе она съедала бы и полоску прокрутки у краёв. */
+  & .M_CasesWidget-list {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cases-list-gap);
+
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--cases-fade),
+      #000 calc(100% - var(--cases-fade)),
+      transparent 100%
+    );
+
+    /* Родную полоску прячем: в вебките она всплывающая и в покое не видна,
+       а в макете стоит всегда — рисуем свою. */
+    scrollbar-width: none;
+  }
+
+  & .M_CasesWidget-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Полоска стоит слева от текста, в поле виджета: 8 от края при поле 20. */
+  & .M_CasesWidget-bar {
+    position: absolute;
+    left: calc(-1 * var(--cases-scroll-inset));
+    top: 0;
+    bottom: 0;
+    width: var(--cases-scroll-w);
+  }
+
+  & .M_CasesWidget-thumb {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border-radius: var(--radius-s);
+    background: var(--color-glass);
+  }
+
+  /* Строки перечня приглушены, кроме той, чей кейс сейчас в кадре: класс
+     вешает casesWidget.js по тем же триггерам, что и точки. */
+  & .M_CasesWidget-item {
+    opacity: var(--menu-sub-dim);
+    transition: opacity var(--transition-base);
+  }
+
+  & .M_CasesWidget-item:hover,
+  & .M_CasesWidget-item.is-Active {
+    opacity: 1;
+  }
+
   /* Точки прокрутки кейсов. В свёрнутом виде строка не просто прозрачная,
      а нулевой высоты с отрицательным полем: иначе gap контейнера всё равно
      добавлял бы 24px и виджет был бы выше макетного 91px. */
@@ -1151,6 +1227,22 @@ body:not(:has(.O_Hero)) .M_CasesWidget {
 .M_CasesWidget.is-Raised {
   top: var(--space-gutter);
 }
+
+/* На странице всех кейсов виджет меняет вид: строка-ссылка и точки уходят,
+   вместо них заголовок и прокручиваемый перечень. Состояние берём из самой
+   страницы, а не из класса в разметке, — виджет один на весь сайт. */
+body:has(.O_Projects) .M_CasesWidget {
+  & .M_CasesWidget-row,
+  & .M_CasesWidget-dots {
+    display: none;
+  }
+
+  & .M_CasesWidget-title,
+  & .M_CasesWidget-scroll {
+    display: block;
+  }
+}
+
 
 /* точки показываем, пока блок кейсов в кадре */
 .M_CasesWidget.is-OnCases {
