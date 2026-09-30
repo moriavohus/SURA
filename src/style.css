@@ -1052,7 +1052,7 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
   left: var(--space-gutter);
   top: calc(var(--header-h) + var(--widget-offset));
   z-index: 20;
-  transition: top var(--transition-hover), background-color var(--transition-base);
+  transition: background-color var(--transition-base);
   width: var(--widget-w);
   padding: var(--widget-pad);
   display: flex;
@@ -1126,10 +1126,6 @@ body:not(:has(.O_Hero)) .M_CasesWidget {
   background: var(--color-glass-shade);
 }
 
-
-.M_CasesWidget.is-Raised {
-  top: var(--space-gutter);
-}
 
 /* точки показываем, пока блок кейсов в кадре */
 .M_CasesWidget.is-OnCases {
