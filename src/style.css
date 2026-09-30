@@ -72,6 +72,25 @@ button,
 
 
 
+/* ===== A_Circle — цветной круг =========================================
+   Координата круга — его центр: отрицательные поля в половину размера
+   сдвигают коробку так, что и наведение на кнопке, и физика в футере могут
+   думать центрами, а не углами.
+   ====================================================================== */
+
+.A_Circle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--circle-size);
+  height: var(--circle-size);
+  margin: calc(var(--circle-size) / -2);
+  border-radius: 50%;
+  background: var(--circle-color);
+  pointer-events: none;
+}
+
+
 /* ===== A_Logo — знак (↑) в шапке ======================================= */
 
 .A_Logo {
@@ -134,9 +153,13 @@ button,
   justify-content: center;
   white-space: nowrap;
   border-radius: var(--radius-cta);
+  /* круги всплывают внутри кнопки и подрезаются её же скруглением */
+  overflow: hidden;
   transition: background-color var(--transition-base);
 
   & .A_Button-label {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -795,8 +818,8 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
 
 
 /* ===== M_ServiceCard — карточка услуги =================================
-   На ховере карточка раскрывается: сверху выезжает стрелка, снизу
-   поднимается круглый кадр. Оба элемента подрезаются самой карточкой.
+   Карточка — ссылка на страницу услуги. На ховере сверху выезжает стрелка;
+   она подрезается самой карточкой.
    ====================================================================== */
 
 .M_ServiceCard {
@@ -838,30 +861,6 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
     transition: opacity var(--transition-base), transform var(--transition-hover);
   }
 
-  /* кадр стоит под нижним краем и выезжает вверх */
-  & .M_ServiceCard-photo {
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    width: var(--service-photo-size);
-    height: var(--service-photo-size);
-    transform: translateX(-50%);
-    border-radius: 50%;
-    overflow: hidden;
-    pointer-events: none;
-    transition: top var(--transition-hover);
-  }
-
-  /* обрезка кадра в круге — как в макете */
-  & .M_ServiceCard-photo img {
-    position: absolute;
-    left: -20.55%;
-    top: -15.51%;
-    width: 133.33%;
-    height: 133.33%;
-    max-width: none;
-  }
-
   &:hover {
     gap: var(--service-gap-hover);
   }
@@ -869,10 +868,6 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
   &:hover .M_ServiceCard-arrow {
     opacity: 1;
     transform: translate(-50%, 0);
-  }
-
-  &:hover .M_ServiceCard-photo {
-    top: var(--service-photo-top);
   }
 }
 
@@ -975,6 +970,7 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
    ====================================================================== */
 
 .O_Footer {
+  position: relative;
   /* Содержимое стоит на общей сетке страницы: блок начинается с третьей
      колонки, знак занимает две — ровно 454 на макетных 1440. Ширину в
      пикселях не считаем: --grid-col выражен от 100%, и внутри футера эти
@@ -984,7 +980,19 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
   padding-block: var(--footer-pad);
   color: var(--color-black);
 
+  /* Слой кругов между знаком и ссылками: знак они закрывают, текст — нет.
+     Коробка подрезает их по футеру, чтобы осыпь не выходила на страницу. */
+  & .O_Footer-circles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
   & .M_FooterLinks {
+    position: relative;
+    z-index: 2;
     grid-column: var(--footer-col) / -1;
   }
 

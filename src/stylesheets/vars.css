@@ -4,34 +4,33 @@
    ========================================================================== */
 
 :root {
-  /* ===== цвета: база проекта ===== */
-  --color-bg: #fff;
-  --color-bg-inverse: #0a0a0a;
-  --color-text: #0a0a0a;
-  --color-text-muted: rgba(10, 10, 10, 0.56);
-  /* --color-accent: задать при утверждении дизайна */
-
-  /* ===== цвета: токены из Figma ===== */
+  /* ===== цвета: токены из Figma =====
+     --color-accent задаётся при утверждении дизайна. */
   --color-white: #f6f6f6;                        /* Figma: white */
   --color-white-pure: #ffffff;                   /* Figma: token white в виджете */
+  /* Чёрный на сайте один. Всё, что темнит, — стёкла и притенения кадра —
+     берётся из него же прозрачностью, а не отдельным значением: поменяешь
+     здесь, поменяется везде. */
   --color-black: #0a0a0a;                        /* Figma: black */
   --color-grey: #ececec;                         /* Figma: grey — фон блока кейсов */
   --color-glass: rgba(255, 255, 255, 0.2);       /* светлая стеклянная подложка */
-  --color-glass-dark: rgba(0, 0, 0, 0.1);        /* тёмная стеклянная подложка */
-  --color-glass-ink: rgba(0, 0, 0, 0.08);        /* шапка мобильной карточки кейса */
+  --color-glass-dark: color-mix(in srgb, var(--color-black) 10%, transparent);
+  --color-glass-ink: color-mix(in srgb, var(--color-black) 8%, transparent);
   /* чёрное стекло — одно на весь сайт: счётчик кейсов и меню, на любом
      экране и в любом состоянии */
-  --color-glass-shade: rgba(0, 0, 0, 0.28);
+  --color-glass-shade: color-mix(in srgb, var(--color-black) 28%, transparent);
   --color-glass-button: rgba(255, 255, 255, 0.16);
   --color-glass-tip: rgba(255, 255, 255, 0.1);
   --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */
   --color-case-fallback: #d8d3cf;                /* фон карточки до загрузки */
 
   /* притенение краёв кадра на вытянутых экранах */
-  --color-scrim-strong: rgba(10, 10, 10, 0.5);
-  --color-scrim-mid: rgba(10, 10, 10, 0.3);
-  --color-scrim-soft: rgba(10, 10, 10, 0.24);
-  --color-scrim-none: rgba(10, 10, 10, 0);
+  --color-scrim-strong: color-mix(in srgb, var(--color-black) 50%, transparent);
+  --color-scrim-mid: color-mix(in srgb, var(--color-black) 30%, transparent);
+  --color-scrim-soft: color-mix(in srgb, var(--color-black) 24%, transparent);
+  /* конец градиента — не чёрный, а его отсутствие: каналы в нулевой
+     прозрачности всё равно не участвуют */
+  --color-scrim-none: transparent;
 
   /* ===== отступы — шкала 4px ===== */
   --space-3xs: 4px;
@@ -163,11 +162,10 @@
   --service-inset: 10px;
   --service-gap-hover: 10px;
   --service-dot: 8px;
-  --service-photo-size: 368px;
-  --service-photo-top: 60.5%;     /* 222 / 367 */
   --service-arrow-w: 80px;
   --service-arrow-h: 88px;
-  --service-arrow-top: 27.25%;    /* 100 / 367 */
+  /* 100 / 367 из макета минус 8: в кадре стрелка сидела низковато */
+  --service-arrow-top: calc(27.25% - 8px);
 
   /* ===== страница услуги (service.html) ===== */
   --service-lead-pad-y: 100px;
@@ -212,6 +210,14 @@
   --contact-card-pad: 40px;
   --contact-title-w: 723px;
 
+
+  /* ===== цветные круги =====
+     Палитра снята с кейсов студии: оранжевый из huli, синий из phone,
+     сине-фиолетовый и оливковый из flowers, розовый из boxes. Читается
+     скриптом как список, поэтому цвета правятся здесь и сразу везде. */
+  --circle-colors: #ff5b1b, #1891d0, #4177ce, #ef9cb3, #949431;
+  --circle-size-min: 8px;
+  --circle-size-max: 18px;
 
   /* ===== хлебные крошки ===== */
   --crumbs-gap: var(--space-xs);     /* между ступенями и разделителем */
