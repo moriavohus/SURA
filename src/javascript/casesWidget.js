@@ -85,6 +85,22 @@ if (widget && cases) {
   const setActive = (index) =>
     marks.forEach((mark, i) => mark.classList.toggle("is-Active", i === index));
 
+  /* Перечень едет вместе со страницей: прокрутка по блоку кейсов ложится на
+     прокрутку списка один к одному, поэтому подсвеченная строка сама
+     остаётся на виду и лист не приходится листать руками. */
+  if (list && onProjects) {
+    ScrollTrigger.create({
+      trigger: cases,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        const range = list.scrollHeight - list.clientHeight;
+
+        if (range > 0) list.scrollTop = range * self.progress;
+      },
+    });
+  }
+
   cards.forEach((card, index) => {
     if (!marks[index]) return;
 
