@@ -730,9 +730,13 @@ body:not(:has(.O_Hero)) .O_Menu {
 
 .M_Breadcrumbs {
   position: fixed;
-  top: var(--page-pad-top);
+  /* Строка ступеней стоит на линии знака: своя полоса в высоту шапки, а
+     содержимое по центру — знак в шапке выровнен так же. */
+  top: 0;
   left: 0;
   right: 0;
+  height: var(--header-h);
+  align-items: center;
   z-index: 35;
   color: var(--color-white);
   mix-blend-mode: difference;
@@ -763,22 +767,10 @@ body:not(:has(.O_Hero)) .O_Menu {
   }
 }
 
-/* Уезжают выше верхнего края: своё расстояние до верха плюс собственная
-   высота. Класс вешает headerScroll.js — тот же, что прячет шапку. */
+/* Уезжают за верхний край вместе с шапкой — тем же движением на свою
+   высоту. Класс вешает headerScroll.js, один на оба слоя. */
 .M_Breadcrumbs.is-Hidden {
-  transform: translateY(calc(-1 * var(--page-pad-top) - 100%));
-}
-
-/* Крошки закреплены и места в потоке не занимают, поэтому открывающий блок
-   страницы отступает сверху сам: поле до крошек, строка крошек и зазор под
-   ними. Условие на странице, а не на соседстве: перечень услуг закреплён
-   ScrollTrigger'ом, и в потоке он завёрнут в его pin-spacer. */
-body:has(.M_Breadcrumbs) .O_Projects,
-body:has(.M_Breadcrumbs) .O_Case,
-body:has(.M_Breadcrumbs) .O_ServiceLead {
-  padding-top: calc(
-    var(--page-pad-top) + var(--crumbs-h) + var(--crumbs-bottom)
-  );
+  transform: translateY(-100%);
 }
 
 
