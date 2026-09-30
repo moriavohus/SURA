@@ -18,7 +18,7 @@
   --color-glass-ink: color-mix(in srgb, var(--color-black) 8%, transparent);
   /* чёрное стекло — одно на весь сайт: счётчик кейсов и меню, на любом
      экране и в любом состоянии */
-  --color-glass-shade: color-mix(in srgb, var(--color-black) 28%, transparent);
+  --color-glass-shade: color-mix(in srgb, var(--color-black) 32%, transparent);
   --color-glass-button: rgba(255, 255, 255, 0.16);
   --color-glass-tip: rgba(255, 255, 255, 0.1);
   --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */
