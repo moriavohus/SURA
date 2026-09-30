@@ -22,7 +22,7 @@
  */
 
 import gsap from "gsap";
-import { createCircle, popIn } from "./circles.js";
+import { createCircle, popIn, SIZE } from "./circles.js";
 
 /** Оседание, а не бросок. Секунды, пиксели, радианы. */
 export const FALL = {
@@ -92,9 +92,7 @@ const layer = footer?.querySelector(".O_Footer-circles");
 
 if (layer) {
   gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
-    const sizeMax = parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue("--circle-size-max")
-    ) || 18;
+    const radius = SIZE / 2;
 
     let area = { w: 0, h: 0, max: 0 };
     let falling = [];
@@ -109,9 +107,9 @@ if (layer) {
       area = {
         w: box.width,
         h: box.height,
-        /* плотность одна на любом экране: на 1440×818 выходит 80 кругов,
-           на телефоне — два десятка */
-        max: gsap.utils.clamp(24, 80, Math.round((box.width * box.height) / 12000)),
+        /* плотность одна на любом экране: на 1440×818 выходит 40 кругов,
+           на телефоне — дюжина */
+        max: gsap.utils.clamp(12, 40, Math.round((box.width * box.height) / 24000)),
       };
     };
 
@@ -124,10 +122,9 @@ if (layer) {
     };
 
     const spawn = () => {
-      const r = gsap.utils.random(4, sizeMax / 2);
-      const x = gsap.utils.random(r, area.w - r);
-      const y = gsap.utils.random(r, area.h * FALL.band);
-      const el = createCircle(layer, { x, y, size: r * 2 });
+      const x = gsap.utils.random(radius, area.w - radius);
+      const y = gsap.utils.random(radius, area.h * FALL.band);
+      const el = createCircle(layer, { x, y });
 
       spawned += 1;
 
@@ -136,7 +133,7 @@ if (layer) {
       popIn(el).eventCallback("onComplete", () =>
         falling.push({
           el,
-          r,
+          r: radius,
           x,
           y,
           v: 0,
