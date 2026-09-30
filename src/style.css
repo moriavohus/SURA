@@ -404,28 +404,19 @@ button,
   }
 
   & .O_Menu-subitem:hover,
-  & .O_Menu-subitem:focus-within {
+  & .O_Menu-subitem:has(:focus-visible) {
     opacity: 1;
   }
 
-  /* Появление точки держит атом A_Link, но у пункта с раскрытием собственного
-     :hover мало: меню прижато к низу экрана, при раскрытии коробка растёт
-     вверх, «solutions» уезжает из-под курсора и точка тут же гасла бы. Поэтому
-     у него точку зажигает наведение на всю группу.
-
-     Подпункт под курсором забирает её себе: без :has() родителя по состоянию
-     потомка не выбрать, а где селектор не поддержан — загорятся обе, меню от
-     этого не ломается. */
-  & .O_Menu-item:hover > .O_Menu-row .A_Link-dot,
+  /* Точку зажигает атом A_Link у той строки, на которой курсор. Раскрытому
+     разделу она не нужна: пока список открыт, сам «solutions» выключен, и
+     выбирать можно только конкретную услугу (см. (hover: hover) в
+     responsive.css). На тач-устройствах ховера нет, там открытый раздел
+     помечается классом. */
   & .O_Menu-item.is-Open > .O_Menu-row .A_Link-dot,
   & .O_Menu-subitem:hover .A_Link-dot {
     margin-right: 0;
     opacity: 1;
-  }
-
-  & .O_Menu-item:has(.O_Menu-subitem:hover) > .O_Menu-row .A_Link-dot {
-    margin-right: calc(-1 * (var(--dot) + var(--gap)));
-    opacity: 0;
   }
 
   /* Кнопка-триггер выглядит как обычная строка списка. letter-spacing явно:
@@ -437,11 +428,16 @@ button,
     background: none;
     text-align: left;
     letter-spacing: inherit;
+    transition: opacity var(--transition-base);
   }
 
-  /* is-Open вешает menuToggle.js там, где нет ховера */
+  /* is-Open вешает menuToggle.js там, где нет ховера.
+
+     Клавиатура — через :focus-visible, а не :focus-within: после тапа фокус
+     остаётся на кнопке, и список, раскрытый тапом, уже не закрывался
+     повторным — его держал фокус. */
   & .O_Menu-item:hover .O_Menu-sub,
-  & .O_Menu-item:focus-within .O_Menu-sub,
+  & .O_Menu-item:has(:focus-visible) .O_Menu-sub,
   & .O_Menu-item.is-Open .O_Menu-sub {
     grid-template-rows: 1fr;
     opacity: 1;
