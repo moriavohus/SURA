@@ -160,7 +160,6 @@
   --service-gap: var(--space-2xs);     /* точки → подпись внутри карточки */
   --service-card-h: 367px;
   --service-inset: 10px;
-  --service-gap-hover: 10px;
   --service-dot: 8px;
   --service-arrow-w: 80px;
   --service-arrow-h: 88px;

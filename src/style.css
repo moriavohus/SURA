@@ -90,8 +90,10 @@ button,
   display: inline-flex;
   align-items: center;
 
-  /* Точка растёт из ничего: ширина и поле идут от нуля, поэтому подпись
-     стоит на месте, а коробка ссылки становится шире ровно на точку. */
+  /* Точка появляется сразу, без перехода: ширина у неё идёт от нуля, и
+     любой переход по ней читался бы как сплющенный круг, который
+     раздувается. Подпись при этом стоит на месте, а коробка ссылки
+     становится шире ровно на точку с зазором. */
   & .A_Link-dot {
     width: 0;
     height: var(--dot);
@@ -101,10 +103,6 @@ button,
     opacity: 0;
     /* ниже середины строки — как в макете */
     translate: 0 var(--drop);
-    transition:
-      width var(--transition-base),
-      margin-left var(--transition-base),
-      opacity var(--transition-base);
   }
 
   &:hover .A_Link-dot,
@@ -834,7 +832,8 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
 
 /* ===== M_ServiceCard — карточка услуги =================================
    Карточка — ссылка на страницу услуги. На ховере сверху выезжает стрелка;
-   она подрезается самой карточкой.
+   она подрезается самой карточкой. Само содержимое при этом стоит на месте:
+   зазор между точками и подписью не меняется, иначе подпись отъезжает вниз.
    ====================================================================== */
 
 .M_ServiceCard {
@@ -850,7 +849,6 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
   border-radius: var(--radius-l);
   background: var(--color-white);
   color: var(--color-black);
-  transition: gap var(--transition-hover);
 
   & .M_ServiceCard-dots {
     display: flex;
@@ -874,10 +872,6 @@ main:has(.M_Breadcrumbs) .O_ServiceLead {
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base), transform var(--transition-hover);
-  }
-
-  &:hover {
-    gap: var(--service-gap-hover);
   }
 
   &:hover .M_ServiceCard-arrow {
