@@ -43,14 +43,18 @@ if (widget && hero) {
    движения, поэтому бегунок свой. Высота — доля видимой части от всего
    списка, положение — та же доля от прокрутки.
 
-   Здесь же снимается растушёвка с того края, где список кончился: у начала
-   и у конца прятать нечего, а первая и последняя строки из-за градиента
-   читались хуже остальных. */
+   Здесь же считается растушёвка краёв. Она не включается и не выключается
+   скачком, а растёт вместе с прокруткой: сколько строк уехало за край,
+   настолько край и затуманен, но не глубже макетных 24. У самого начала и
+   самого конца её нет вовсе — прятать там нечего. */
 const list = widget?.querySelector(".M_CasesWidget-list");
 const thumb = widget?.querySelector(".M_CasesWidget-thumb");
 
 if (list && thumb) {
-  const EDGE = 1;   // px — допуск: прокрутка приходит дробной
+  const depth = () =>
+    parseFloat(
+      getComputedStyle(list).getPropertyValue("--cases-fade")
+    ) || 24;
 
   const draw = () => {
     const visible = list.clientHeight;
@@ -68,12 +72,12 @@ if (list && thumb) {
     thumb.style.height = `${(visible / total) * visible}px`;
     thumb.style.transform = `translateY(${(list.scrollTop / total) * visible}px)`;
 
-    /* Пустая строка возвращает значение из стилей — растушёвку по умолчанию. */
-    list.style.setProperty("--fade-top", list.scrollTop <= EDGE ? "0px" : "");
-    list.style.setProperty(
-      "--fade-bottom",
-      list.scrollTop >= range - EDGE ? "0px" : ""
-    );
+    const full = depth();
+    const top = Math.min(full, list.scrollTop);
+    const bottom = Math.min(full, range - list.scrollTop);
+
+    list.style.setProperty("--fade-top", `${Math.max(0, top)}px`);
+    list.style.setProperty("--fade-bottom", `${Math.max(0, bottom)}px`);
   };
 
   list.addEventListener("scroll", draw, { passive: true });
