@@ -383,7 +383,7 @@
 
   /* Ссылке поле даём внешнее: её подчёркивает бордюр по всей коробке, и
      padding вытянул бы линию на 20 вправо. */
-  .A_LinkArrow {
+  .A_LinkRule {
     margin-inline-start: var(--text-pad);
   }
 

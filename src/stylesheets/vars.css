@@ -175,8 +175,7 @@
   --service-lead-gap: 40px;       /* заявление → ссылка; в макете 43 */
   --service-item-dim: 0.5;        /* пункт перечня вне текущего */
   --service-tab-scroll: 320px;    /* прокрутка на один подраздел при закреплении */
-  --service-link-rule: 2px;       /* подчёркивание ссылки */
-  --service-link-icon: 12px;
+  --service-link-rule: 2px;       /* черта под ссылкой на странице услуги */
   /* Клевер-декор. Ширина — видимая часть кадра из макета 1440: за краем
      экрана он всё равно обрезан, и в файле этой части уже нет. */
   --service-streak-w: 407px;
@@ -230,6 +229,10 @@
   --link-dot: 6px;
   --link-gap: 3px;
   --link-drop: 1px;
+  /* средний — по label 2, ровно между обычным и крупным */
+  --link-dot-medium: 7px;
+  --link-gap-medium: 4px;
+  --link-drop-medium: 1px;
   --link-dot-big: 8px;
   --link-gap-big: 6px;
   --link-drop-big: 2px;

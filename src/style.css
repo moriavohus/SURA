@@ -120,6 +120,12 @@ button,
   }
 }
 
+.A_Link--medium {
+  --dot: var(--link-dot-medium);
+  --gap: var(--link-gap-medium);
+  --drop: var(--link-drop-medium);
+}
+
 .A_Link--big {
   --dot: var(--link-dot-big);
   --gap: var(--link-gap-big);
@@ -1518,25 +1524,16 @@ body:has(.O_Projects) .M_CasesWidget {
 }
 
 
-/* ===== A_LinkArrow — текстовая ссылка со стрелкой ====================== */
+/* ===== A_LinkRule — ссылка с чертой ====================================
+   Тот же атом A_Link среднего размера, но с чертой под строкой: на странице
+   услуги это единственная ссылка в тексте, и без черты она теряется.
+   ====================================================================== */
 
-.A_LinkArrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
+.A_LinkRule {
   padding-bottom: var(--space-2xs);
   border-bottom: var(--service-link-rule) solid currentColor;
   color: var(--color-black);
 
-  & img {
-    width: var(--service-link-icon);
-    height: var(--service-link-icon);
-    transition: transform var(--transition-hover);
-  }
-
-  &:hover img {
-    transform: translate(3px, -3px);
-  }
 }
 
 
@@ -1675,7 +1672,7 @@ body:has(.O_Projects) .M_CasesWidget {
 /* Ссылка лежит в другой ветке разметки, дотянуться до кадра соседним
    селектором нельзя — состояние читаем с секции через :has(). Там, где
    он не поддержан, кадр просто не выезжает: это украшение. */
-.O_ServiceLead:has(.A_LinkArrow:hover) .A_ServiceStreak,
-.O_ServiceLead:has(.A_LinkArrow:focus-visible) .A_ServiceStreak {
+.O_ServiceLead:has(.A_LinkRule:hover) .A_ServiceStreak,
+.O_ServiceLead:has(.A_LinkRule:focus-visible) .A_ServiceStreak {
   transform: translateX(0);
 }
