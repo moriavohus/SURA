@@ -1057,9 +1057,9 @@ main > .O_Contact:first-child {
 
 
 /* ===== O_Footer (Figma 732:755) =======================================
-   Знак и соцсети стоят рядом: знак на двух колонках слева, столбик ссылок в
-   следующей колонке. Оба прижаты к низу — знак упирается в нижний край
-   футера без поля, поэтому высота задана макетной, а не содержимым.
+   Соцсети и знак идут столбиком: сверху ссылки на колонке контента, под
+   ними знак во всю оставшуюся ширину. Высоту задаёт содержимое — поля 20
+   сверху и снизу, между блоками шаг сетки.
 
    Заливки у футера нет: он лежит на фоне страницы, а знак светлый и
    читается по серому тон в тон, как в макете.
@@ -1067,9 +1067,7 @@ main > .O_Contact:first-child {
 
 .O_Footer {
   position: relative;
-  min-height: var(--footer-h);
-  align-items: end;
-  padding-block: var(--footer-pad) 0;
+  padding-block: var(--footer-pad);
   color: var(--color-black);
 
   /* Слой кругов между знаком и ссылками: знак они закрывают, текст — нет.
@@ -1082,32 +1080,30 @@ main > .O_Contact:first-child {
     pointer-events: none;
   }
 
-  & .A_FooterWordmark {
-    grid-column: var(--footer-logo-col) / span var(--footer-logo-span);
-  }
-
-  /* Пропорцию держит сам файл: вектор экспортирован 454×575, и при высоте
-     auto коробка повторяет его на любой ширине колонки. */
-  & .A_FooterWordmark img {
-    width: 100%;
-    height: auto;
-    max-width: none;
-  }
-
   & .M_FooterLinks {
     position: relative;
     z-index: 2;
-    grid-column: var(--footer-links-col) / span var(--footer-links-span);
-    /* столбик не прижимается к низу вместе со знаком, а стоит от верха */
-    align-self: start;
-    padding-top: var(--footer-links-top);
+    grid-column: 2 / 3;
+  }
+
+  /* Знак начинается с той же колонки, что и ссылки, и идёт своей макетной
+     величиной — 971,25×396. Шире этого места он не растягивается, а где
+     места меньше, ужимается по колонкам; пропорцию держит сам файл. */
+  & .A_FooterWordmark {
+    grid-column: 2 / -1;
+  }
+
+  & .A_FooterWordmark img {
+    width: min(var(--footer-logo-w), 100%);
+    height: auto;
+    max-width: none;
   }
 }
 
 
 /* ===== M_FooterLinks =================================================== */
 
-/* Соцсети — столбик ссылок кеглем label 1 с отбивкой 12. Сама ссылка — атом
+/* Соцсети — столбик ссылок кеглем label 2 с отбивкой 12. Сама ссылка — атом
    A_Link: подпись и точка, которая вырастает под курсором. */
 .M_FooterLinks {
   display: flex;
