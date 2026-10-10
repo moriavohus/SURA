@@ -394,19 +394,13 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
     gap: var(--space-3xs);
   }
 
-  /* Список услуг приглушён и проявляется под курсором. Прозрачность на
-     строке целиком, а не на цвете текста: у отметки свой :hover-переход
-     по opacity, и внутри приглушённой строки они просто перемножаются. */
+  /* Услуги набраны в полную силу: приглушать их не от чего — список и так
+     виден только раскрытым, а под курсором строку помечает точка. Гаснет
+     наоборот сам «solutions», пока список открыт (см. (hover: hover) в
+     responsive.css). */
   & .O_Menu-subitem {
     display: flex;
     align-items: center;
-    opacity: var(--menu-sub-dim);
-    transition: opacity var(--transition-base);
-  }
-
-  & .O_Menu-subitem:hover,
-  & .O_Menu-subitem:has(:focus-visible) {
-    opacity: 1;
   }
 
   /* Точку зажигает атом A_Link у той строки, на которой курсор. Раскрытому
