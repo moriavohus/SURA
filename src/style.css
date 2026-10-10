@@ -1027,6 +1027,35 @@ body:not(:has(.O_Hero)) .O_Menu {
   }
 }
 
+/* Вариант со строками связи вместо кнопки — страница контактов
+   (Figma 763:4308). Коробка та же, но высоту задаёт содержимое: строк
+   может стать больше, а подпирать их пустотой незачем. */
+.M_ContactCard--links {
+  height: auto;
+  gap: var(--contact-links-top);
+
+  & .M_ContactCard-links {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--contact-links-gap);
+  }
+
+  /* Почта подчёркнута постоянно — это адрес, а не обычная ссылка. */
+  & .M_ContactCard-link {
+    text-decoration-line: underline;
+    text-underline-position: from-font;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--transition-base);
+  }
+
+  & .M_ContactCard-link[href^="mailto:"],
+  & .M_ContactCard-link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
 
 /* ===== O_Footer (Figma 732:755) =======================================
    Знак и соцсети стоят рядом: знак на двух колонках слева, столбик ссылок в

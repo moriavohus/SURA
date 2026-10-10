@@ -222,6 +222,10 @@
   --contact-card-gap: 60px;      /* заголовок → кнопка в мобильной карточке */
   --contact-card-pad: 40px;
   --contact-title-w: 723px;
+  /* страница контактов (Figma 763:4308): заголовок → строки связи и между
+     самими строками */
+  --contact-links-gap: 14px;
+  --contact-links-top: 60px;
 
 
   /* ===== цветные круги =====
