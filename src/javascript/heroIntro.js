@@ -12,7 +12,6 @@ const hero = document.querySelector(".O_Hero");
 if (hero) {
   const targets = {
     header: hero.querySelector(".O_Header"),
-    wordmark: hero.querySelector(".A_Wordmark"),
     menu: document.querySelector(".O_Menu"),   // меню лежит вне секции
   };
 
@@ -22,10 +21,9 @@ if (hero) {
     });
 
     // Шапке двигаем только прозрачность: transform создал бы контекст
-    // наложения, и mix-blend-difference знака перестал бы видеть кадр.
+    // наложения, и mix-blend-difference шапки перестал бы видеть кадр.
     if (targets.header) tl.from(targets.header, { autoAlpha: 0, duration: 0.7 }, 0);
-    if (targets.wordmark) tl.from(targets.wordmark, { autoAlpha: 0, y: 24 }, 0.15);
-    if (targets.menu) tl.from(targets.menu, { autoAlpha: 0, y: 18 }, 0.5);
+    if (targets.menu) tl.from(targets.menu, { autoAlpha: 0, y: 18 }, 0.35);
 
     return () => tl.kill();
   });

@@ -29,7 +29,6 @@
     --footer-links-top: 140px;
     --cases-pad-top: var(--space-xl);
 
-    --hero-logo-h: 420px;
 
     --services-pad-y: var(--space-xl);
     --section-pad-y: var(--space-xl);
@@ -135,7 +134,6 @@
     --space-gutter: 16px;
     --header-logo-w: 140px;
     --header-logo-h: 33px;
-    --hero-logo-h: 200px;
     --cases-pad-top: var(--space-l);
     --case-blur: 5px;                  /* стекло шапки мобильной карточки */
     --case-bg-blur: 15px;              /* размытие кадра-подложки */
@@ -170,14 +168,6 @@
   .M_ContactCard {
     height: auto;
     gap: var(--contact-card-gap);
-  }
-
-  /* Оба виджета стоят у левого края — счётчик сверху, меню снизу. Знак
-     встаёт между ними по вертикали: развести их по горизонтали нельзя,
-     виджеты держат макетные 217px, а колонка сетки на 375 всего 40px. */
-  .A_Wordmark {
-    align-items: center;
-    padding-bottom: 0;
   }
 
   /* ===== мобильная карточка кейса (Figma 718:1958) =====================
@@ -389,12 +379,6 @@
   .T_CaseIntro .T_CaseIntro-head,
   .O_Clients .O_Clients-title {
     padding-inline: var(--text-pad);
-  }
-
-  /* На телефоне знака на первом экране нет: кадр остаётся кадром, а имя
-     студии и так стоит в шапке. */
-  .A_Wordmark {
-    display: none;
   }
 
   /* В макете подписи услуг начинаются с прописной, в разметке они строчные
