@@ -13,6 +13,7 @@
      здесь, поменяется везде. */
   --color-black: #0a0a0a;                        /* Figma: black */
   --color-grey: #ececec;                         /* Figma: grey — фон блока кейсов */
+  --color-text-muted: #939393;                   /* приглушённый текст: имена клиентов */
   --color-glass: rgba(255, 255, 255, 0.2);       /* светлая стеклянная подложка */
   --color-glass-dark: color-mix(in srgb, var(--color-black) 10%, transparent);
   --color-glass-ink: color-mix(in srgb, var(--color-black) 8%, transparent);

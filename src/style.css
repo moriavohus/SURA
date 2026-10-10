@@ -982,11 +982,14 @@ body:not(:has(.O_Hero)) .O_Menu {
     gap: var(--clients-row-gap);
   }
 
+  /* Имена набраны приглушённым серым: заголовок блока остаётся чёрным и
+     ведёт, перечень под ним отступает на шаг назад. */
   & .O_Clients-item {
     min-height: var(--clients-row-h);
     display: flex;
     align-items: center;
     white-space: nowrap;
+    color: var(--color-text-muted);
   }
 }
 
