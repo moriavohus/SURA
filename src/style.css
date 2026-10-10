@@ -997,6 +997,13 @@ body:not(:has(.O_Hero)) .O_Menu {
   padding: var(--section-pad-y) 0;
 }
 
+/* Когда блок открывает страницу — как на контактах, — он встаёт на ту же
+   линию, что и плавающий счётчик кейсов слева: это верхнее поле страницы,
+   а не отбивка между секциями. */
+main > .O_Contact:first-child {
+  padding-top: var(--page-pad-top);
+}
+
 .M_ContactCard {
   grid-column: 2 / -1;
   height: var(--contact-card-h);
