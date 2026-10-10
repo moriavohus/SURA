@@ -20,7 +20,6 @@
      экране и в любом состоянии */
   --color-glass-shade: color-mix(in srgb, var(--color-black) 32%, transparent);
   --color-glass-button: rgba(255, 255, 255, 0.16);
-  --color-glass-tag: rgba(255, 255, 255, 0.12);  /* пилюля услуги в панели */
   --color-glass-tip: rgba(255, 255, 255, 0.1);
   --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */
   --color-case-fallback: #d8d3cf;                /* фон карточки до загрузки */
