@@ -16,7 +16,6 @@
 @media (max-width: 1024px) {
   :root {
     --header-h: 92px;
-    --header-logo-w: 168px;
     --header-logo-h: 39px;
     --hero-scrim-opacity: 1;
     /* Футер: колонка здесь уже, и «instagram» в одну не влезает — столбик
@@ -132,7 +131,6 @@
 @media (max-width: 768px) {
   :root {
     --space-gutter: 16px;
-    --header-logo-w: 140px;
     --header-logo-h: 33px;
     --cases-pad-top: var(--space-l);
     --case-blur: 5px;                  /* стекло шапки мобильной карточки */
