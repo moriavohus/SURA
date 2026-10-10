@@ -362,12 +362,6 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
     white-space: nowrap;
   }
 
-  /* почта отбита от перечня услуг, иначе он читается одним слипшимся
-     столбцом строк */
-  & .O_Menu-item + .O_Menu-item {
-    margin-top: var(--space-xs);
-  }
-
   /* пункт стал колонкой: под строкой раскрывается список услуг */
   & .O_Menu-item {
     display: flex;
@@ -491,10 +485,6 @@ body:not(:has(.O_Hero)) .O_Menu {
     width: calc(100% - var(--space-gutter) * 2);
     opacity: 0;
     pointer-events: none;
-  }
-
-  & .O_Menu-bullet {
-    display: none;
   }
 
 }

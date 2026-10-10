@@ -556,18 +556,6 @@
     backdrop-filter: blur(var(--nav-blur));
   }
 
-  /* отметки перед списком в макете нет */
-  .O_Menu .O_Menu-bullet {
-    display: none;
-  }
-
-  /* Пункты отбиты ровно зазором списка. На широком экране почта отделена от
-     перечня услуг ещё восемью сверху, и в сумме выходило 12 вместо
-     макетных 4. */
-  .O_Menu .O_Menu-item + .O_Menu-item {
-    margin-top: 0;
-  }
-
   .O_Menu .O_Menu-block--intro {
     gap: var(--nav-intro-gap);
   }
