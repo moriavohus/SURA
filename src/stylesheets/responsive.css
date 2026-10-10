@@ -218,9 +218,9 @@
     letter-spacing: -0.0125em;
   }
 
-  /* Услуги уходят из потока в правый верхний угол шапки. Заливка у пилюли
-     та же, что на широком экране, — белое 12%; своего размытия ей тут не
-     нужно, шапка под ней уже размыта. */
+  /* Услуги уходят из потока в правый верхний угол шапки. Своего размытия
+     им тут не нужно: шапка под ними уже размыта. Подпись набрана body, а
+     не label 2 широкого экрана (Figma 718:1958). */
   .M_CasePanel .M_CasePanel-tags {
     position: absolute;
     top: var(--space-s);
@@ -231,6 +231,13 @@
   .M_CasePanel .M_CasePanel-tag {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+
+  .M_CasePanel .M_CasePanel-tag .Label2 {
+    font-size: 17px;
+    line-height: 1.294118;
+    letter-spacing: 0;
+    font-weight: 500;
   }
 
   /* снимок во всю ширину карточки, без полей и скругления */

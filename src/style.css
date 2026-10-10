@@ -567,21 +567,20 @@ body:not(:has(.O_Hero)) .O_Menu {
     word-break: break-word;
   }
 
-  /* Услуги идут пилюлями и переносятся по строкам: их у кейса может быть
-     несколько (Figma 759:4005). */
+  /* Услуги идут строкой и переносятся по ней: их у кейса может быть
+     несколько (Figma 759:4024). Заливки и полей у них нет — только точка,
+     подпись и размытие под ними. */
   & .M_CasePanel-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3xs);
+    gap: var(--case-tags-gap);
   }
 
   & .M_CasePanel-tag {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
-    padding: var(--case-tag-pad-y) var(--case-tag-pad-x);
+    gap: var(--case-tag-gap);
     border-radius: var(--radius-pill);
-    background: var(--color-glass-tag);
     -webkit-backdrop-filter: blur(var(--case-tags-blur));
     backdrop-filter: blur(var(--case-tags-blur));
   }

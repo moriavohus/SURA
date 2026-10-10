@@ -154,8 +154,8 @@
   --case-bg-blur: 30px;          /* размытие кадра-подложки в мобильной раскладке */
   --case-cta-h: 68px;
   --case-cta-blur: 2px;          /* стекло кнопки в мобильной карточке */
-  --case-tag-pad-x: 12px;
-  --case-tag-pad-y: var(--space-xs);
+  --case-tags-gap: 12px;             /* между услугами в панели кейса */
+  --case-tag-gap: var(--space-2xs);  /* точка → подпись внутри услуги */
   --case-tip-w: 315px;
 
   /* ===== блок услуг ===== */
