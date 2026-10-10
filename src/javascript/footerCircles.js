@@ -1,20 +1,22 @@
 /**
- * footerCircles — круги оседают в футере.
+ * footerCircles — круги летают в футере.
  *
- * Круги те же, что при наведении на кнопку (circles.js), и появляются той же
- * анимацией — по одному, в случайных точках верхней части футера. Дальше
- * каждый очень медленно падает: со скоростью 0, с плавным разгоном до своего
- * предела (30 px/с ±30%, чтобы не падали строем) и с лёгким покачиванием по
- * горизонтали — как оседающая в воздухе пыль.
+ * Круги те же, что в остальных местах (circles.js), и появляются той же
+ * анимацией — по одному, в случайных точках футера. Дальше каждый медленно
+ * плывёт по своей траектории: у него своя скорость (18 px/с ±30%, чтобы не
+ * шли строем) и своё направление, которое само по себе плавно уводит в
+ * сторону — поэтому летят они по дугам, а не по прямым.
  *
- * Внизу круг ложится на пол футера или на уже лежащие круги: опора ищется по
- * тем, с кем он пересекается по горизонтали, и берётся самая высокая. При
- * касании скорость не обнуляется, а переворачивается с потерей — выходит
- * мягкий отскок на пару пикселей вместо резкого стопа.
+ * Гравитации нет: круги не падают и не складываются внизу. От краёв футера
+ * они отражаются, сохраняя скорость, и остаются в кадре.
  *
- * Расчёт вынесен в чистые функции (support, advance) и ничего не знает ни про
- * DOM, ни про GSAP: в браузере анимацию на глаз не измеришь, а так её можно
- * прогнать симуляцией и проверить скорости, размах качания и высоту отскока.
+ * Курсор подталкивает те, до которых дотянулся: толчок добавляется к
+ * скорости, а она сама возвращается к своей крейсерской — круг отходит и
+ * снова плывёт как плыл.
+ *
+ * Расчёт вынесен в чистые функции (advance, push) и ничего не знает ни про
+ * DOM, ни про GSAP: в браузере движение на глаз не измеришь, а так его можно
+ * прогнать симуляцией и проверить скорости, повороты и отражения.
  *
  * Поле живёт, только пока футер в кадре: за его пределами и таймер, и цикл
  * стоят. Страница статическая и едет на слабом VPS — фоновая анимация,
@@ -24,102 +26,79 @@
 import gsap from "gsap";
 import { createCircle, popIn, SIZE } from "./circles.js";
 
-/** Оседание, а не бросок. Секунды, пиксели, радианы. */
-export const FALL = {
-  gravity: 20,        // px/с² — разгон до предела примерно за полторы секунды
-  speed: 30,          // px/с — предельная скорость
-  spread: 0.3,        // ±30% у каждого круга, чтобы не падали строем
-  sway: [2, 4],       // px — амплитуда покачивания
-  rate: [0.8, 1.6],   // рад/с — его частота
+/** Полёт, а не падение. Секунды, пиксели, радианы. */
+export const DRIFT = {
+  speed: 18,          // px/с — крейсерская скорость
+  spread: 0.3,        // ±30% у каждого круга, чтобы не шли строем
+  turn: [0.15, 0.5],  // рад/с — насколько круто уводит направление
+  rate: [0.1, 0.35],  // Гц — как быстро меняется сам увод
+  ease: 0.6,          // с — за столько скорость наполовину возвращается к своей
   spawn: [0.15, 0.4], // с — пауза между появлениями
-  bounce: 0.25,       // доля скорости, остающаяся после касания
-  rest: 3,            // px/с — ниже этого круг ложится
-  band: 0.25,         // верхняя четверть футера — откуда круги приходят
-  drag: 0.12,         // за сколько секунд боковой разгон гаснет вдвое
-  wall: 0.4,          // доля скорости после удара о край футера
 };
 
-/**
- * Курсор чуть отодвигает круги, которых касается. Толчок деликатный: круг
- * отходит на несколько пикселей и тут же оседает обратно, горку не сдувает.
- */
+/** Курсор чуть отодвигает круги, которых касается. */
 export const PUSH = {
   radius: 50,         // px — на каком расстоянии круг чувствует курсор
   force: 30,          // px/с — толчок в упор, дальше слабее
-  lift: 8,            // px/с — вверх, чтобы круг едва оторвался
 };
 
 /**
- * Высота опоры под кругом: пол футера или верх того, на что он сел.
- *
- * Круг на круге лежит не по вертикали: чем дальше центры по горизонтали, тем
- * ниже он садится, — отсюда теорема Пифагора, а не просто «минус радиус».
+ * Шаг полёта: сначала направление уводит в сторону, потом скорость
+ * подтягивается к своей крейсерской, потом круг переносится и, если дошёл до
+ * края, отражается. Меняет круг на месте и возвращает точку, где его рисовать.
  */
-export function support(circle, x, area, settled) {
-  let top = area.h - circle.r;
-
-  for (const rest of settled) {
-    const dx = x - rest.x;
-    const reach = circle.r + rest.r;
-
-    if (Math.abs(dx) >= reach) continue;
-
-    const perch = rest.y - Math.sqrt(reach * reach - dx * dx);
-
-    if (perch < top) top = perch;
-  }
-
-  return top;
-}
-
-/**
- * Шаг падения. Меняет круг на месте и возвращает точку, где его рисовать, и
- * признак того, что он улёгся.
- */
-export function advance(circle, dt, area, settled) {
-  circle.v = Math.min(circle.vMax, circle.v + FALL.gravity * dt);
-  circle.y += circle.v * dt;
+export function advance(circle, dt, area) {
+  /* Увод направления — синусом: он меняет знак сам, и траектория выходит
+     волнистой, без накопления поворота в одну сторону. */
   circle.phase += circle.rate * dt;
 
-  /* Боковой разгон бывает только от курсора и гаснет сам: круг не улетает,
-     а отъезжает и продолжает оседать. */
-  if (circle.vx) {
-    circle.x += circle.vx * dt;
-    circle.vx *= 0.5 ** (dt / FALL.drag);
+  const turn = Math.sin(circle.phase * Math.PI * 2) * circle.turn * dt;
+  const cos = Math.cos(turn);
+  const sin = Math.sin(turn);
+  const vx = circle.vx * cos - circle.vy * sin;
+  const vy = circle.vx * sin + circle.vy * cos;
 
-    if (Math.abs(circle.vx) < 1) circle.vx = 0;
+  circle.vx = vx;
+  circle.vy = vy;
 
-    /* края футера держат: за ними круга не видно, он подрезан слоем */
-    if (circle.x < circle.r) {
-      circle.x = circle.r;
-      circle.vx = Math.abs(circle.vx) * FALL.wall;
-    } else if (circle.x > area.w - circle.r) {
-      circle.x = area.w - circle.r;
-      circle.vx = -Math.abs(circle.vx) * FALL.wall;
-    }
+  /* Скорость возвращается к крейсерской: так толчок курсора затухает сам,
+     а круг не разгоняется и не останавливается насовсем. */
+  const speed = Math.hypot(circle.vx, circle.vy);
+
+  if (speed > 0) {
+    const k = 0.5 ** (dt / DRIFT.ease);
+    const want = circle.cruise + (speed - circle.cruise) * k;
+
+    circle.vx = (circle.vx / speed) * want;
+    circle.vy = (circle.vy / speed) * want;
   }
 
-  const x = circle.x + Math.sin(circle.phase) * circle.sway;
-  const floor = support(circle, x, area, settled);
+  circle.x += circle.vx * dt;
+  circle.y += circle.vy * dt;
 
-  if (circle.y < floor) return { x, y: circle.y, done: false };
-
-  circle.y = floor;
-
-  /* Касание не гасит движение разом: скорость переворачивается с потерей,
-     и круг подпрыгивает на пару пикселей. Ниже порога — ложится. */
-  if (circle.v > FALL.rest) {
-    circle.v = -circle.v * FALL.bounce;
-
-    return { x, y: circle.y, done: false };
+  /* Края футера отражают, скорость при этом сохраняется. */
+  if (circle.x < circle.r) {
+    circle.x = circle.r;
+    circle.vx = Math.abs(circle.vx);
+  } else if (circle.x > area.w - circle.r) {
+    circle.x = area.w - circle.r;
+    circle.vx = -Math.abs(circle.vx);
   }
 
-  return { x, y: circle.y, done: true };
+  if (circle.y < circle.r) {
+    circle.y = circle.r;
+    circle.vy = Math.abs(circle.vy);
+  } else if (circle.y > area.h - circle.r) {
+    circle.y = area.h - circle.r;
+    circle.vy = -Math.abs(circle.vy);
+  }
+
+  return { x: circle.x, y: circle.y };
 }
 
 /**
- * Толчок от курсора: круг отъезжает от точки тем сильнее, чем ближе к ней
- * был, и подскакивает. Возвращает true, если круг тронулся с места.
+ * Толчок от курсора: круг отходит от точки тем сильнее, чем ближе к ней был.
+ * Возвращает true, если круг тронуло.
  */
 export function push(circle, pointer) {
   const dx = circle.x - pointer.x;
@@ -131,10 +110,10 @@ export function push(circle, pointer) {
   /* В упор толчок полный, на краю радиуса — нулевой. */
   const strength = 1 - distance / PUSH.radius;
   /* Круг ровно под курсором пихаем в случайную сторону: иначе делить на 0. */
-  const dir = distance > 0.01 ? dx / distance : Math.random() < 0.5 ? -1 : 1;
+  const angle = distance > 0.01 ? Math.atan2(dy, dx) : Math.random() * Math.PI * 2;
 
-  circle.vx = (circle.vx || 0) + dir * PUSH.force * strength;
-  circle.v = Math.min(circle.v, -PUSH.lift * strength);
+  circle.vx += Math.cos(angle) * PUSH.force * strength;
+  circle.vy += Math.sin(angle) * PUSH.force * strength;
 
   return true;
 }
@@ -148,10 +127,8 @@ if (layer) {
     const hoverable = window.matchMedia("(hover: hover)").matches;
 
     let area = { w: 0, h: 0, max: 0 };
-    let falling = [];
-    let settled = [];
+    let circles = [];
     let nextSpawn = 0;
-    let spawned = 0;
     let running = false;
 
     const measure = () => {
@@ -168,60 +145,33 @@ if (layer) {
 
     const reset = () => {
       layer.replaceChildren();
-      falling = [];
-      settled = [];
-      spawned = 0;
+      circles = [];
       nextSpawn = 0;
     };
 
     const spawn = () => {
       const x = gsap.utils.random(radius, area.w - radius);
-      const y = gsap.utils.random(radius, area.h * FALL.band);
+      const y = gsap.utils.random(radius, area.h - radius);
       const el = createCircle(layer, { x, y });
+      const cruise = DRIFT.speed * gsap.utils.random(1 - DRIFT.spread, 1 + DRIFT.spread);
+      const heading = gsap.utils.random(0, Math.PI * 2);
 
-      spawned += 1;
-
-      /* Падать круг начинает, когда появился: иначе он поехал бы вниз
-         прямо из-под собственного всплытия. */
+      /* Лететь круг начинает, когда появился: иначе он поехал бы прямо
+         из-под собственного всплытия. */
       popIn(el).eventCallback("onComplete", () =>
-        falling.push({
+        circles.push({
           el,
           r: radius,
           x,
           y,
-          v: 0,
-          vMax: FALL.speed * gsap.utils.random(1 - FALL.spread, 1 + FALL.spread),
-          sway: gsap.utils.random(...FALL.sway),
-          rate: gsap.utils.random(...FALL.rate),
-          phase: gsap.utils.random(0, Math.PI * 2),
+          vx: Math.cos(heading) * cruise,
+          vy: Math.sin(heading) * cruise,
+          cruise,
+          turn: gsap.utils.random(...DRIFT.turn),
+          rate: gsap.utils.random(...DRIFT.rate),
+          phase: gsap.utils.random(0, 1),
         })
       );
-    };
-
-    /* Круг, которого толкнули, уезжает из горки — и те, что на нём лежали,
-       повисают в воздухе. Поэтому после толчка будим всех, под кем не стало
-       опоры: они просто падают дальше и складываются заново. */
-    const wake = () => {
-      for (let i = settled.length - 1; i >= 0; i -= 1) {
-        const rest = settled[i];
-        const others = settled.filter((other) => other !== rest);
-
-        if (rest.y >= support(rest, rest.x, area, others) - 0.5) continue;
-
-        settled.splice(i, 1);
-        falling.push({
-          el: rest.el,
-          r: rest.r,
-          x: rest.x,
-          y: rest.y,
-          v: rest.v || 0,
-          vx: rest.vx || 0,
-          vMax: FALL.speed * gsap.utils.random(1 - FALL.spread, 1 + FALL.spread),
-          sway: gsap.utils.random(...FALL.sway),
-          rate: gsap.utils.random(...FALL.rate),
-          phase: gsap.utils.random(0, Math.PI * 2),
-        });
-      }
     };
 
     /* Курсор над футером: расталкиваем то, до чего дотянулся. Слой кругов
@@ -229,59 +179,27 @@ if (layer) {
     const onPointer = (event) => {
       const box = layer.getBoundingClientRect();
       const pointer = { x: event.clientX - box.left, y: event.clientY - box.top };
-      let touched = false;
 
-      for (let i = settled.length - 1; i >= 0; i -= 1) {
-        const rest = settled[i];
-
-        if (!push(rest, pointer)) continue;
-
-        settled.splice(i, 1);
-        falling.push({
-          el: rest.el,
-          r: rest.r,
-          x: rest.x,
-          y: rest.y,
-          v: rest.v,
-          vx: rest.vx,
-          vMax: FALL.speed * gsap.utils.random(1 - FALL.spread, 1 + FALL.spread),
-          sway: gsap.utils.random(...FALL.sway),
-          rate: gsap.utils.random(...FALL.rate),
-          phase: gsap.utils.random(0, Math.PI * 2),
-        });
-        touched = true;
-      }
-
-      /* и падающим тоже достаётся — мимо курсора они не проскакивают */
-      falling.forEach((circle) => push(circle, pointer));
-
-      if (touched) wake();
+      circles.forEach((circle) => push(circle, pointer));
     };
 
     const update = () => {
       const dt = Math.min(gsap.ticker.deltaRatio() / 60, 0.05);
 
-      if (spawned < area.max) {
+      if (layer.childElementCount < area.max) {
         nextSpawn -= dt;
 
         if (nextSpawn <= 0) {
           spawn();
-          nextSpawn = gsap.utils.random(...FALL.spawn);
+          nextSpawn = gsap.utils.random(...DRIFT.spawn);
         }
       }
 
-      for (let i = falling.length - 1; i >= 0; i -= 1) {
-        const circle = falling[i];
-        const step = advance(circle, dt, area, settled);
+      circles.forEach((circle) => {
+        const step = advance(circle, dt, area);
 
         gsap.set(circle.el, { x: step.x, y: step.y });
-
-        if (step.done) {
-          /* элемент кладём вместе с координатами: круг ещё поднимут курсором */
-          settled.push({ el: circle.el, x: circle.x, y: step.y, r: circle.r, v: 0, vx: 0 });
-          falling.splice(i, 1);
-        }
-      }
+      });
     };
 
     const start = () => {
@@ -299,7 +217,7 @@ if (layer) {
     };
 
     /* Пересборка по ресайзу: координаты кругов в пикселях слоя, и при другой
-       ширине лежащая горка оказалась бы не на своём месте. */
+       ширине они оказались бы за кадром. */
     let resizeTimer = 0;
     const onResize = () => {
       clearTimeout(resizeTimer);
@@ -319,7 +237,7 @@ if (layer) {
     window.addEventListener("resize", onResize);
 
     /* Без курсора расталкивать нечем: на тач-устройствах круги просто
-       оседают. */
+       летают. */
     if (hoverable) footer.addEventListener("pointermove", onPointer);
 
     return () => {
