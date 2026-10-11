@@ -209,14 +209,14 @@
 
   /* Услуги уходят из потока в правый верхний угол шапки. Подпись набрана
      body, а не label 2 широкого экрана (Figma 718:1958). */
-  .M_CasePanel .M_CasePanel-tags {
+  .M_CasePanel .M_CaseTags {
     position: absolute;
     top: var(--space-s);
     right: var(--case-pad);
     white-space: nowrap;
   }
 
-  .M_CasePanel .M_CasePanel-tag .Label2 {
+  .M_CasePanel .M_CaseTags-tag .Label2 {
     font-size: 17px;
     line-height: 1.294118;
     letter-spacing: 0;
@@ -382,8 +382,9 @@
     text-transform: uppercase;
   }
 
-  /* подпись с услугами занимала бы треть кадра */
-  .M_CaseTags {
+  /* подпись с услугами занимала бы треть кадра; в панели у неё поля нет —
+     отсюда и селектор по кадру */
+  .A_CaseFrame .M_CaseTags {
     padding: var(--space-xs);
   }
 

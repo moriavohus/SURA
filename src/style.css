@@ -561,21 +561,6 @@ body:not(:has(.O_Hero)) .O_Menu {
     word-break: break-word;
   }
 
-  /* Услуги идут строкой и переносятся по ней: их у кейса может быть
-     несколько (Figma 759:4024). Никакой подложки под ними нет — только
-     точка и подпись; панель вокруг уже стеклянная. */
-  & .M_CasePanel-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--case-tags-gap);
-  }
-
-  & .M_CasePanel-tag {
-    display: flex;
-    align-items: center;
-    gap: var(--case-tag-gap);
-  }
-
   & .M_CasePanel-text {
     width: 100%;
   }
@@ -1323,12 +1308,16 @@ body:has(.O_Projects) .M_CasesWidget {
   border-radius: var(--radius-l);
   background: var(--color-case-fallback);
 
-  /* Поле кадра из макета держит плашку, а не коробку: внутреннее поле
-     сдвинуло бы и обложку — абсолют считается от padding-box. */
+  /* Услуги лежат поверх обложки. Поле кадра из макета держат они, а не
+     коробка: внутреннее поле сдвинуло бы и обложку — абсолют считается от
+     padding-box. Белые они тоже по месту: под ними фотография, а не
+     панель. */
   & .M_CaseTags {
     position: absolute;
     left: var(--case-media-pad);
     top: var(--case-media-pad);
+    padding: var(--space-s);
+    color: var(--color-white);
   }
 
   & .A_CaseFrame-image {
@@ -1357,25 +1346,25 @@ body:has(.O_Projects) .M_CasesWidget {
 }
 
 
-/* ===== M_CaseTags — услуги на кадре кейса ============================== */
+/* ===== M_CaseTags — услуги кейса =======================================
+   Один компонент на оба места: панель карточки в списках и кадр на
+   странице кейса. Строка тегов, каждый — точка и подпись label 2,
+   переносится по строке: услуг у кейса бывает несколько (Figma 759:4024).
+   Подложки нет ни там, ни там.
+
+   Положение и цвет компонент не несёт — их задаёт место: в панели он
+   просто стоит в потоке, на кадре прижат к углу обложки и набран белым.
+   ====================================================================== */
 
 .M_CaseTags {
-  /* положение задаёт кадр — .A_CaseFrame выше */
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2xs);
-  /* Плашки больше нет — ни заливки, ни размытия, только белая подпись
-     поверх кадра. Поле осталось: оно отодвигает её от края обложки, а не
-     рисует коробку. */
-  padding: var(--space-s);
-  color: var(--color-white);
+  flex-wrap: wrap;
+  gap: var(--case-tags-gap);
 
-  & .M_CaseTags-list {
+  & .M_CaseTags-tag {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-3xs);
-    white-space: nowrap;
+    align-items: center;
+    gap: var(--case-tag-gap);
   }
 }
 
