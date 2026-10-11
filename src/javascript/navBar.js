@@ -73,7 +73,15 @@ if (menu && widget && "ResizeObserver" in window) {
      включая поворот экрана. */
   const observer = new ResizeObserver(schedule);
 
-  pills.forEach((pill) => observer.observe(pill));
+  /* Следим и за содержимым пилюли, а не только за ней самой. Пока она
+     держит наш min-height, её собственная коробка при изменениях внутри не
+     шелохнётся, и наблюдатель промолчит: так счётчик оставался высоким
+     после того, как строка точек схлопнулась, вместо того чтобы снова
+     сесть по содержимому. */
+  pills.forEach((pill) => {
+    observer.observe(pill);
+    [...pill.children].forEach((block) => observer.observe(block));
+  });
   bar.addEventListener("change", schedule);
   schedule();
 }
