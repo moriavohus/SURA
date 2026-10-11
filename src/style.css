@@ -562,8 +562,8 @@ body:not(:has(.O_Hero)) .O_Menu {
   }
 
   /* Услуги идут строкой и переносятся по ней: их у кейса может быть
-     несколько (Figma 759:4024). Заливки и полей у них нет — только точка,
-     подпись и размытие под ними. */
+     несколько (Figma 759:4024). Никакой подложки под ними нет — только
+     точка и подпись; панель вокруг уже стеклянная. */
   & .M_CasePanel-tags {
     display: flex;
     flex-wrap: wrap;
@@ -574,9 +574,6 @@ body:not(:has(.O_Hero)) .O_Menu {
     display: flex;
     align-items: center;
     gap: var(--case-tag-gap);
-    border-radius: var(--radius-pill);
-    -webkit-backdrop-filter: blur(var(--case-tags-blur));
-    backdrop-filter: blur(var(--case-tags-blur));
   }
 
   & .M_CasePanel-text {
@@ -1368,16 +1365,10 @@ body:has(.O_Projects) .M_CasesWidget {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-2xs);
+  /* Плашки больше нет — ни заливки, ни размытия, только белая подпись
+     поверх кадра. Поле осталось: оно отодвигает её от края обложки, а не
+     рисует коробку. */
   padding: var(--space-s);
-  /* Заливки у плашки нет — текст держится на размытии под ним. Радиус
-     остаётся: размытие обрезается по рамке, и без скругления его прямые
-     углы торчали бы в скруглённом кадре. Внутренний радиус = внешний минус
-     отступ: кадр скруглён на 20 и вставка плашки 10, значит ей 10. Считаем,
-     а не проставляем числом, — поменяется любое из двух, скругление
-     пересчитается само. */
-  border-radius: calc(var(--radius-l) - var(--case-media-pad));
-  -webkit-backdrop-filter: blur(var(--case-tags-blur));
-  backdrop-filter: blur(var(--case-tags-blur));
   color: var(--color-white);
 
   & .M_CaseTags-list {
