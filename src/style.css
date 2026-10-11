@@ -413,9 +413,9 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
     opacity: var(--menu-sub-dim);
   }
 
-  /* Точку зажигает атом A_Link у той строки, на которой курсор. На тач-
-     устройствах ховера нет, там открытый раздел помечается классом. */
-  & .O_Menu-item.is-Open > .O_Menu-row .A_Link-dot,
+  /* Точку зажигает атом A_Link у той строки, на которой курсор. У раздела
+     «solutions» её нет вовсе: он не ссылка, а переключатель списка, и
+     строка сама по себе никуда не ведёт. */
   & .O_Menu-subitem:hover .A_Link-dot {
     margin-right: 0;
     opacity: 1;
