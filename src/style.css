@@ -1670,10 +1670,12 @@ body:has(.O_Projects) .M_CasesWidget {
     text-align: left;
   }
 
-  /* отметка занимает место всегда, чтобы строки не прыгали при наведении */
+  /* Отметка занимает место всегда, чтобы строки не прыгали при наведении.
+     Проявляется она тем же таймингом, что точка у ссылки: жест один и тот
+     же — курсор на строке, рядом загорается круг. */
   & .A_Dot {
     opacity: 0;
-    transition: opacity var(--transition-base);
+    transition: opacity var(--transition-hover);
   }
 
   & .M_ServiceList-item.is-Current .A_Dot,
