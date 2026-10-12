@@ -1423,10 +1423,6 @@ body:has(.O_Projects) .M_CasesWidget {
   }
 }
 
-.T_ProjectCard--full {
-  grid-column: 1 / -1;
-}
-
 
 /* ===== O_Case — страница одного кейса ================================== */
 
