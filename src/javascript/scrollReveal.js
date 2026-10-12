@@ -14,7 +14,17 @@ import { EASE, REVEAL } from "./motion.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const targets = gsap.utils.toArray("[data-scroll-reveal]");
+/* Блок, на который ведёт якорь в адресе, не прячем: к нему сразу
+   прокручивают, и появление сдвинуло бы его на свою высоту — страница
+   вставала бы мимо, ровно на эти сорок восемь пикселей. */
+const anchored =
+  location.hash.length > 1
+    ? document.getElementById(decodeURIComponent(location.hash.slice(1)))
+    : null;
+
+const targets = gsap.utils
+  .toArray("[data-scroll-reveal]")
+  .filter((el) => el !== anchored);
 
 if (targets.length) {
   gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {

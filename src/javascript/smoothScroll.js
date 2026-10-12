@@ -46,10 +46,24 @@ if (document.querySelector(".ScrollWrap")) {
     const byHash = (hash) =>
       hash.length > 1 ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
 
+    /* Шапка закреплена поверх страницы, поэтому «встать на блок» — это
+       встать под шапку, а не под верхний край окна: иначе её полоса
+       накрывает начало кейса. Высоту берём из того же токена, что и сама
+       шапка, — на телефоне она другая. */
+    const under = () => {
+      const header = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--header-h")
+      );
+
+      return `top ${Number.isFinite(header) ? header : 0}px`;
+    };
+
+    const goTo = (target, smooth) => smoother.scrollTo(target, smooth, under());
+
     const jumpToHash = () => {
       const target = byHash(location.hash);
 
-      if (target) smoother.scrollTo(target, false);
+      if (target) goTo(target, false);
     };
 
     /* Ссылка на якорь этой же страницы: ведём её плавно, тем же плагином. */
@@ -67,7 +81,7 @@ if (document.querySelector(".ScrollWrap")) {
       if (!target) return;
 
       event.preventDefault();
-      smoother.scrollTo(target, true);
+      goTo(target, true);
       history.pushState(null, "", url.hash);
     };
 
