@@ -41,8 +41,12 @@ button,
   color: var(--color-black);
 }
 
+/* Рамка фокуса берёт цвет текста, а не свой: белая была видна на тёмном
+   стекле и пропадала на светлых секциях — на подвале и клиентах фокус было
+   просто не найти. currentColor делает её чёрной по светлому и белой по
+   тёмному сам. */
 :focus-visible {
-  outline: 2px solid var(--color-white);
+  outline: 2px solid currentColor;
   outline-offset: var(--space-3xs);
   border-radius: var(--radius-s);
 }
@@ -1063,7 +1067,8 @@ main > .O_Contact:first-child {
   }
 
   & .M_ContactCard-link[href^="mailto:"],
-  & .M_ContactCard-link:hover {
+  & .M_ContactCard-link:hover,
+  & .M_ContactCard-link:focus-visible {
     text-decoration-color: currentColor;
   }
 }
@@ -1245,6 +1250,7 @@ main > .O_Contact:first-child {
   }
 
   & .M_CasesWidget-item:hover,
+  & .M_CasesWidget-item:has(:focus-visible),
   & .M_CasesWidget-item.is-Active {
     opacity: 1;
   }
