@@ -22,6 +22,8 @@
  */
 
 import gsap from "gsap";
+
+import { SWAP } from "./motion.js";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
@@ -79,8 +81,7 @@ if (list && box && panels.length) {
             { opacity: 1 },
             {
               opacity: 0,
-              duration: 0.28,
-              ease: "power1.out",
+              ...SWAP.out,
               onComplete: () => {
                 leaving.classList.remove("is-Leaving");
                 // к этому времени оно могло снова стать текущим
@@ -99,7 +100,7 @@ if (list && box && panels.length) {
         gsap.fromTo(
           coming,
           { opacity: 0 },
-          { opacity: 1, duration: 0.4, delay: 0.14, ease: "power2.out" }
+          { opacity: 1, ...SWAP.in }
         );
 
         /* Ссылка появляется вместе с текстом, но заявление на каждую смену
@@ -112,7 +113,7 @@ if (list && box && panels.length) {
           linkFade = gsap.fromTo(
             link,
             { opacity: 0 },
-            { opacity: 1, duration: 0.4, delay: 0.14, ease: "power2.out" }
+            { opacity: 1, ...SWAP.in }
           );
         }
       }

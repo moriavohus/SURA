@@ -14,6 +14,8 @@
 
 import gsap from "gsap";
 
+import { EASE, INTRO } from "./motion.js";
+
 const hero = document.querySelector(".O_Hero");
 
 if (!hero) {
@@ -26,10 +28,10 @@ if (!hero) {
 
   gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
     const tl = gsap.timeline({
-      defaults: { duration: 0.8, ease: "power3.out" },
+      defaults: { duration: INTRO.duration, ease: EASE },
     });
 
-    if (bars.length) tl.from(bars, { opacity: 0, duration: 0.6 }, 0);
+    if (bars.length) tl.from(bars, { opacity: 0, duration: INTRO.bars }, 0);
     if (widget) tl.from(widget, { autoAlpha: 0, y: -12 }, 0.12);
     if (menu) tl.from(menu, { autoAlpha: 0, y: 12 }, 0.22);
 

@@ -19,6 +19,8 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { CASE, EASE, REVEAL } from "./motion.js";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const blocks = gsap.utils.toArray("[data-case-reveal]");
@@ -32,9 +34,7 @@ if (blocks.length) {
     (context) => {
       const { wide } = context.conditions;
 
-      const rise = wide ? 28 : 12;
-      const duration = wide ? 0.8 : 0.6;
-      const cascade = wide ? 0.09 : 0.06;
+      const { rise, duration, cascade } = wide ? CASE.wide : CASE.narrow;
 
       /* Блоки, уже стоящие в кадре при загрузке, триггер показал бы разом —
          разводим их каскадом, чтобы первый экран собирался, а не вспыхивал. */
@@ -47,11 +47,11 @@ if (blocks.length) {
         const order = onScreen.indexOf(block);
 
         const tl = gsap.timeline({
-          defaults: { ease: "power3.out" },
+          defaults: { ease: EASE },
           delay: order < 0 ? 0 : order * cascade,
           scrollTrigger: {
             trigger: block,
-            start: "top 88%",
+            start: REVEAL.start,
           },
         });
 
@@ -60,8 +60,12 @@ if (blocks.length) {
         if (caption) {
           tl.from(
             caption,
-            { autoAlpha: 0, y: rise * 0.45, duration: duration * 0.78 },
-            duration * 0.2
+            {
+              autoAlpha: 0,
+              y: rise * CASE.captionRise,
+              duration: duration * CASE.captionDuration,
+            },
+            duration * CASE.captionDelay
           );
         }
 

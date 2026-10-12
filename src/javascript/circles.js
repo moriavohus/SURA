@@ -11,6 +11,8 @@
 
 import gsap from "gsap";
 
+import { POP } from "./motion.js";
+
 /** Размер круга из токена: по нему физика в футере считает радиус. */
 export const SIZE =
   parseFloat(
@@ -18,7 +20,6 @@ export const SIZE =
   ) || 12;
 
 /** Появление: круг вскакивает из точки, чуть переваливая за свой размер. */
-export const POP = { duration: 0.42, ease: "back.out(2.2)" };
 
 /**
  * Круг в заданной точке хозяина. Координата — центр: у элемента

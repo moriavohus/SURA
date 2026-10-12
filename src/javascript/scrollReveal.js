@@ -10,6 +10,8 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { EASE, REVEAL } from "./motion.js";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const targets = gsap.utils.toArray("[data-scroll-reveal]");
@@ -19,12 +21,12 @@ if (targets.length) {
     const tweens = targets.map((el) =>
       gsap.from(el, {
         autoAlpha: 0,
-        y: 48,
-        duration: 0.9,
-        ease: "power3.out",
+        y: REVEAL.rise,
+        duration: REVEAL.duration,
+        ease: EASE,
         scrollTrigger: {
           trigger: el,
-          start: "top 88%",
+          start: REVEAL.start,
         },
       })
     );

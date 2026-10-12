@@ -13,6 +13,8 @@
  */
 
 import gsap from "gsap";
+
+import { MENU } from "./motion.js";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -39,13 +41,13 @@ if (menu && hero) {
       gsap.fromTo(
         intro,
         { autoAlpha: 1 },
-        { autoAlpha: 0, duration: 0.18, ease: "power2.in" }
+        { autoAlpha: 0, ...MENU.introOut }
       );
     } else {
       gsap.fromTo(
         intro,
         { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.25, delay: 0.34, ease: "power2.out" }
+        { autoAlpha: 1, ...MENU.introIn }
       );
     }
   };
@@ -90,8 +92,7 @@ if (menu && hero) {
 
     gsap.fromTo(menu, from, {
       ...to,
-      duration: 0.55,
-      ease: "power3.inOut",
+      ...MENU.morph,
       clearProps: "width,height",
       onComplete: () => {
         if (intro) gsap.set(intro, { clearProps: "width" });

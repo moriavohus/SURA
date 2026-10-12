@@ -13,6 +13,8 @@
 
 import gsap from "gsap";
 
+import { SWAP } from "./motion.js";
+
 const cards = gsap.utils.toArray(".T_CaseCard");
 const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -59,7 +61,7 @@ if (cards.length && canHover) {
       cursor.x = eased.x = event.clientX;
       cursor.y = eased.y = event.clientY;
       place();
-      gsap.to(tip, { autoAlpha: 1, duration: 0.25, ease: "power2.out" });
+      gsap.to(tip, { autoAlpha: 1, ...SWAP.tip });
       gsap.ticker.add(tick);
     });
 
@@ -70,7 +72,7 @@ if (cards.length && canHover) {
 
     card.addEventListener("pointerleave", () => {
       gsap.ticker.remove(tick);
-      gsap.to(tip, { autoAlpha: 0, duration: 0.25, ease: "power2.out" });
+      gsap.to(tip, { autoAlpha: 0, ...SWAP.tip });
     });
   });
 }

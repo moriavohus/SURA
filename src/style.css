@@ -381,9 +381,12 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
+    /* Коробка и прозрачность идут одним таймингом: раньше текст проявлялся
+       быстрее, чем раскрывался список, и движение читалось двумя шагами.
+       Так же сделаны стрелка в карточке услуги и строка точек в счётчике. */
     transition:
       grid-template-rows var(--transition-hover),
-      opacity var(--transition-base);
+      opacity var(--transition-hover);
   }
 
   & .O_Menu-sub-list {
@@ -880,9 +883,12 @@ body:not(:has(.O_Hero)) .O_Menu {
     gap: var(--space-3xs);
   }
 
+  /* Подпись переносится по словам. Строкой её держать нельзя: на телефоне
+     плитка 182 пикселя, а «дизайн-поддержка» занимает 202 — название
+     обрезалось краем плитки. Короткие имена всё равно встают в строку. */
   & .M_ServiceCard-label {
     text-align: center;
-    white-space: nowrap;
+    text-wrap: balance;
   }
 
   & .M_ServiceCard-arrow {
@@ -1029,7 +1035,7 @@ main > .O_Contact:first-child {
     text-decoration-line: underline;
     text-underline-position: from-font;
     text-decoration-color: transparent;
-    transition: text-decoration-color var(--transition-base);
+    transition: text-decoration-color var(--transition-hover);
   }
 
   & .M_ContactCard-link[href^="mailto:"],
@@ -1235,7 +1241,7 @@ main > .O_Contact:first-child {
     transition:
       height var(--transition-hover),
       margin-top var(--transition-hover),
-      opacity var(--transition-base);
+      opacity var(--transition-hover);
   }
 
   & .M_CasesWidget-dot {
