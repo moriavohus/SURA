@@ -1079,7 +1079,10 @@ main > .O_Contact:first-child {
     gap: var(--contact-links-gap);
   }
 
-  /* Почта подчёркнута постоянно — это адрес, а не обычная ссылка. */
+  /* Обе строки — ссылки, и отзываются одинаково: подчёркивание проявляется
+     под курсором и на фокусе. Линия лежит в разметке всегда, меняется
+     только её цвет, — иначе текст подпрыгивал бы на полпикселя в момент
+     появления. */
   & .M_ContactCard-link {
     text-decoration-line: underline;
     text-underline-position: from-font;
@@ -1087,7 +1090,6 @@ main > .O_Contact:first-child {
     transition: text-decoration-color var(--transition-hover);
   }
 
-  & .M_ContactCard-link[href^="mailto:"],
   & .M_ContactCard-link:hover,
   & .M_ContactCard-link:focus-visible {
     text-decoration-color: currentColor;
