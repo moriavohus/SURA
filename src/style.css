@@ -232,6 +232,9 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
 .A_Avatar {
   display: flex;
   align-items: center;
+  /* Оптическая правка на два пикселя: кружок аватара рядом с прописными
+     буквами подписи кажется приподнятым, если выровнять его по центру
+     строки честно. */
   padding-top: 2px;
   flex: none;
 
@@ -627,8 +630,8 @@ body:not(:has(.O_Hero)) .O_Menu {
   }
 
   & .M_CaseTip-tail {
-    width: 53px;
-    height: 17px;
+    width: var(--tip-tail-w);
+    height: var(--tip-tail-h);
   }
 }
 
