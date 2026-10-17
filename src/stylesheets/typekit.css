@@ -22,10 +22,12 @@
   font-weight: 600;
 }
 
-/* Figma: label 1 — Inter Tight SemiBold 32 / 32, letter-spacing -0.4px */
+/* label 1 — Inter Tight SemiBold 30 / 30. В Figma стиль описан как 32/32
+   с трекингом −0,4; кегль уменьшен до 30, трекинг задан в em и едет вместе
+   с ним. */
 .Label1 {
-  font-size: 32px;
-  line-height: 1;          /* 32 / 32 */
+  font-size: 30px;
+  line-height: 1;          /* 30 / 30 */
   letter-spacing: -0.0125em;
   font-weight: 600;
 }

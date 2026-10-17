@@ -48,7 +48,7 @@
   .M_FooterLinks .M_FooterLinks-link,
   .O_Clients .O_Clients-item,
   .M_ContactCard .M_ContactCard-link {
-    font-size: 32px;
+    font-size: 30px;
   }
 
   .M_Contact {
@@ -202,7 +202,7 @@
 
   /* название набрано label 1, а не заголовочным кеглем */
   .M_CasePanel .M_CasePanel-title {
-    font-size: 32px;
+    font-size: 30px;
     line-height: 1;
     letter-spacing: -0.0125em;
   }
@@ -351,11 +351,11 @@
 
   /* в мобильном макете карточки (Figma 635:1045) заголовок набран label 1 */
   .M_ContactCard .M_ContactCard-title {
-    font-size: 32px;
+    font-size: 30px;
     line-height: 1;
     letter-spacing: -0.0125em;
   }
-  .Title2 { font-size: 32px; }
+  .Title2 { font-size: 30px; }
   .Label1 { font-size: 20px; }
 
   /* ===== поле у текста ================================================
@@ -512,7 +512,7 @@
 
   .O_Clients .O_Clients-title,
   .O_Clients .O_Clients-item {
-    font-size: 32px;
+    font-size: 30px;
     line-height: 1;
     letter-spacing: -0.0125em;
   }
