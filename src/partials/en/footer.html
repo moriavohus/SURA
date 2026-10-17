@@ -9,11 +9,9 @@
       <a class="A_Link A_Link--big Label1 M_FooterLinks-link" href="https://www.instagram.com/sura.dsgn/" target="_blank" rel="noopener">instagram<span class="A_Link-dot" aria-hidden="true"></span></a>
     </nav>
 
-    <!-- Знак у широкого экрана и у телефона разный не размером, а рисунком:
-         на экране он лежит строкой (732:755), на телефоне стоит столбиком
-         (719:2380). Поэтому это две разные выкладки, а не одна масштабом. -->
-    <picture class="A_FooterWordmark">
-      <source media="(max-width: 480px)" srcset="/src/images/logos/wordmark-footer-mobile.svg">
-      <img src="/src/images/logos/logo.svg" alt="süra" width="971" height="396" loading="lazy">
-    </picture>
+    <!-- Знак один на все ширины и масштабируется по ширине колонки. Для
+         телефона был отдельный файл, но в нём буквы вытянуты по вертикали —
+         это не другая выкладка, а искажённая копия того же знака. -->
+    <img class="A_FooterWordmark" src="/src/images/logos/logo.svg" alt="süra"
+         width="971" height="396" loading="lazy">
   </footer>
