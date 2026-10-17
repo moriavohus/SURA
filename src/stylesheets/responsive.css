@@ -207,13 +207,38 @@
     letter-spacing: -0.0125em;
   }
 
-  /* Услуги уходят из потока в правый верхний угол шапки. Подпись набрана
-     body, а не label 2 широкого экрана (Figma 718:1958). */
+  /* Шапка карточки на телефоне — строка из двух равных половин: слева
+     название, справа услуги (Figma 725:2633). Описание идёт под ними во
+     всю ширину, поэтому сетка, а не флекс: разметка одна на все ширины.
+
+     Раньше услуги стояли абсолютом в правом верхнем углу и ложились
+     поверх названия — у длинных имён текст уходил под теги. */
+  .M_CasePanel .M_CasePanel-head,
+  .M_CasePanel--dark .M_CasePanel-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+    align-items: start;
+  }
+
+  .M_CasePanel .M_CasePanel-title {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  /* Услуги переносятся внутри своей половины и стоят по центру её высоты.
+     Подпись набрана body, а не label 2 широкого экрана (Figma 718:1958). */
   .M_CasePanel .M_CaseTags {
-    position: absolute;
-    top: var(--space-s);
-    right: var(--case-pad);
-    white-space: nowrap;
+    position: static;
+    grid-column: 2;
+    min-width: 0;
+    align-self: center;
+    align-content: center;
+    gap: var(--space-xs);
+  }
+
+  .M_CasePanel .M_CasePanel-text {
+    grid-column: 1 / -1;
   }
 
   .M_CasePanel .M_CaseTags-tag .Label2 {
