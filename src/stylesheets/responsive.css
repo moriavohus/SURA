@@ -226,14 +226,17 @@
     min-width: 0;
   }
 
-  /* Услуги переносятся внутри своей половины и стоят по центру её высоты.
+  /* Услуги переносятся внутри своей половины и прижаты к её правому
+     верхнему углу: сама половина стоит по верхнему краю строки, а строки
+     тегов внутри неё — по правому краю.
      Подпись набрана body, а не label 2 широкого экрана (Figma 718:1958). */
   .M_CasePanel .M_CaseTags {
     position: static;
     grid-column: 2;
     min-width: 0;
-    align-self: center;
-    align-content: center;
+    align-self: start;
+    align-content: flex-start;
+    justify-content: flex-end;
     gap: var(--space-xs);
   }
 
