@@ -23,7 +23,7 @@
 
 import gsap from "gsap";
 
-import { SWAP } from "./motion.js";
+import { ACCORDION, EASE, SWAP } from "./motion.js";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
@@ -163,8 +163,12 @@ if (list && box && panels.length) {
   gsap.matchMedia().add("(max-width: 480px)", () => {
     const home = link?.parentNode;
 
-    relocate = () => {
-      const card = tabs[current].closest(".M_ServiceList-item");
+    const cards = tabs.map((tab) => tab.closest(".M_ServiceList-item"));
+
+    /* Перенос содержимого в раскрытую карточку. Сам по себе он мгновенный:
+       узел просто меняет родителя. */
+    const move = () => {
+      const card = cards[current];
 
       /* Прежнее заявление возвращаем в общую коробку: за пределами
          .M_ServiceStatement правило, прячущее нетекущие, на него не
@@ -175,6 +179,46 @@ if (list && box && panels.length) {
 
       card.append(panels[current]);
       if (link) card.append(link);
+    };
+
+    /* Раскрытие и закрытие. Высоту карточек не вычисляем из содержимого, а
+       замеряем до и после переноса и проигрываем переход между ними: так
+       же сделан морфинг меню. Текст появляется следом за коробкой, чтобы
+       не проступать, пока она ещё едет. */
+    relocate = () => {
+      if (still.matches) {
+        move();
+        return;
+      }
+
+      const before = cards.map((card) => card.offsetHeight);
+      const opening = cards[current];
+
+      move();
+
+      cards.forEach((card, i) => {
+        const to = card.offsetHeight;
+
+        if (to === before[i]) return;
+
+        gsap.killTweensOf(card);
+        gsap.fromTo(
+          card,
+          { height: before[i] },
+          { height: to, duration: ACCORDION.duration, ease: EASE, clearProps: "height" }
+        );
+      });
+
+      const coming = [panels[current], link].filter(Boolean);
+
+      gsap.killTweensOf(coming);
+      gsap.fromTo(
+        coming,
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: ACCORDION.fade, delay: ACCORDION.duration * 0.35, ease: EASE }
+      );
+
+      return opening;
     };
 
     relocate();

@@ -439,6 +439,9 @@
     padding: var(--service-card-pad);
     border-radius: var(--service-card-radius);
     background: var(--color-grey);
+    /* пока высота едет, содержимое подрезается по карточке — иначе текст
+       вылезает за её край в первом же кадре раскрытия */
+    overflow: hidden;
     /* строки перечня на телефоне не приглушены: карточка сама по себе */
     opacity: 1;
   }
