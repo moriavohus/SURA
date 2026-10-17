@@ -1123,11 +1123,19 @@ main > .O_Contact:first-child {
      места меньше, ужимается по колонкам; пропорцию держит сам файл. */
   /* Знак идёт своей макетной величиной и ужимается по колонкам, когда
      места меньше; пропорцию держит сам файл. */
+  /* Знак начинается с той же колонки, что и ссылки, и идёт своей макетной
+     величиной; где места меньше — ужимается по колонкам.
+
+     Это не картинка, а маска: форма берётся из файла, цвет — из токена.
+     На светлой странице услуги знак должен быть серым, на серых страницах
+     светлым, а в файле цвет зашит. Пропорцию держит aspect-ratio. */
   & .A_FooterWordmark {
     grid-column: 2 / -1;
     width: min(var(--footer-logo-w), 100%);
-    height: auto;
-    max-width: none;
+    aspect-ratio: var(--footer-logo-ratio);
+    background: var(--color-footer-mark);
+    -webkit-mask: url("/src/images/logos/logo.svg") left center / contain no-repeat;
+    mask: url("/src/images/logos/logo.svg") left center / contain no-repeat;
   }
 }
 
@@ -1568,9 +1576,16 @@ body:has(.O_Projects) .M_CasesWidget {
    серый фон с главной — здесь они берут фон страницы.
    ====================================================================== */
 
-.W_ServicePage {
-  /* тем же одним слоем, поверх серого фона body: у этой страницы он светлее */
+/* Светлая страница заливается целиком, вместе с подвалом: заливка лежит на
+   body, а не на main. Пока она была на main, подвал оставался на сером фоне
+   и между ними проходил шов. Знак в подвале при этом темнеет до серого —
+   тон в тон с новым фоном. */
+body:has(.W_ServicePage) {
   background: var(--color-white);
+  --color-footer-mark: var(--color-grey);
+}
+
+.W_ServicePage {
   color: var(--color-black);
 
   & .O_Clients,
