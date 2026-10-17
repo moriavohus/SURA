@@ -288,15 +288,6 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
 
 /* Заливка — модификатором: коробка и набор у всех кнопок сайта одни. */
 
-.A_Button--grey {
-  background: var(--color-grey);
-  color: var(--color-black);
-
-  &:hover {
-    background: var(--color-white);
-  }
-}
-
 .A_Button--glass {
   background: var(--color-glass-button);
   color: var(--color-white);
