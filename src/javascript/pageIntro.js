@@ -15,6 +15,7 @@
 import gsap from "gsap";
 
 import { EASE, INTRO } from "./motion.js";
+import { glassSafe } from "./glass.js";
 
 const hero = document.querySelector(".O_Hero");
 
@@ -32,8 +33,11 @@ if (!hero) {
     });
 
     if (bars.length) tl.from(bars, { opacity: 0, duration: INTRO.bars }, 0);
-    if (widget) tl.from(widget, { autoAlpha: 0, y: -12 }, 0.12);
-    if (menu) tl.from(menu, { autoAlpha: 0, y: 12 }, 0.22);
+    /* Виджет и меню стеклянные: пока они полупрозрачны, размытие берёт фон
+       из них самих, и обе плашки выходят глухо-серыми — см. glass.js. */
+    if (widget)
+      tl.from(widget, { autoAlpha: 0, y: -12, ...glassSafe(widget) }, 0.12);
+    if (menu) tl.from(menu, { autoAlpha: 0, y: 12, ...glassSafe(menu) }, 0.22);
 
     return () => tl.kill();
   });

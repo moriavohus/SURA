@@ -11,6 +11,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { EASE, REVEAL } from "./motion.js";
+import { glassSafe } from "./glass.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,6 +35,9 @@ if (targets.length) {
         y: REVEAL.rise,
         duration: REVEAL.duration,
         ease: EASE,
+        /* Пока блок полупрозрачен, стекло внутри него (панель кейса, кнопка)
+           размывает не страницу, а саму карточку — см. glass.js. */
+        ...glassSafe(el),
         scrollTrigger: {
           trigger: el,
           start: REVEAL.start,

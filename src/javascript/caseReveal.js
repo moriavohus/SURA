@@ -20,6 +20,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { CASE, EASE, REVEAL } from "./motion.js";
+import { glassSafe } from "./glass.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,7 +56,11 @@ if (blocks.length) {
           },
         });
 
-        tl.from(block, { autoAlpha: 0, y: rise, duration }, 0);
+        tl.from(
+          block,
+          { autoAlpha: 0, y: rise, duration, ...glassSafe(block) },
+          0
+        );
 
         if (caption) {
           tl.from(

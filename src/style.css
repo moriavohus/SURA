@@ -608,7 +608,12 @@ body:not(:has(.O_Hero)) .O_Menu {
 
   & .M_CasePanel-title {
     width: 100%;
-    word-break: break-word;
+    /* Названия кейсов приходят из админки и бывают длиннее колонки. Кегль под
+       них подбирает titleFit.js; если слово не влезает и на минимальном кегле,
+       переносим его по слогам с дефисом, а не разрубаем посередине. */
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    overflow-wrap: break-word;
   }
 
   & .M_CasePanel-text {

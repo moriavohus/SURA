@@ -14,6 +14,7 @@
 import gsap from "gsap";
 
 import { SWAP } from "./motion.js";
+import { glassSafe } from "./glass.js";
 
 const cards = gsap.utils.toArray(".T_CaseCard");
 const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -61,7 +62,9 @@ if (cards.length && canHover) {
       cursor.x = eased.x = event.clientX;
       cursor.y = eased.y = event.clientY;
       place();
-      gsap.to(tip, { autoAlpha: 1, ...SWAP.tip });
+      /* Реплика стеклянная: пока она проявляется, размытие внутри неё берёт
+         фон не из страницы, и в Chrome она мигает глухой плашкой — glass.js. */
+      gsap.to(tip, { autoAlpha: 1, ...SWAP.tip, ...glassSafe(tip) });
       gsap.ticker.add(tick);
     });
 
@@ -72,7 +75,7 @@ if (cards.length && canHover) {
 
     card.addEventListener("pointerleave", () => {
       gsap.ticker.remove(tick);
-      gsap.to(tip, { autoAlpha: 0, ...SWAP.tip });
+      gsap.to(tip, { autoAlpha: 0, ...SWAP.tip, ...glassSafe(tip) });
     });
   });
 }

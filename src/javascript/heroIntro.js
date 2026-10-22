@@ -8,6 +8,7 @@
 import gsap from "gsap";
 
 import { EASE, INTRO } from "./motion.js";
+import { glassSafe } from "./glass.js";
 
 const hero = document.querySelector(".O_Hero");
 
@@ -25,7 +26,14 @@ if (hero) {
     // Шапке двигаем только прозрачность: transform создал бы контекст
     // наложения, и mix-blend-difference шапки перестал бы видеть кадр.
     if (targets.header) tl.from(targets.header, { autoAlpha: 0, duration: INTRO.heroHeader }, 0);
-    if (targets.menu) tl.from(targets.menu, { autoAlpha: 0, y: 18 }, 0.35);
+    /* Меню стеклянное: на время проявления размытие снимаем, иначе оно
+       берёт фон из самого меню и оно превращается в глухую плашку. */
+    if (targets.menu)
+      tl.from(
+        targets.menu,
+        { autoAlpha: 0, y: 18, ...glassSafe(targets.menu) },
+        0.35
+      );
 
     return () => tl.kill();
   });
