@@ -1425,10 +1425,18 @@ body:has(.O_Projects) .M_CasesWidget {
   flex-wrap: wrap;
   gap: var(--case-tags-gap);
 
+  /* Точка стоит у верхнего края подписи, а не по центру: подпись бывает в
+     две строки, а услуга одна, и метка принадлежит её началу. Сдвиг вниз
+     ставит точку ровно в середину первой строки — величина своя на каждый
+     кегль подписи, см. токен. */
   & .M_CaseTags-tag {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--case-tag-gap);
+  }
+
+  & .M_CaseTags-tag .A_Dot {
+    margin-top: var(--case-tag-dot-drop);
   }
 }
 

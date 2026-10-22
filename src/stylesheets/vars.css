@@ -154,6 +154,7 @@
   --tip-tail-w: 53px;
   --tip-tail-h: 17px;
   --case-tag-gap: var(--space-2xs);  /* точка → подпись внутри услуги */
+  --case-tag-dot-drop: 11px;     /* (28 − 6) / 2: точка в середине первой строки label 2 */
   --case-tip-w: 315px;
 
   /* ===== блок услуг ===== */

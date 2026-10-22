@@ -221,9 +221,13 @@
     align-items: start;
   }
 
+  /* Название занимает половину карточки — на телефоне это 164 пикселя, и
+     длинные слова в неё не помещались: «Конференция» при 30 занимает 188.
+     При 24 остаётся запас, при 26 слово впритык упирается в край. */
   .M_CasePanel .M_CasePanel-title {
     grid-column: 1;
     min-width: 0;
+    font-size: 24px;
   }
 
   /* Услуги переносятся внутри своей половины и прижаты к её правому
@@ -242,6 +246,10 @@
 
   .M_CasePanel .M_CasePanel-text {
     grid-column: 1 / -1;
+  }
+
+  .M_CasePanel .M_CaseTags-tag {
+    --case-tag-dot-drop: 8px;    /* (22 − 6) / 2: подпись здесь набрана body */
   }
 
   .M_CasePanel .M_CaseTags-tag .Label2 {
