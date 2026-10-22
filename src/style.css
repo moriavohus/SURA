@@ -569,11 +569,6 @@ body:not(:has(.O_Hero)) .O_Menu {
   }
 }
 
-/* панель прижата к правому краю кадра */
-.T_CaseCard--panelRight {
-  justify-content: flex-end;
-}
-
 /* ===== M_CasePanel ===================================================== */
 
 .M_CasePanel {
