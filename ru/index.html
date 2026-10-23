@@ -39,12 +39,13 @@
         <section class="O_Hero W_Grid">
 
           <div class="W_HeroMedia">
-            <img class="A_HeroImage"
-                 src="/src/images/hero/hero-bg.jpg"
-                 alt=""
-                 width="1614" height="1008"
-                 fetchpriority="high"
-                 data-media-reveal>
+            <video class="A_HeroImage"
+                   src="/src/images/hero/hero.webm"
+                   poster="/src/images/hero/hero-bg.jpg"
+                   width="1920" height="1080"
+                   autoplay muted loop playsinline
+                   aria-hidden="true"
+                   data-media-reveal></video>
           </div>
 
         </section>
@@ -286,6 +287,7 @@
   <script type="module" src="/src/javascript/smoothScroll.js"></script>
   <script type="module" src="/src/javascript/footerCircles.js"></script>
   <script type="module" src="/src/javascript/mediaReveal.js"></script>
+  <script type="module" src="/src/javascript/heroVideo.js"></script>
   <script type="module" src="/src/javascript/heroIntro.js"></script>
   <script type="module" src="/src/javascript/menuScroll.js"></script>
   <script type="module" src="/src/javascript/menuToggle.js"></script>
