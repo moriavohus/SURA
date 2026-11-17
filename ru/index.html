@@ -40,12 +40,17 @@
 
           <div class="W_HeroMedia">
             <video class="A_HeroImage"
-                   src="/src/images/hero/hero.webm"
                    poster="/src/images/hero/hero-bg.jpg"
                    width="1920" height="1080"
                    autoplay muted loop playsinline
                    aria-hidden="true"
-                   data-media-reveal></video>
+                   data-media-reveal>
+              <!-- Вертикальный ролик для телефона и горизонтальный для всего
+                   остального: media выбирает источник при загрузке, смену
+                   ширины на ходу доигрывает heroVideo.js. -->
+              <source src="/src/images/hero/hero-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+              <source src="/src/images/hero/hero.webm" type="video/webm">
+            </video>
           </div>
 
         </section>

@@ -891,7 +891,12 @@ body:not(:has(.O_Hero)) .O_Menu {
     transition: opacity var(--transition-slow);
     background:
       linear-gradient(180deg, var(--color-scrim-strong) 0%, var(--color-scrim-soft) 30%, var(--color-scrim-none) 55%),
-      linear-gradient(0deg,   var(--color-scrim-strong) 0%, var(--color-scrim-mid)  22%, var(--color-scrim-none) 45%);
+      linear-gradient(
+        0deg,
+        var(--color-scrim-strong) 0%,
+        var(--color-scrim-mid) var(--hero-scrim-bottom-mid),
+        var(--color-scrim-none) var(--hero-scrim-bottom-end)
+      );
   }
 }
 
