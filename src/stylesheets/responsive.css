@@ -661,11 +661,15 @@
      пункте, и курсор, стоящий на погасшей надписи, всё так же держит список
      раскрытым — событие просто достаётся родителю.
 
-     Только там, где есть курсор: на тач-устройствах этой же кнопкой список
-     и закрывают. */
-  .O_Menu-item:hover > .O_Menu-row .O_Menu-trigger {
-    opacity: var(--menu-sub-dim);
-    pointer-events: none;
+     Только там, где есть курсор и широкая раскладка: в мобильной этой же
+     кнопкой список открывают и закрывают, и снятые pointer-events делали её
+     вовсе ненажимаемой — курсор в узком окне браузера наводился на пункт
+     раньше, чем успевал кликнуть. */
+  @media (min-width: 769px) {
+    .O_Menu-item:hover > .O_Menu-row .O_Menu-trigger {
+      opacity: var(--menu-sub-dim);
+      pointer-events: none;
+    }
   }
 }
 
@@ -686,7 +690,10 @@
     opacity: 0;
   }
 
-  .O_Menu .O_Menu-item.is-Open .O_Menu-sub {
+  /* Второй селектор — для мыши в узком окне: курсор в момент клика стоит
+     на пункте, и правило выше гасило бы список прямо под ним. */
+  .O_Menu .O_Menu-item.is-Open .O_Menu-sub,
+  .O_Menu .O_Menu-item.is-Open:hover .O_Menu-sub {
     grid-template-rows: 1fr;
     opacity: 1;
   }
