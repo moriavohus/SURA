@@ -968,6 +968,12 @@ body:not(:has(.O_Hero)) .O_Menu {
   padding: var(--services-pad-y) 0;
 }
 
+/* Отдельной страницей услуги стоят теми же полями, что и список кейсов:
+   сверху запас под шапку, снизу — поле страницы. */
+.O_Services--page {
+  padding: var(--page-pad-top) 0 var(--page-pad-bottom);
+}
+
 
 /* ===== W_ServicesGrid ================================================== */
 
