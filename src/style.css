@@ -585,9 +585,11 @@ body:not(:has(.O_Hero)) .O_Menu {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* То же чёрное стекло, что у виджетов: панель лежит поверх кадра, и
-     светлое стекло на светлых кадрах переставало читаться (Figma 759:4005). */
-  background: var(--color-glass-shade);
+  /* Чёрное стекло: панель лежит поверх кадра, и светлое на светлых кадрах
+     переставало читаться (Figma 759:4005). Плотнее, чем у виджетов: на
+     оранжевом или розовом кадре стекло виджета уходило в цвет кадра, а
+     панель должна читаться чёрной на любом. */
+  background: var(--color-glass-case);
   -webkit-backdrop-filter: blur(var(--case-blur));
   backdrop-filter: blur(var(--case-blur));
   /* Цвет свой, а не унаследованный от страницы: панель лежит поверх кадра и
@@ -614,10 +616,6 @@ body:not(:has(.O_Hero)) .O_Menu {
   & .M_CasePanel-text {
     width: 100%;
   }
-}
-
-.M_CasePanel--dark {
-  background: var(--color-glass-dark);
 }
 
 /* ===== M_CaseTip — реплика, всплывающая на ховере кадра ================ */
