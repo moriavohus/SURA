@@ -1081,21 +1081,9 @@ main > .O_Contact:first-child {
     gap: var(--contact-links-gap);
   }
 
-  /* Обе строки — ссылки, и отзываются одинаково: подчёркивание проявляется
-     под курсором и на фокусе. Линия лежит в разметке всегда, меняется
-     только её цвет, — иначе текст подпрыгивал бы на полпикселя в момент
-     появления. */
-  & .M_ContactCard-link {
-    text-decoration-line: underline;
-    text-underline-position: from-font;
-    text-decoration-color: transparent;
-    transition: text-decoration-color var(--transition-hover);
-  }
-
-  & .M_ContactCard-link:hover,
-  & .M_ContactCard-link:focus-visible {
-    text-decoration-color: currentColor;
-  }
+  /* Обе строки — ссылки и отзываются как все остальные на сайте: точкой
+     справа (.A_Link). Подчёркивание здесь было единственным на весь сайт
+     и выбивалось из общего приёма. */
 }
 
 
