@@ -17,12 +17,14 @@
   --color-footer-mark: var(--color-white);
   --color-text-muted: #939393;                   /* приглушённый текст: имена клиентов */
   --color-glass: rgba(255, 255, 255, 0.2);       /* светлая стеклянная подложка */
+  --color-glass-dark: color-mix(in srgb, var(--color-black) 10%, transparent);
   --color-glass-ink: color-mix(in srgb, var(--color-black) 8%, transparent);
   /* чёрное стекло — одно на весь сайт: счётчик кейсов и меню, на любом
      экране и в любом состоянии */
   --color-glass-shade: color-mix(in srgb, var(--color-black) 32%, transparent);
-  /* панель кейса: должна читаться чёрной и на светлом кадре */
-  --color-glass-case: color-mix(in srgb, var(--color-black) 72%, transparent);
+  /* виджеты меню и кейсов: чёрное стекло, которое держится и на светлом
+     кадре первого экрана */
+  --color-glass-solid: color-mix(in srgb, var(--color-black) 60%, transparent);
   --color-glass-button: rgba(255, 255, 255, 0.16);
   --color-glass-tip: rgba(255, 255, 255, 0.1);
   --color-hero-fallback: #efe4dc;                /* фон до загрузки кадра */

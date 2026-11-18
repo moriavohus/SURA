@@ -195,7 +195,8 @@
 
   /* Шапка на тёмном стекле. Светлый и тёмный варианты панели с широкого
      экрана здесь сходятся в один: в макете шапка у всех карточек одна. */
-  .M_CasePanel .M_CasePanel-head {
+  .M_CasePanel .M_CasePanel-head,
+  .M_CasePanel--dark .M_CasePanel-head {
     position: relative;
     z-index: 2;
     order: 1;
@@ -220,7 +221,8 @@
 
      Сетка, а не флекс: разметка одна на все ширины, а на широком экране
      теги по-прежнему стоят абсолютом в углу кадра. */
-  .M_CasePanel .M_CasePanel-head {
+  .M_CasePanel .M_CasePanel-head,
+  .M_CasePanel--dark .M_CasePanel-head {
     display: grid;
     grid-template-columns: 1fr;
     align-items: start;

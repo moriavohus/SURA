@@ -349,8 +349,10 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
   border-radius: var(--radius-l);
   /* гаснущее вступление шире схлопывающейся коробки — подрезаем по панели */
   overflow: hidden;
-  /* над кадром первого экрана стекло светлое: фон там тёмный */
-  background: var(--color-glass);
+  /* Чёрное стекло на всех фонах, как в мобильной раскладке. Светлое
+     держалось, пока на первом экране был тёмный кадр: на нынешнем, светлом,
+     белый текст на нём переставал читаться (1,3:1). */
+  background: var(--color-glass-solid);
   -webkit-backdrop-filter: blur(var(--menu-blur));
   backdrop-filter: blur(var(--menu-blur));
 
@@ -503,8 +505,6 @@ body:not(:has(.O_Hero)) .A_Logo-arrow {
    меню останется развёрнутым — вёрстка от этого не рассыпается. */
 .O_Menu.is-Compact,
 body:not(:has(.O_Hero)) .O_Menu {
-  background: var(--color-glass-shade);
-  transition: background-color var(--transition-base);
   height: max-content;
   /* Низ, а не центр: меню привязано к низу экрана и сжимается кверху, так что
      при flex-end список стоит на месте всю анимацию. При center он прыгал бы
@@ -585,11 +585,9 @@ body:not(:has(.O_Hero)) .O_Menu {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Чёрное стекло: панель лежит поверх кадра, и светлое на светлых кадрах
-     переставало читаться (Figma 759:4005). Плотнее, чем у виджетов: на
-     оранжевом или розовом кадре стекло виджета уходило в цвет кадра, а
-     панель должна читаться чёрной на любом. */
-  background: var(--color-glass-case);
+  /* То же чёрное стекло, что у виджетов: панель лежит поверх кадра, и
+     светлое стекло на светлых кадрах переставало читаться (Figma 759:4005). */
+  background: var(--color-glass-shade);
   -webkit-backdrop-filter: blur(var(--case-blur));
   backdrop-filter: blur(var(--case-blur));
   /* Цвет свой, а не унаследованный от страницы: панель лежит поверх кадра и
@@ -616,6 +614,10 @@ body:not(:has(.O_Hero)) .O_Menu {
   & .M_CasePanel-text {
     width: 100%;
   }
+}
+
+.M_CasePanel--dark {
+  background: var(--color-glass-dark);
 }
 
 /* ===== M_CaseTip — реплика, всплывающая на ховере кадра ================ */
@@ -1177,9 +1179,9 @@ main > .O_Contact:first-child {
   align-items: flex-start;
   gap: var(--widget-gap);
   border-radius: var(--radius-l);
-  /* Стекло переворачивается вместе с фоном, как у меню: над тёмным кадром
-     первого экрана — светлое, ниже, над светлыми секциями, — чёрное. */
-  background: var(--color-glass);
+  /* То же чёрное стекло, что у меню: виджеты стоят в одной колонке друг
+     под другом, и разный фон читался бы как разнобой. */
+  background: var(--color-glass-solid);
   -webkit-backdrop-filter: blur(var(--widget-blur));
   backdrop-filter: blur(var(--widget-blur));
   /* тот же белый, что у меню: виджеты стоят в одной колонке друг под другом,
@@ -1320,15 +1322,6 @@ main > .O_Contact:first-child {
 }
 
 /* шапка спрятана — виджет занимает её место */
-/* За первым экраном подложка темнеет — тем же чёрным стеклом 20%, что у
-   компактного меню. Класс вешает casesWidget.js; второй селектор — страницы
-   без первого экрана, где светло с первого кадра (подробнее у
-   .O_Menu.is-Compact). */
-.M_CasesWidget.is-Shaded,
-body:not(:has(.O_Hero)) .M_CasesWidget {
-  background: var(--color-glass-shade);
-}
-
 
 .M_CasesWidget.is-Raised {
   top: var(--space-gutter);
