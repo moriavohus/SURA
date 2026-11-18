@@ -1526,6 +1526,13 @@ body:has(.O_Projects) .M_CasesWidget {
   & .T_CaseIntro-title {
     grid-column: 1 / 2;
     margin: 0;
+    /* Название приходит из админки и бывает длиннее колонки. Кегль под него
+       подбирает titleFit.js; если слово не влезает и на минимальном кегле,
+       переносим его по слогам, а не пускаем поверх описания справа: колонка
+       сетки держит ширину ячейки, но не длинное слово внутри неё. */
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    overflow-wrap: break-word;
   }
 
   & .T_CaseIntro-text {
