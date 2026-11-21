@@ -9,6 +9,12 @@
  * таких названий кегль уменьшается ровно настолько, чтобы самое длинное
  * слово встало целиком, — короткие («MONS») остаются макетного размера.
  *
+ * Макетный кегль берётся не с самого заголовка, а с линейки: ей выдаются
+ * те же классы, и typekit задаёт ей тот же размер и трекинг — включая
+ * брейкпоинты. Читать кегль с заголовка нельзя: сразу после снятия нашей
+ * подгонки getComputedStyle отдаёт ещё старое значение, подгонка решала,
+ * что всё и так влезает, и название возвращалось к макетному кеглю.
+ *
  * Ниже MIN_PX не опускаемся: такой кегль уже не читается, и там слово
  * переносится по слогам (hyphens в style.css).
  */
@@ -19,35 +25,36 @@ const MIN_PX = 20;
 const ruler = document.createElement("span");
 ruler.setAttribute("aria-hidden", "true");
 ruler.style.cssText =
-  "position:absolute;left:-9999px;top:0;white-space:nowrap;pointer-events:none";
+  "position:absolute;left:-9999px;top:0;white-space:nowrap;width:max-content;" +
+  "pointer-events:none";
 
 const titles = [
   ...document.querySelectorAll(".M_CasePanel-title, .T_CaseIntro-title"),
 ];
 
 const fit = (title) => {
-  /* Сначала снимаем прошлую подгонку: базовый кегль задаёт typekit и он
-     меняется по брейкпоинтам, читать его надо без наших правок. */
-  title.style.fontSize = "";
-
-  const style = getComputedStyle(title);
-  const base = parseFloat(style.fontSize);
   const avail = title.clientWidth;
-  if (!base || !avail) return;
+  if (!avail) return;
 
-  ruler.style.font = style.font;
-  ruler.style.fontSize = `${base}px`;
-  ruler.style.letterSpacing = style.letterSpacing;
+  /* Линейке выдаём классы заголовка — вместе с ними она получает макетный
+     кегль и трекинг, в том числе для текущего брейкпоинта. */
+  ruler.className = title.className;
+  const base = parseFloat(getComputedStyle(ruler).fontSize);
+  if (!base) return;
 
   let widest = 0;
   for (const word of title.textContent.trim().split(/\s+/)) {
     ruler.textContent = word;
     widest = Math.max(widest, ruler.getBoundingClientRect().width);
   }
-  if (!widest || widest <= avail) return;
+  if (!widest) return;
 
-  const size = Math.max(MIN_PX, Math.floor((base * avail) / widest));
-  if (size < base) title.style.fontSize = `${size}px`;
+  const size =
+    widest <= avail
+      ? base
+      : Math.max(MIN_PX, Math.floor((base * avail) / widest));
+
+  title.style.fontSize = size === base ? "" : `${size}px`;
 };
 
 const fitAll = () => titles.forEach(fit);
@@ -68,4 +75,7 @@ if (titles.length) {
   };
   const observer = new ResizeObserver(schedule);
   titles.forEach((title) => observer.observe(title.parentElement));
+
+  /* Смена ширины окна — смена брейкпоинта: макетный кегль там другой. */
+  window.addEventListener("resize", schedule);
 }
