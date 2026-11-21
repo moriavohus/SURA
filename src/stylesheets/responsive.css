@@ -265,13 +265,21 @@
     object-fit: cover;
   }
 
+  /* Кнопка лежит на снимке, а не под ним: в макете снимок доходит до низа
+     карточки, а кнопка висит на нём с тем же полем 20 (Figma 750:847).
+     Поэтому она вынута из потока — иначе снизу оставалась бы полоса
+     размытой подложки. */
   .T_CaseCard .A_Button {
     --btn-h: var(--case-cta-h);
-    position: relative;
-    z-index: 2;
-    order: 3;
-    width: calc(100% - var(--case-pad) * 2);
-    margin: var(--case-pad);
+    position: absolute;
+    /* выше снимка: он flex-элемент с order, и при равном z-index порядок
+       отрисовки считается по order, а не по разметке */
+    z-index: 3;
+    left: var(--case-pad);
+    right: var(--case-pad);
+    bottom: var(--case-pad);
+    width: auto;
+    margin: 0;
     -webkit-backdrop-filter: blur(var(--case-cta-blur));
     backdrop-filter: blur(var(--case-cta-blur));
   }

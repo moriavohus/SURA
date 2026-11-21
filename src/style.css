@@ -1602,6 +1602,11 @@ body:has(.O_Projects) .M_CasesWidget {
   position: static;
   width: 100%;
   height: auto;
+  /* Потолок высоты: снимок в полэкрана шириной и пропорцией 1:2 вырастал на
+     полтора экрана. Выше потолка кадр не идёт — снимок заполняет его по
+     ширине и подрезается сверху и снизу поровну. */
+  max-height: var(--case-frame-max-h);
+  object-fit: cover;
 }
 
 
