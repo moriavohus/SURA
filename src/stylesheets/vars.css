@@ -18,7 +18,7 @@
   --color-text-muted: #939393;                   /* приглушённый текст: имена клиентов */
   --color-glass: rgba(255, 255, 255, 0.2);       /* светлая стеклянная подложка */
   --color-glass-dark: color-mix(in srgb, var(--color-black) 10%, transparent);
-  --color-glass-ink: color-mix(in srgb, var(--color-black) 8%, transparent);
+  --color-glass-ink: color-mix(in srgb, var(--color-black) 18%, transparent);
   /* чёрное стекло — одно на весь сайт: счётчик кейсов и меню, на любом
      экране и в любом состоянии */
   --color-glass-shade: color-mix(in srgb, var(--color-black) 32%, transparent);
@@ -162,7 +162,7 @@
   --tip-tail-w: 53px;
   --tip-tail-h: 17px;
   --case-tag-gap: var(--space-2xs);  /* точка → подпись внутри услуги */
-  --case-tag-dot-drop: 11px;     /* (28 − 6) / 2: точка в середине первой строки label 2 */
+  --case-tag-dot-drop: 8px;      /* (22 − 6) / 2: точка в середине первой строки body */
   --case-tip-w: 315px;
 
   /* ===== блок услуг ===== */

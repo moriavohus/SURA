@@ -226,6 +226,8 @@
     display: grid;
     grid-template-columns: 1fr;
     align-items: start;
+    /* в макете строки шапки стоят вплотную — 8, а не 24 широкого экрана */
+    gap: var(--space-xs);
   }
 
   .M_CasePanel .M_CasePanel-title {
@@ -235,7 +237,7 @@
   /* Теги идут строкой и переносятся целиком: фраза вроде «оформление
      мероприятий» не должна разрываться посередине. Отбивка между ними
      больше межстрочной — иначе соседние теги читаются как одна строка.
-     Подпись набрана body, а не label 2 широкого экрана (Figma 718:1958). */
+     Подпись набрана body — теперь она такая на всех ширинах. */
   .M_CasePanel .M_CaseTags {
     position: static;
     min-width: 0;
@@ -249,17 +251,6 @@
   .M_CasePanel .M_CaseTags-tag {
     max-width: 100%;
     white-space: nowrap;
-  }
-
-  .M_CasePanel .M_CaseTags-tag {
-    --case-tag-dot-drop: 8px;    /* (22 − 6) / 2: подпись здесь набрана body */
-  }
-
-  .M_CasePanel .M_CaseTags-tag .Label2 {
-    font-size: 17px;
-    line-height: 1.294118;
-    letter-spacing: 0;
-    font-weight: 500;
   }
 
   /* снимок во всю ширину карточки, без полей и скругления */
@@ -454,6 +445,12 @@
     position: static;
     padding: 0;
     color: inherit;
+  }
+
+  /* Кадр на странице кейса лежит во всю ширину, а текст — в полях. Услуги
+     идут с текстом, иначе они одни прижаты к краю экрана. */
+  .T_CaseIntro > .M_CaseTags {
+    padding-inline: var(--text-pad);
   }
 
   /* точка по умолчанию белая — под обложкой она на светлом фоне */
